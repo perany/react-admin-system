@@ -5,6 +5,7 @@
 # production
 /node_modules
 /release
+/src/pages/.umi
 
 # misc
 /_site

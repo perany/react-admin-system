@@ -1,0 +1,21 @@
+
+# dependencies
+/node_modules
+
+# production
+/node_modules
+/release
+
+# misc
+/_site
+/.idea
+.happypack
+.DS_Store
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+
+

@@ -8,9 +8,7 @@ class KingrcTest extends Component {
     return (
       <PageHeaderWrapper title="kingRC组件测试页">
         <div className={styles.test}>
-          <p>按钮</p>
-          <Button>button</Button>
-          <p>时间控件</p>
+          <p>时间范围选择器</p>
           <DateRangePicker className={"date-picker"} />
           <p>信息展示列表</p>
           <GridList

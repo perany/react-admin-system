@@ -289,6 +289,13 @@ export default [
           },
         ],
       },
+      //test
+      {
+        name: 'test',
+        icon: 'check-circle-o',
+        path: '/test',
+        component: './Test/KingrcTest',
+      },
       {
         component: '404',
       },

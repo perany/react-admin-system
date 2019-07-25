@@ -6,6 +6,7 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
+    "buildProd": "npm run build",
     "deploy": "cross-env ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION=site npm run site && npm run gh-pages",
     "fetch:blocks": "pro fetch-blocks",
     "format-imports": "import-sort --write '**/*.{js,jsx,ts,tsx}'",

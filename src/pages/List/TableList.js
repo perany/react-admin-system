@@ -43,7 +43,7 @@ const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
-      if (err) return;
+      if (err) { return; }
       form.resetFields();
       handleAdd(fieldsValue);
     });
@@ -100,7 +100,7 @@ class UpdateForm extends PureComponent {
     const { form, handleUpdate } = this.props;
     const { formVals: oldValue } = this.state;
     form.validateFields((err, fieldsValue) => {
-      if (err) return;
+      if (err) { return; }
       const formVals = { ...oldValue, ...fieldsValue };
       this.setState(
         {
@@ -406,7 +406,7 @@ class TableList extends PureComponent {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
 
-    if (selectedRows.length === 0) return;
+    if (selectedRows.length === 0) { return; }
     switch (e.key) {
       case 'remove':
         dispatch({
@@ -438,7 +438,7 @@ class TableList extends PureComponent {
     const { dispatch, form } = this.props;
 
     form.validateFields((err, fieldsValue) => {
-      if (err) return;
+      if (err) { return; }
 
       const values = {
         ...fieldsValue,

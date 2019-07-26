@@ -109,7 +109,7 @@ export default {
   },
   outputPath: "./release",
   publicPath: "./",
-  base: "./",
+  // base: "./",
   hash: true,
   history: "hash",
   chainWebpack: webpackPlugin

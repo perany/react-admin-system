@@ -4,6 +4,7 @@
  */
 import { extend } from "umi-request";
 import { notification } from "antd";
+import proxyConfig from "../../config/proxyConfig";
 
 const codeMessage = {
   200: "服务器成功返回请求的数据。",
@@ -47,5 +48,32 @@ const request = extend({
   errorHandler, // 默认错误处理
   credentials: "include" // 默认请求是否带上cookie
 });
+
+//request interceptor, change url or options.
+request.interceptors.request.use((url, options) => {
+  //access check
+  let checkToken = false;
+  let reqParams = { ...options.params };
+  if (checkToken) {
+    // reqParams = { ...options.params, token: token };
+  }
+  return {
+    options: {
+      ...options,
+      interceptors: true,
+      params: reqParams
+    },
+    url:
+        proxyConfig.postServer +
+        (process.env.NODE_ENV === "production" ? url.substr(4) : url)
+  };
+});
+
+//response interceptor, handling response
+request.interceptors.response.use((response, options) => {
+  // response.headers.append('interceptors', 'yes yo');
+  return response;
+});
+
 
 export default request;

@@ -4,13 +4,9 @@ import form from './pt-BR/form';
 import globalHeader from './pt-BR/globalHeader';
 import login from './pt-BR/login';
 import menu from './pt-BR/menu';
-import monitor from './pt-BR/monitor';
 import result from './pt-BR/result';
-import settingDrawer from './pt-BR/settingDrawer';
-import settings from './pt-BR/settings';
 import pwa from './pt-BR/pwa';
 import component from './pt-BR/component';
-import editor from './pt-BR/editor';
 
 export default {
   'navBar.lang': 'Idiomas',
@@ -27,11 +23,7 @@ export default {
   ...globalHeader,
   ...login,
   ...menu,
-  ...monitor,
   ...result,
-  ...settingDrawer,
-  ...settings,
   ...pwa,
   ...component,
-  ...editor,
 };

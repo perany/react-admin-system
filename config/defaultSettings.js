@@ -7,7 +7,7 @@ module.exports = {
   autoHideHeader: false, // auto hide header
   fixSiderbar: false, // sticky siderbar
   menu: {
-    disableLocal: false,
+    disableLocal: true,
   },
   title: '后台管理系统',
   pwa: false,

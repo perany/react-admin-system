@@ -23,11 +23,11 @@ export default [
       {
         path: '/list',
         icon: 'table',
-        name: 'list',
+        name: '列表',
         routes: [
           {
             path: '/list/table-list',
-            name: 'searchtable',
+            name: '查询列表',
             component: './List/TableList',
           },
         ],
@@ -64,7 +64,7 @@ export default [
       },
       //test
       {
-        name: 'test',
+        name: '测试页面',
         icon: 'check-circle-o',
         path: '/test',
         component: './Test/KingrcTest',

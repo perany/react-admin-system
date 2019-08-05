@@ -84,7 +84,7 @@ class LoginPage extends Component {
             {login.status === 'error' &&
               login.type === 'account' &&
               !submitting &&
-              this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
+              this.renderMessage("账户或密码错误（admin/123456）")}
             <UserName
               name="userName"
               placeholder={`${formatMessage({ id: 'app.login.userName' })}: admin or user`}
@@ -97,7 +97,7 @@ class LoginPage extends Component {
             />
             <Password
               name="password"
-              placeholder={`${formatMessage({ id: 'app.login.password' })}: ant.design`}
+              placeholder={`${formatMessage({ id: 'app.login.password' })}: 123456`}
               rules={[
                 {
                   required: true,

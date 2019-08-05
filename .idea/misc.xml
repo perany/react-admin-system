@@ -5,6 +5,7 @@
   </component>
   <component name="ProjectPlainTextFileTypeManager">
     <file url="file://$PROJECT_DIR$/mock/chart.js" />
+    <file url="file://$PROJECT_DIR$/src/models/list.js" />
     <file url="file://$PROJECT_DIR$/src/services/geographic.js" />
   </component>
 </project>

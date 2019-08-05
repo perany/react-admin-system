@@ -119,7 +119,7 @@ class LoginPage extends Component {
               )}
             <Mobile
               name="mobile"
-              placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
+              placeholder={"手机号"}
               rules={[
                 {
                   required: true,
@@ -133,11 +133,11 @@ class LoginPage extends Component {
             />
             <Captcha
               name="captcha"
-              placeholder={formatMessage({ id: 'form.verification-code.placeholder' })}
+              placeholder={'验证码'}
               countDown={120}
               onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({ id: 'form.get-captcha' })}
-              getCaptchaSecondText={formatMessage({ id: 'form.captcha.second' })}
+              getCaptchaButtonText={'获取验证码'}
+              getCaptchaSecondText={'秒'}
               rules={[
                 {
                   required: true,

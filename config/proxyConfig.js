@@ -8,9 +8,9 @@ const proxyConfig = {
   prod: {
     postServer: "https://prod"
   },
-  // 本地：研发环境（npm run start）
+  // 本地：研发环境（npm run start）, 开启mock时值为""
   development: {
-    postServer: "https://localhost:8080"
+    postServer: ""
   },
   // 本地：生产环境 (npm run buildProd)
   production: {

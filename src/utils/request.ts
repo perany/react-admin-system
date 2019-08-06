@@ -6,6 +6,10 @@ import { extend } from "umi-request";
 import { notification } from "antd";
 import proxyConfig from "../../config/proxyConfig";
 
+declare global {
+  interface Window { g_app: any; }
+}
+
 const codeMessage = {
   200: "服务器成功返回请求的数据。",
   201: "新建或修改数据成功。",
@@ -33,10 +37,19 @@ const errorHandler = (error: { response: Response }): Response => {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
 
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText
-    });
+    if (status === 401) {
+      notification.error({
+        message: "未登录或登录已过期，请重新登录。"
+      });
+      window.g_app._store.dispatch({
+        type: "login/logout"
+      });
+    }else{
+      notification.error({
+        message: `请求错误 ${status}: ${url}`,
+        description: errorText
+      });
+    }
   }
   return response;
 };
@@ -47,15 +60,25 @@ const errorHandler = (error: { response: Response }): Response => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: "include" // 默认请求是否带上cookie
+  // headers: {
+  //   Some: 'header' // unified headers
+  // },
+  // params: {
+  //   token: 'token' // the query parameter to be included with each request
+  // }
 });
 
 //request interceptor, change url or options.
 request.interceptors.request.use((url, options) => {
   //access check
-  let checkToken = false;
-  let reqParams = { ...options.params };
+  const checkToken = false;
+  let reqParams = {...options.params};
   if (checkToken) {
-    // reqParams = { ...options.params, token: token };
+      reqParams = {...options.params, token: '123456'};
+  }
+  // url
+  if ((process.env.MOCK === 'none' && process.env.NODE_ENV === 'development') || process.env.NODE_ENV === "production" || process.env.build_env) {
+    url = proxyConfig.postServer + url.substr(url.indexOf("/", 1));
   }
   return {
     options: {
@@ -63,9 +86,7 @@ request.interceptors.request.use((url, options) => {
       interceptors: true,
       params: reqParams
     },
-    url:
-        proxyConfig.postServer +
-        (process.env.NODE_ENV === "production" ? url.substr(4) : url)
+    url: url
   };
 });
 

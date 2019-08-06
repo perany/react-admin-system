@@ -37,7 +37,7 @@ export default [
         component: './Welcome',
       }, //test
       {
-        name: 'test',
+        name: 'KingRC Demo',
         icon: 'check-circle-o',
         path: '/test',
         component: './Test/KingrcTest',

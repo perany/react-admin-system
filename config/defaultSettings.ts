@@ -44,7 +44,7 @@ export interface DefaultSettings {
 
 export default {
   navTheme: "dark",
-  primaryColor: "#1890FF",
+  primaryColor: "#ff9442",
   layout: "sidemenu",
   contentWidth: "Fluid",
   fixedHeader: false,
@@ -52,9 +52,9 @@ export default {
   fixSiderbar: false,
   colorWeak: false,
   menu: {
-    locale: true
+    locale: false
   },
-  title: "Ant Design Pro",
+  title: "后台管理系统",
   pwa: false,
   iconfontUrl: ""
 } as DefaultSettings;

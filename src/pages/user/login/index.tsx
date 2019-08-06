@@ -144,7 +144,7 @@ class Login extends Component<LoginProps,
                             ]}
                             onPressEnter={e => {
                                 e.preventDefault();
-                                this.loginForm.validateFields(this.handleSubmit);
+                                this.loginForm && this.loginForm.validateFields(this.handleSubmit);
                             }}
                         />
                     </Tab>

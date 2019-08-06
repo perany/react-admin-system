@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import Link from 'umi/link';
 import { connect } from 'dva';
-import { StateType } from './model';
+import { StateType } from '@/models/login';
 import LoginComponents from './components/Login';
 import styles from './style.less';
 

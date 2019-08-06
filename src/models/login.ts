@@ -1,8 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
-import { fakeAccountLogin, getFakeCaptcha } from '@/pages/user/login/service';
-import { getPageQuery, setAuthority } from '@/pages/user/login/utils/utils';
+import { fakeAccountLogin, getFakeCaptcha } from '@/services/user';
+import { getPageQuery, setAuthority } from '@/utils/utils';
 import { stringify } from "qs";
 
 export interface StateType {

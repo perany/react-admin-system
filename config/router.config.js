@@ -17,8 +17,7 @@ export default [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
-      // dashboard
-      { path: '/', redirect: '/test', authority: ['admin', 'user'] },
+      { path: '/', redirect: '/test' },
       // list
       {
         path: '/list',
@@ -68,6 +67,7 @@ export default [
         icon: 'check-circle-o',
         path: '/test',
         component: './Test/KingrcTest',
+        authority: ['admin']
       },
       {
         component: '404',

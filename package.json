@@ -27,8 +27,7 @@
     "test:component": "umi test ./src/components"
   },
   "husky": {
-    "hooks": {
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
@@ -76,6 +75,7 @@
     "@ant-design/colors": "^3.1.0",
     "@ant-design/pro-cli": "^1.0.0",
     "@types/classnames": "^2.2.7",
+    "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.133",

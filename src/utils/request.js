@@ -45,7 +45,7 @@ const errorHandler = error => {
         return;
     }
     notification.error({
-        message: `请求错误 ${status}: ${url}`,
+        message: status && url ? `请求错误 ${status}: ${url}` : '请求错误',
         description: errortext
     });
     // environment should not be used

@@ -1,50 +1,16 @@
-import React, { Suspense } from 'react';
-// import { Layout } from 'antd-mobile';
-import DocumentTitle from 'react-document-title';
-import { connect } from 'dva';
-import { ContainerQuery } from 'react-container-query';
-import classNames from 'classnames';
-import Media from 'react-media';
-import logo from '../assets/logo.svg';
-import Footer from './Footer';
-import Header from './Header';
-import Context from './MenuContext';
-import SiderMenu from '@/components/SiderMenu';
-import getPageTitle from '@/utils/getPageTitle';
-import styles from './BasicLayout.less';
+import React from 'react';
+import {connect} from 'dva';
+import NProgress from 'nprogress';
 
-// const { Content } = Layout;
+NProgress.configure({showSpinner: false});
 
-const query = {
-  'screen-xs': {
-    maxWidth: 575,
-  },
-  'screen-sm': {
-    minWidth: 576,
-    maxWidth: 767,
-  },
-  'screen-md': {
-    minWidth: 768,
-    maxWidth: 991,
-  },
-  'screen-lg': {
-    minWidth: 992,
-    maxWidth: 1199,
-  },
-  'screen-xl': {
-    minWidth: 1200,
-    maxWidth: 1599,
-  },
-  'screen-xxl': {
-    minWidth: 1600,
-  },
-};
+let currHref = '';
 
-class BasicLayout extends React.Component {
+class BasicLayout extends React.PureComponent {
   componentDidMount() {
     const {
       dispatch,
-      route: { routes, path, authority },
+      route: {routes, path, authority},
     } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
@@ -52,109 +18,46 @@ class BasicLayout extends React.Component {
     dispatch({
       type: 'setting/getSetting',
     });
-    dispatch({
-      type: 'menu/getMenuData',
-      payload: { routes, path, authority },
-    });
+    // dispatch({
+    //   type: 'menu/getMenuData',
+    //   payload: {routes, path, authority},
+    // });
   }
 
   getContext() {
-    const { location, breadcrumbNameMap } = this.props;
+    const {location, breadcrumbNameMap} = this.props;
     return {
       location,
       breadcrumbNameMap,
     };
   }
 
-  getLayoutStyle = () => {
-    const { fixSiderbar, isMobile, collapsed, layout } = this.props;
-    if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
-      return {
-        paddingLeft: collapsed ? '80px' : '256px',
-      };
-    }
-    return null;
-  };
-
-  handleMenuCollapse = collapsed => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload: collapsed,
-    });
-  };
-
-
   render() {
     const {
-      navTheme,
-      layout: PropsLayout,
       children,
-      location: { pathname },
-      isMobile,
-      menuData,
-      breadcrumbNameMap,
-      fixedHeader,
+      loading
     } = this.props;
+    const {href} = window.location;
 
-    const isTop = PropsLayout === 'topmenu';
-    const contentStyle = !fixedHeader ? { paddingTop: 0 } : {};
-    const layout = (
-      <div>
-        {isTop && !isMobile ? null : (
-          <SiderMenu
-            logo={logo}
-            theme={navTheme}
-            onCollapse={this.handleMenuCollapse}
-            menuData={menuData}
-            isMobile={isMobile}
-            {...this.props}
-          />
-        )}
-        <div
-          style={{
-            ...this.getLayoutStyle(),
-            minHeight: '100vh',
-          }}
-        >
-          <Header
-            menuData={menuData}
-            handleMenuCollapse={this.handleMenuCollapse}
-            logo={logo}
-            isMobile={isMobile}
-            {...this.props}
-          />
-          <div className={styles.content} style={contentStyle}>
-            {children}
-          </div>
-          <Footer />
-        </div>
-      </div>
-    );
+    if (currHref !== href) {
+      // currHref 和 href 不一致时说明进行了页面跳转
+      NProgress.start(); // 页面开始加载时调用 start 方法
+      if (!loading.global) {
+        // loading.global 为 false 时表示加载完毕
+        NProgress.done(); // 页面请求完毕时调用 done 方法
+        currHref = href; // 将新页面的 href 值赋值给 currHref
+      }
+    }
+
     return (
-      <React.Fragment>
-        <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
-          <ContainerQuery query={query}>
-            {params => (
-              <Context.Provider value={this.getContext()}>
-                <div className={classNames(params)}>{layout}</div>
-              </Context.Provider>
-            )}
-          </ContainerQuery>
-        </DocumentTitle>
-      </React.Fragment>
+      <div>{children}</div>
     );
   }
 }
 
-export default connect(({ global, setting, menu: menuModel }) => ({
+export default connect(({global, setting, loading}) => ({
   collapsed: global.collapsed,
   layout: setting.layout,
-  menuData: menuModel.menuData,
-  breadcrumbNameMap: menuModel.breadcrumbNameMap,
+  loading,
   ...setting,
-}))(props => (
-  <Media query="(max-width: 599px)">
-    {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
-  </Media>
-));
+}))(BasicLayout);

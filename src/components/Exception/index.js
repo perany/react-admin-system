@@ -1,6 +1,6 @@
 import React, { createElement } from 'react';
 import classNames from 'classnames';
-import { Button } from 'antd';
+import { Button } from 'antd-mobile';
 import config from './typeConfig';
 import styles from './index.less';
 

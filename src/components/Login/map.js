@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { Icon } from 'antd-mobile';
 import styles from './index.less';
 
 export default {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { Layout, message } from 'antd';
+import { Toast } from 'antd-mobile';
 import Animate from 'rc-animate';
 import { connect } from 'dva';
 import router from 'umi/router';
@@ -8,7 +8,6 @@ import GlobalHeader from '@/components/GlobalHeader';
 import TopNavHeader from '@/components/TopNavHeader';
 import styles from './Header.less';
 
-const { Header } = Layout;
 
 class HeaderView extends Component {
   state = {
@@ -42,7 +41,7 @@ class HeaderView extends Component {
   };
 
   handleNoticeClear = type => {
-    message.success(
+    Toast.success(
       `${formatMessage({ id: 'component.noticeIcon.cleared' })} ${formatMessage({
         id: `component.globalHeader.${type}`,
       })}`
@@ -108,7 +107,7 @@ class HeaderView extends Component {
     const isTop = layout === 'topmenu';
     const width = this.getHeadWidth();
     const HeaderDom = visible ? (
-      <Header
+      <div
         style={{ padding: 0, width, zIndex: 2 }}
         className={fixedHeader ? styles.fixedHeader : ''}
       >
@@ -131,7 +130,7 @@ class HeaderView extends Component {
             {...this.props}
           />
         )}
-      </Header>
+      </div>
     ) : null;
     return (
       <Animate component="" transitionName="fade">

@@ -1,5 +1,4 @@
 import React, { PureComponent, Suspense } from 'react';
-import { Layout } from 'antd';
 import classNames from 'classnames';
 import Link from 'umi/link';
 import styles from './index.less';
@@ -8,7 +7,6 @@ import { getDefaultCollapsedSubMenus } from './SiderMenuUtils';
 import { title } from '../../../config/defaultSettings';
 
 const BaseMenu = React.lazy(() => import('./BaseMenu'));
-const { Sider } = Layout;
 
 let firstMount = true;
 
@@ -63,18 +61,7 @@ export default class SiderMenu extends PureComponent {
       [styles.light]: theme === 'light',
     });
     return (
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        breakpoint="lg"
-        onCollapse={collapse => {
-          if (firstMount || !isMobile) {
-            onCollapse(collapse);
-          }
-        }}
-        width={256}
-        theme={theme}
+      <div
         className={siderClassName}
       >
         <div className={styles.logo} id="logo">
@@ -93,7 +80,7 @@ export default class SiderMenu extends PureComponent {
             {...defaultProps}
           />
         </Suspense>
-      </Sider>
+      </div>
     );
   }
 }

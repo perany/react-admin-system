@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
-import { Layout, Icon } from 'antd';
+import { Icon } from 'antd-mobile';
 import GlobalFooter from '@/components/GlobalFooter';
 
-const { Footer } = Layout;
 const FooterView = () => (
-  <Footer style={{ padding: 0 }}>
+  <div style={{ padding: 0 }}>
     <GlobalFooter
       // links={[
       //   {
@@ -32,6 +31,6 @@ const FooterView = () => (
         </Fragment>
       }
     />
-  </Footer>
+  </div>
 );
 export default FooterView;

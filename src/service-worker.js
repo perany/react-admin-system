@@ -1,7 +1,7 @@
 /* globals workbox */
 /* eslint-disable no-restricted-globals */
 workbox.core.setCacheNameDetails({
-  prefix: 'antd-pro',
+  prefix: 'umi-mobile-template',
   suffix: 'v1',
 });
 // Control all opened tabs ASAP

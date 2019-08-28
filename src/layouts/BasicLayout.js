@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Layout } from 'antd';
+// import { Layout } from 'antd-mobile';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { ContainerQuery } from 'react-container-query';
@@ -13,10 +13,7 @@ import SiderMenu from '@/components/SiderMenu';
 import getPageTitle from '@/utils/getPageTitle';
 import styles from './BasicLayout.less';
 
-// lazy load SettingDrawer
-const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
-
-const { Content } = Layout;
+// const { Content } = Layout;
 
 const query = {
   'screen-xs': {
@@ -87,19 +84,6 @@ class BasicLayout extends React.Component {
     });
   };
 
-  renderSettingDrawer = () => {
-    // Do not render SettingDrawer in production
-    // unless it is deployed in preview.pro.ant.design as demo
-    // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
-    // if (
-    //   process.env.NODE_ENV === 'production' &&
-    //   ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION !== 'site'
-    // ) {
-    //   return null;
-    // }
-    // return <SettingDrawer />;
-    return null;
-  };
 
   render() {
     const {
@@ -116,7 +100,7 @@ class BasicLayout extends React.Component {
     const isTop = PropsLayout === 'topmenu';
     const contentStyle = !fixedHeader ? { paddingTop: 0 } : {};
     const layout = (
-      <Layout>
+      <div>
         {isTop && !isMobile ? null : (
           <SiderMenu
             logo={logo}
@@ -127,7 +111,7 @@ class BasicLayout extends React.Component {
             {...this.props}
           />
         )}
-        <Layout
+        <div
           style={{
             ...this.getLayoutStyle(),
             minHeight: '100vh',
@@ -140,12 +124,12 @@ class BasicLayout extends React.Component {
             isMobile={isMobile}
             {...this.props}
           />
-          <Content className={styles.content} style={contentStyle}>
+          <div className={styles.content} style={contentStyle}>
             {children}
-          </Content>
+          </div>
           <Footer />
-        </Layout>
-      </Layout>
+        </div>
+      </div>
     );
     return (
       <React.Fragment>
@@ -158,7 +142,6 @@ class BasicLayout extends React.Component {
             )}
           </ContainerQuery>
         </DocumentTitle>
-        <Suspense fallback={null}>{this.renderSettingDrawer()}</Suspense>
       </React.Fragment>
     );
   }

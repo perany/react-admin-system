@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Tabs } from 'antd';
+import { Tabs } from 'antd-mobile';
+import { createForm } from 'rc-form';
 import classNames from 'classnames';
 import LoginItem from './LoginItem';
 import LoginTab from './LoginTab';

@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { ActivityIndicator } from 'antd-mobile';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
 // eslint-disable-next-line import/no-cycle
@@ -69,7 +69,7 @@ export default class PromiseRender extends React.Component {
           textAlign: 'center',
         }}
       >
-        <Spin size="large" />
+        <ActivityIndicator size="large" />
       </div>
     );
   }

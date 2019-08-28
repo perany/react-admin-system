@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
-import { PageHeader, Tabs, Typography } from 'antd';
+import { PageHeader, Tabs } from 'antd-mobile';
 import { connect } from 'dva';
 import classNames from 'classnames';
 import GridContent from './GridContent';
@@ -9,7 +9,6 @@ import styles from './index.less';
 import MenuContext from '@/layouts/MenuContext';
 import { conversionBreadcrumbList } from './breadcrumb';
 
-const { Title } = Typography;
 
 /**
  * render Footer tabList
@@ -65,7 +64,7 @@ const PageHeaderWrapper = ({
                   title={
                     <>
                       {logo && <span className={styles.logo}>{logo}</span>}
-                      <Title
+                      <h3
                         level={4}
                         style={{
                           marginBottom: 0,
@@ -73,7 +72,7 @@ const PageHeaderWrapper = ({
                         }}
                       >
                         {title}
-                      </Title>
+                      </h3>
                     </>
                   }
                   key="pageheader"

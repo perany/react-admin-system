@@ -5,7 +5,7 @@ export default [
     component: '../layouts/UserLayout',
     routes: [
       { path: '/user', redirect: '/user/login' },
-      { path: '/user/login', name: 'login', component: './User/Login' },
+      { path: '/user/login', name: 'login', component: './Exception/403' },
       {
         component: '404',
       },
@@ -17,20 +17,7 @@ export default [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
-      { path: '/', redirect: '/list/table-list' },
-      // list
-      {
-        path: '/list',
-        icon: 'table',
-        name: '列表',
-        routes: [
-          {
-            path: '/list/table-list',
-            name: '查询列表',
-            component: './List/TableList',
-          },
-        ],
-      },
+      { path: '/', redirect: '/test' },
       {
         name: 'exception',
         icon: 'warning',

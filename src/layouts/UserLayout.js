@@ -2,13 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import { Icon } from 'antd';
+import { Icon } from 'antd-mobile';
 import GlobalFooter from '@/components/GlobalFooter';
 import DocumentTitle from 'react-document-title';
 import SelectLang from '@/components/SelectLang';
 import styles from './UserLayout.less';
 import logo from '../assets/logo.svg';
 import getPageTitle from '@/utils/getPageTitle';
+import {title} from './../../config/defaultSettings';
 
 const links = [
   {
@@ -60,7 +61,7 @@ class UserLayout extends Component {
               <div className={styles.header}>
                 <Link to="/">
                   {/*<img alt="logo" className={styles.logo} src={logo} />*/}
-                  <span className={styles.title}>后台管理系统</span>
+                  <span className={styles.title}>{title}</span>
                 </Link>
               </div>
               <div className={styles.desc}>基于Ant Design Pro的后台管理系统框架</div>

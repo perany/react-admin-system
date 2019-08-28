@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {formatMessage} from 'umi-plugin-react/locale';
-import {Alert, Checkbox, Modal} from 'antd';
+import {Toast, Checkbox, Modal} from 'antd-mobile';
 import Login from '@/components/Login';
 import styles from './Login.less';
 
@@ -63,7 +63,7 @@ class LoginPage extends Component {
     };
 
     renderMessage = content => (
-        <Alert style={{marginBottom: 24}} message={content} type="error" showIcon/>
+        <Toast style={{marginBottom: 24}} message={content} type="error" showIcon/>
     );
 
     render() {

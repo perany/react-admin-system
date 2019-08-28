@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer } from 'antd';
+import { Drawer } from 'antd-mobile';
 import SiderMenu from './SiderMenu';
 import { getFlatMenuKeys } from './SiderMenuUtils';
 

@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { Toast } from 'antd-mobile';
 import defaultSettings from '../../config/defaultSettings';
 
 let lessNodesAppended;
@@ -7,7 +7,7 @@ const updateTheme = primaryColor => {
   if (!primaryColor) {
     return;
   }
-  const hideMessage = message.loading('正在编译主题！', 0);
+  const hideMessage = Toast.loading('正在编译主题！', 0);
   function buildIt() {
     if (!window.less) {
       return;
@@ -21,7 +21,7 @@ const updateTheme = primaryColor => {
           hideMessage();
         })
         .catch(() => {
-          message.error('Failed to update theme');
+          Toast.error('Failed to update theme');
           hideMessage();
         });
     }, 200);

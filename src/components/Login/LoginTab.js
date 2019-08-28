@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs } from 'antd';
+import { Tabs } from 'antd-mobile';
 import LoginContext from './loginContext';
 
 const { TabPane } = Tabs;

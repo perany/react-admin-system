@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Button, Spin, Card } from 'antd';
+import { Button, Card } from 'antd-mobile';
 import { connect } from 'dva';
 import styles from './style.less';
 
@@ -28,7 +28,7 @@ class TriggerException extends PureComponent {
     const { isloading } = this.state;
     return (
       <Card>
-        <Spin spinning={isloading} wrapperClassName={styles.trigger}>
+        <div>
           <Button type="danger" onClick={() => this.triggerError(401)}>
             触发401
           </Button>
@@ -41,7 +41,7 @@ class TriggerException extends PureComponent {
           <Button type="danger" onClick={() => this.triggerError(404)}>
             触发404
           </Button>
-        </Spin>
+        </div>
       </Card>
     );
   }

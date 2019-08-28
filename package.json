@@ -46,15 +46,11 @@
     "not ie <= 10"
   ],
   "dependencies": {
-    "@antv/data-set": "^0.10.1",
-    "antd": "^3.19.2",
-    "bizcharts": "^3.5.3-beta.0",
-    "bizcharts-plugin-slider": "^2.1.1-beta.1",
+    "antd-mobile": "^2.2.5",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
     "enquire-js": "^0.2.1",
     "express": "^4.16.4",
-    "gg-editor": "^2.0.2",
     "lodash": "^4.17.11",
     "lodash-decorators": "^6.0.1",
     "memoize-one": "^5.0.0",
@@ -78,13 +74,10 @@
     "resize-observer-polyfill": "^1.5.1",
     "umi": "^2.4.4",
     "umi-plugin-react": "^1.7.2",
-    "umi-request": "^1.0.5",
-    "kingrc": "^0.0.2"
+    "umi-request": "^1.0.5"
   },
   "devDependencies": {
-    "@types/history": "^4.7.2",
-    "@types/react": "^16.8.1",
-    "@types/react-dom": "^16.0.11",
+    "@babel/polyfill": "^7.0.0",
     "antd-pro-merge-less": "^1.0.0",
     "antd-theme-webpack-plugin": "^1.2.0",
     "babel-eslint": "^10.0.1",

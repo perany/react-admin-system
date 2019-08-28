@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col } from 'antd-mobile';
 import omit from 'omit.js';
 import styles from './index.less';
 import ItemMap from './map';

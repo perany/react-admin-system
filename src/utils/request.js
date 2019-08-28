@@ -3,7 +3,7 @@
  * 更详细的api文档: https://bigfish.alipay.com/doc/api#request
  */
 import {extend} from "umi-request";
-import {notification} from "antd";
+import {Toast} from "antd-mobile";
 import router from "umi/router";
 import proxyConfig from "../../config/proxyConfig";
 
@@ -34,7 +34,7 @@ const errorHandler = error => {
   const {status, url} = response;
 
   if (status === 401) {
-    notification.error({
+    Toast.error({
       message: "未登录或登录已过期，请重新登录。"
     });
     // @HACK
@@ -44,7 +44,7 @@ const errorHandler = error => {
     });
     return;
   }
-  notification.error({
+  Toast.error({
     message: status && url ? `请求错误 ${status}: ${url}` : '请求错误',
     description: errortext
   });

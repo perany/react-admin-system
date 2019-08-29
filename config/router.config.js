@@ -5,7 +5,7 @@ export default [
     component: '../layouts/UserLayout',
     routes: [
       { path: '/user', redirect: '/user/login' },
-      { path: '/user/login', name: 'login', component: './Exception/403' },
+      {path: '/user/login', name: 'login', component: './Exception/404'},
       {
         component: '404',
       },
@@ -15,16 +15,28 @@ export default [
   {
     path: '/',
     component: '../layouts/BasicLayout',
-    // Routes: ['src/pages/Authorized'],
+    Routes: ['src/pages/Authorized'],
     routes: [
       { path: '/', redirect: '/test' },
+      //test
+      {
+        name: '测试页面',
+        path: '/test',
+        // authority: ['admin'],
+        component: './Test/KingrcTest',
+      },
+      {
+        name: '测试页面',
+        path: '/detail',
+        component: './Test/Detail',
+      },
+      // exception
       {
         name: 'exception',
         icon: 'warning',
         path: '/exception',
         hideInMenu: true,
         routes: [
-          // exception
           {
             path: '/exception/403',
             name: 'not-permission',
@@ -47,14 +59,6 @@ export default [
             component: './Exception/TriggerException',
           },
         ],
-      },
-      //test
-      {
-        name: '测试页面',
-        icon: 'check-circle-o',
-        path: '/test',
-        component: './Test/KingrcTest',
-        authority: ['admin']
       },
       {
         component: '404',

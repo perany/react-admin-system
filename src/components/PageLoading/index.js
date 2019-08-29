@@ -1,10 +1,27 @@
 import React from 'react';
 import { ActivityIndicator } from 'antd-mobile';
 
-// loading components from code split
-// https://umijs.org/plugin/umi-plugin-react.html#dynamicimport
 export default () => (
-  <div style={{ paddingTop: 100, textAlign: 'center' }}>
-    <ActivityIndicator size="large" />
+  <div
+    style={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '100px',
+      height: '100px',
+    }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <ActivityIndicator animating size="large"/>
+      <span style={{marginTop: 8}}>加载中...</span>
+    </div>
   </div>
 );

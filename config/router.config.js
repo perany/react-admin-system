@@ -20,13 +20,13 @@ export default [
       { path: '/', redirect: '/test' },
       //test
       {
-        name: '测试页面',
-        path: '/test',
+        name: '首页',
+        path: '/home',
         // authority: ['admin'],
-        component: './Test/KingrcTest',
+        component: './Test/Home',
       },
       {
-        name: '测试页面',
+        name: '详情页',
         path: '/detail',
         component: './Test/Detail',
       },

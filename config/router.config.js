@@ -17,7 +17,7 @@ export default [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
-      { path: '/', redirect: '/test' },
+      {path: '/', redirect: '/home'},
       //test
       {
         name: '首页',

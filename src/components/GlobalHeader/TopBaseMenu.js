@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import classNames from 'classnames';
-import { Menu, Icon } from 'antd';
-import { urlToList } from '../_utils/pathTools';
-import { getMenuMatches } from '@/components/SiderMenu/SiderMenuUtils';
-import { isUrl } from '@/utils/utils';
+import {Icon, Menu} from 'antd';
+import {urlToList} from '../_utils/pathTools';
+import {getMenuMatches} from '@/components/SiderMenu/SiderMenuUtils';
+import {isUrl} from '@/utils/utils';
 import styles from './index.less';
 import IconFont from '@/components/IconFont';
 
-const { SubMenu } = Menu;
+const {SubMenu} = Menu;
 
 // Allow menu.js config icon as string or ReactNode
 //   icon: 'setting',
@@ -17,12 +17,12 @@ const { SubMenu } = Menu;
 const getIcon = icon => {
   if (typeof icon === 'string') {
     if (isUrl(icon)) {
-      return <Icon component={() => <img src={icon} alt="icon" className={styles.icon} />} />;
+      return <Icon component={() => <img src={icon} alt="icon" className={styles.icon}/>}/>;
     }
     if (icon.startsWith('icon-')) {
-      return <IconFont type={icon} />;
+      return <IconFont type={icon}/>;
     }
-    return <Icon type={icon} />;
+    return <Icon type={icon}/>;
   }
   return icon;
 };
@@ -44,7 +44,7 @@ export default class TopBaseMenu extends PureComponent {
 
   // Get the currently selected menu
   getSelectedMenuKeys = pathname => {
-    const { flatMenuKeys } = this.props;
+    const {flatMenuKeys} = this.props;
     return urlToList(pathname).map(itemPath => getMenuMatches(flatMenuKeys, itemPath).pop());
   };
 
@@ -54,7 +54,7 @@ export default class TopBaseMenu extends PureComponent {
   getSubMenuOrItem = item => {
     // doc: add hideChildrenInMenu
     if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
-      const { name } = item;
+      const {name} = item;
       return (
         <SubMenu
           title={
@@ -82,10 +82,10 @@ export default class TopBaseMenu extends PureComponent {
    * @memberof SiderMenu
    */
   getMenuItemPath = item => {
-    const { name } = item;
+    const {name} = item;
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
-    const { target } = item;
+    const {target} = item;
     // Is it a http link
     if (/^https?:\/\//.test(itemPath)) {
       return (
@@ -96,7 +96,7 @@ export default class TopBaseMenu extends PureComponent {
       );
     }
     return (
-      <a onClick={()=>this.setHeaderMenu(itemPath)}>
+      <a onClick={() => this.setHeaderMenu(itemPath)}>
         {icon}
         <span>{name}</span>
       </a>
@@ -105,12 +105,12 @@ export default class TopBaseMenu extends PureComponent {
 
 
   setHeaderMenu = itemPath => {
-    const { selectedHeaderMenu, dispatch } = this.props;
+    const {selectedHeaderMenu, dispatch} = this.props;
     if (selectedHeaderMenu !== itemPath) {
       dispatch({
         type: 'menu/setHeaderMenu',
         payload: {
-          selectedHeaderMenu:itemPath
+          selectedHeaderMenu: itemPath
         }
       });
     }
@@ -142,11 +142,12 @@ export default class TopBaseMenu extends PureComponent {
       className,
       fixedHeader,
       layout,
-      selectedHeaderMenu
+      selectedHeaderMenu,
+      maxWidth,
     } = this.props;
 
 
-    const { handleOpenChange, style, menuData } = this.props;
+    const {handleOpenChange, style, menuData} = this.props;
     const cls = classNames(className, {
       'top-nav-menu': mode === 'horizontal',
     });
@@ -159,13 +160,13 @@ export default class TopBaseMenu extends PureComponent {
           theme={topNavTheme}
           onOpenChange={handleOpenChange}
           selectedKeys={[selectedHeaderMenu]}
-          style={style}
+          style={{...style, width: maxWidth}}
           className={cls}
           getPopupContainer={() => this.getPopupContainer(fixedHeader, layout)}
         >
           {this.getNavMenuItems(menuData)}
         </Menu>
-        <div ref={this.getRef} />
+        <div ref={this.getRef}/>
       </>
     );
   }

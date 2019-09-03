@@ -64,6 +64,7 @@ export default class GlobalHeader extends PureComponent {
             >
               <TopBaseMenu
                 {...this.props}
+                maxWidth={maxWidth}
                 flatMenuKeys={flatMenuKeys}
                 className={styles.menu}
                 theme={topNavTheme}

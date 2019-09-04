@@ -29,6 +29,12 @@ export default [
             name: '查询列表',
             component: './List/TableList',
           },
+          {
+            path: '/list/detail/:id',
+            hideInMenu: true,
+            name: '详情',
+            component: './List/Detail',
+          },
         ],
       },
       {

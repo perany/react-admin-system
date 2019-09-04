@@ -293,7 +293,7 @@ class TableList extends PureComponent {
     {
       title: '规则名称',
       dataIndex: 'name',
-      render: text => <Link to={`/profile/basic/${text.replace(/\s+/gi, '-')}`}>{text}</Link>,
+      render: text => <Link to={`/list/detail/${text.replace(/\s+/gi, '-')}`}>{text}</Link>,
     },
     {
       title: '描述',

@@ -10,6 +10,20 @@
   line-height: @nav-header-height;
   background: #002140;
   transition: all 0.3s;
+
+  &.light, &.left-light {
+    background: white;
+    box-shadow: 1px 1px 0 0 @border-color-split;
+  }
+
+  &.dark {
+    background: #001529de;
+  }
+
+  &.left-dark {
+    background: #002140;
+  }
+
   img {
     display: inline-block;
     height: 32px;
@@ -23,6 +37,14 @@
     font-size: 20px;
     font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
     vertical-align: middle;
+  }
+
+  &.light h1, &.left-light h1 {
+    color: @primary-color;
+  }
+
+  &.dark h1, &.left-dark h1 {
+    color: white;
   }
 }
 .sider {
@@ -52,13 +74,6 @@
   &.light {
     background-color: white;
     box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
-    .logo {
-      background: white;
-      box-shadow: 1px 1px 0 0 @border-color-split;
-      h1 {
-        color: @primary-color;
-      }
-    }
     :global(.ant-menu-light) {
       border-right-color: transparent;
     }

@@ -1,14 +1,14 @@
-import React, { PureComponent, Suspense } from 'react';
-import { Layout } from 'antd';
+import React, {PureComponent, Suspense} from 'react';
+import {Layout} from 'antd';
 import classNames from 'classnames';
 import Link from 'umi/link';
 import styles from './index.less';
 import PageLoading from '../PageLoading';
-import { getDefaultCollapsedSubMenus } from './SiderMenuUtils';
-import { title } from '../../../config/defaultSettings';
+import {getDefaultCollapsedSubMenus} from './SiderMenuUtils';
+import {title} from '../../../config/defaultSettings';
 
 const BaseMenu = React.lazy(() => import('./BaseMenu'));
-const { Sider } = Layout;
+const {Sider} = Layout;
 
 let firstMount = true;
 
@@ -20,12 +20,8 @@ export default class SiderMenu extends PureComponent {
     };
   }
 
-  componentDidMount() {
-    firstMount = false;
-  }
-
   static getDerivedStateFromProps(props, state) {
-    const { pathname, flatMenuKeysLen } = state;
+    const {pathname, flatMenuKeysLen} = state;
     if (props.location.pathname !== pathname || props.flatMenuKeys.length !== flatMenuKeysLen) {
       return {
         pathname: props.location.pathname,
@@ -36,8 +32,12 @@ export default class SiderMenu extends PureComponent {
     return null;
   }
 
+  componentDidMount() {
+    firstMount = false;
+  }
+
   isMainMenu = key => {
-    const { menuData } = this.props;
+    const {menuData} = this.props;
     return menuData.some(item => {
       if (key) {
         return item.key === key || item.path === key;
@@ -54,14 +54,15 @@ export default class SiderMenu extends PureComponent {
   };
 
   render() {
-    const { logo, collapsed, onCollapse, fixSiderbar, theme, isMobile } = this.props;
-    const { openKeys } = this.state;
-    const defaultProps = collapsed ? {} : { openKeys };
+    const {logo, collapsed, onCollapse, fixSiderbar, theme, isMobile, topNavTheme} = this.props;
+    const {openKeys} = this.state;
+    const defaultProps = collapsed ? {} : {openKeys};
 
     const siderClassName = classNames(styles.sider, {
       [styles.fixSiderBar]: fixSiderbar,
       [styles.light]: theme === 'light',
     });
+    const logoTheme = topNavTheme || ('left-' + theme);
     return (
       <Sider
         trigger={null}
@@ -77,19 +78,19 @@ export default class SiderMenu extends PureComponent {
         theme={theme}
         className={siderClassName}
       >
-        <div className={styles.logo} id="logo">
+        <div className={`${styles.logo} ${styles[logoTheme]}`} id="logo">
           <Link to="/">
-            <img src={logo} alt="logo" />
+            <img src={logo} alt="logo"/>
             <h1>{title}</h1>
           </Link>
         </div>
-        <Suspense fallback={<PageLoading />}>
+        <Suspense fallback={<PageLoading/>}>
           <BaseMenu
             {...this.props}
             mode="inline"
             handleOpenChange={this.handleOpenChange}
             onOpenChange={this.handleOpenChange}
-            style={{ padding: '16px 0', width: '100%' }}
+            style={{padding: '16px 0', width: '100%'}}
             {...defaultProps}
           />
         </Suspense>

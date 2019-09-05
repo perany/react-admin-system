@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import Media from 'react-media';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
@@ -108,7 +108,8 @@ class BasicLayout extends React.Component {
       children,
       location: { pathname },
       isMobile,
-      menuData,
+      headerMenuData,
+      sliderMenuData,
       breadcrumbNameMap,
       fixedHeader,
     } = this.props;
@@ -122,7 +123,7 @@ class BasicLayout extends React.Component {
             logo={logo}
             theme={navTheme}
             onCollapse={this.handleMenuCollapse}
-            menuData={menuData}
+            menuData={sliderMenuData}
             isMobile={isMobile}
             {...this.props}
           />
@@ -134,7 +135,7 @@ class BasicLayout extends React.Component {
           }}
         >
           <Header
-            menuData={menuData}
+            menuData={headerMenuData}
             handleMenuCollapse={this.handleMenuCollapse}
             logo={logo}
             isMobile={isMobile}
@@ -167,7 +168,9 @@ class BasicLayout extends React.Component {
 export default connect(({ global, setting, menu: menuModel }) => ({
   collapsed: global.collapsed,
   layout: setting.layout,
-  menuData: menuModel.menuData,
+  headerMenuData: menuModel.headerMenuData,
+  sliderMenuData: menuModel.sliderMenuData,
+  selectedHeaderMenu: menuModel.selectedHeaderMenu,
   breadcrumbNameMap: menuModel.breadcrumbNameMap,
   ...setting,
 }))(props => (

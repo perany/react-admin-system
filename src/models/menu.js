@@ -1,10 +1,10 @@
 import memoizeOne from 'memoize-one';
 import isEqual from 'lodash/isEqual';
-import { formatMessage } from 'umi-plugin-react/locale';
+import {formatMessage} from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
-import { menu } from '../../config/defaultSettings';
+import { layout, menu, topNavTheme } from '../../config/defaultSettings';
 
-const { check } = Authorized;
+const {check} = Authorized;
 
 // Conversion router to menu.
 function formatter(data, parentAuthority, parentName) {
@@ -27,7 +27,7 @@ function formatter(data, parentAuthority, parentName) {
       // close menu international
       const name = menu.disableLocal
         ? item.name
-        : formatMessage({ id: locale, defaultMessage: item.name });
+        : formatMessage({id: locale, defaultMessage: item.name});
       const result = {
         ...item,
         name,
@@ -103,19 +103,35 @@ export default {
 
   state: {
     menuData: [],
+    headerMenuData: [],
+    selectedHeaderMenu: '',
+    sliderMenuData: [],
     routerData: [],
     breadcrumbNameMap: {},
   },
 
   effects: {
-    *getMenuData({ payload }, { put }) {
-      const { routes, authority, path } = payload;
+    * getMenuData({payload}, {put}) {
+      const {routes, authority, path} = payload;
       const originalMenuData = memoizeOneFormatter(routes, authority, path);
-      const menuData = filterMenuData(originalMenuData);
+      const menuData = filterMenuData(originalMenuData) || [];
       const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(originalMenuData);
+      let headerMenuData = [];
+      let sliderMenuData = menuData[0].children || [];
+
+      if (layout === 'topmenu') {
+        headerMenuData = menuData ;
+      } else if (!topNavTheme) {
+        sliderMenuData = menuData;
+      } else {
+        headerMenuData = menuData.map((item) => {
+          return {...item, children: []};
+        });
+      }
+
       yield put({
         type: 'save',
-        payload: { menuData, breadcrumbNameMap, routerData: routes },
+        payload: {menuData, breadcrumbNameMap, routerData: routes, headerMenuData, sliderMenuData},
       });
     },
   },
@@ -125,6 +141,15 @@ export default {
       return {
         ...state,
         ...action.payload,
+      };
+    },
+    setHeaderMenu(state, action) {
+      const {selectedHeaderMenu} = action.payload;
+      const sliderMenuData = state.menuData.filter(item => item.path === selectedHeaderMenu)[0].children;
+      return {
+        ...state,
+        selectedHeaderMenu,
+        sliderMenuData,
       };
     },
   },

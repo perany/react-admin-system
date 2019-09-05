@@ -9,7 +9,7 @@ export default class GlobalHeaderRight extends PureComponent {
         const {
             currentUser,
             onMenuClick,
-            theme,
+          topNavTheme,
         } = this.props;
         const menu = (
             <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
@@ -30,7 +30,7 @@ export default class GlobalHeaderRight extends PureComponent {
         );
 
         let className = styles.right;
-        if (theme === 'dark') {
+        if (topNavTheme === 'dark') {
             className = `${styles.right}  ${styles.dark}`;
         }
         return (

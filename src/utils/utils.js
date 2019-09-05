@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import nzh from 'nzh/cn';
+import router from 'umi/router';
 import { parse, stringify } from 'qs';
 
 export function fixedZero(val) {
@@ -192,3 +193,27 @@ export const importCDN = (url, name) =>
     };
     document.head.appendChild(dom);
   });
+
+// 固化查询参数至url
+export function handleRefresh(context, newQuery = {}, replace = false) {
+  const {location} = context.props;
+  const {pathname} = location;
+  const query = {...newQuery};
+  if (`${query.currentPage}` === '1') {
+    delete query.currentPage;
+  }
+  const routeData = {
+    pathname,
+    search: stringify(
+      {
+        ...query,
+      },
+      {arrayFormat: 'repeat'}
+    ),
+  };
+  if (replace) {
+    router.replace(routeData);
+  } else {
+    router.push(routeData);
+  }
+}

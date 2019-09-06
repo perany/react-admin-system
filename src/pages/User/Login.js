@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {formatMessage} from 'umi-plugin-react/locale';
-import {Alert, Checkbox, Modal} from 'antd';
+import {Alert, Modal} from 'antd';
 import Login from '@/components/Login';
 import styles from './Login.less';
 
@@ -83,24 +83,25 @@ class LoginPage extends Component {
           {login.status === 'error' &&
           login.type === 'account' &&
           !submitting &&
-          this.renderMessage("账户或密码错误（admin/123456）")}
+          this.renderMessage("账户或密码错误")}
           <UserName
             name="userName"
-            placeholder={`用户名: admin or user`}
+            placeholder={`邮箱: `}
+            addonAfter="@kingnet.com"
             rules={[
               {
                 required: true,
-                message: formatMessage({id: 'validation.userName.required'}),
+                message: "请输入邮箱",
               },
             ]}
           />
           <Password
             name="password"
-            placeholder={`密码: 123456`}
+            placeholder={`密码: `}
             rules={[
               {
                 required: true,
-                message: formatMessage({id: 'validation.password.required'}),
+                message: '请输入密码',
               },
             ]}
             onPressEnter={e => {
@@ -156,12 +157,12 @@ class LoginPage extends Component {
           {/*    />*/}
           {/*</Tab>*/}
           <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              记住我
-            </Checkbox>
-            <a style={{float: 'right'}} href="">
-              忘记密码
-            </a>
+            {/*<Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>*/}
+            {/*  记住我*/}
+            {/*</Checkbox>*/}
+            {/*<a style={{float: 'right'}} href="">*/}
+            {/*  忘记密码*/}
+            {/*</a>*/}
           </div>
           <Submit loading={submitting}>
             登录

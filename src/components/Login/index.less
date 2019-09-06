@@ -43,11 +43,23 @@
 
   .prefixIcon {
     color: @disabled-color;
-    font-size: @font-size-base;
+    //font-size: @font-size-base;
+    font-size: 20px;
   }
 
   .submit {
     width: 100%;
     margin-top: 24px;
+  }
+
+  :global {
+    .ant-input-affix-wrapper .ant-input:not(:first-child) {
+      padding-left: 45px;
+    }
+
+    .ant-input-group-addon:last-child {
+      left: -1px;
+      color: #888;
+    }
   }
 }

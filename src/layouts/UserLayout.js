@@ -9,23 +9,24 @@ import SelectLang from '@/components/SelectLang';
 import styles from './UserLayout.less';
 import logo from '../assets/logo.svg';
 import getPageTitle from '@/utils/getPageTitle';
+import {title} from '../../config/defaultSettings';
 
 const links = [
-  {
-    key: 'help',
-    title: formatMessage({ id: 'layout.user.link.help' }),
-    href: '',
-  },
-  {
-    key: 'privacy',
-    title: formatMessage({ id: 'layout.user.link.privacy' }),
-    href: '',
-  },
-  {
-    key: 'terms',
-    title: formatMessage({ id: 'layout.user.link.terms' }),
-    href: '',
-  },
+  // {
+  //   key: 'help',
+  //   title: formatMessage({ id: 'layout.user.link.help' }),
+  //   href: '',
+  // },
+  // {
+  //   key: 'privacy',
+  //   title: formatMessage({ id: 'layout.user.link.privacy' }),
+  //   href: '',
+  // },
+  // {
+  //   key: 'terms',
+  //   title: formatMessage({ id: 'layout.user.link.terms' }),
+  //   href: '',
+  // },
 ];
 
 const copyright = (
@@ -60,10 +61,10 @@ class UserLayout extends Component {
               <div className={styles.header}>
                 <Link to="/">
                   {/*<img alt="logo" className={styles.logo} src={logo} />*/}
-                  <span className={styles.title}>后台管理系统</span>
+                  <span className={styles.title}>{title}</span>
                 </Link>
               </div>
-              <div className={styles.desc}>基于Ant Design Pro的后台管理系统框架</div>
+              {/*<div className={styles.desc}>基于Ant Design Pro的后台管理系统框架</div>*/}
             </div>
             {children}
           </div>

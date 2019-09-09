@@ -84,8 +84,9 @@ request.interceptors.request.use((url, options) => {
   // if (checkToken) {
   //     reqParams = {...options.params, token: token};
   // }
-  // url
-  if ((process.env.MOCK === 'none' && process.env.NODE_ENV === 'development') || process.env.NODE_ENV === "production" || process.env.build_env) {
+  // relative url
+  var isAbsoluteURL = url.substr(0, 4) === 'http';
+  if (!isAbsoluteURL && (process.env.MOCK === 'none' && process.env.NODE_ENV === 'development') || process.env.NODE_ENV === "production" || process.env.build_env) {
     url = proxyConfig.postServer + url.substr(url.indexOf("/", 1));
   }
   return {

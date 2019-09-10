@@ -1,22 +1,22 @@
 import React from 'react';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import {FormattedMessage} from 'umi-plugin-react/locale';
 import Link from 'umi/link';
-import { PageHeader, Tabs, Typography } from 'antd';
-import { connect } from 'dva';
+import {PageHeader, Tabs, Typography} from 'antd';
+import {connect} from 'dva';
 import classNames from 'classnames';
 import GridContent from './GridContent';
 import styles from './index.less';
 import MenuContext from '@/layouts/MenuContext';
-import { conversionBreadcrumbList } from './breadcrumb';
+import {conversionBreadcrumbList} from './breadcrumb';
 
-const { Title } = Typography;
+const {Title} = Typography;
 
 /**
  * render Footer tabList
  * In order to be compatible with the old version of the PageHeader
  * basically all the functions are implemented.
  */
-const renderFooter = ({ tabList, tabActiveKey, onTabChange, tabBarExtraContent }) => {
+const renderFooter = ({tabList, tabActiveKey, onTabChange, tabBarExtraContent}) => {
   return tabList && tabList.length ? (
     <Tabs
       className={styles.tabs}
@@ -29,28 +29,28 @@ const renderFooter = ({ tabList, tabActiveKey, onTabChange, tabBarExtraContent }
       tabBarExtraContent={tabBarExtraContent}
     >
       {tabList.map(item => (
-        <Tabs.TabPane tab={item.tab} key={item.key} />
+        <Tabs.TabPane tab={item.tab} key={item.key}/>
       ))}
     </Tabs>
   ) : null;
 };
 
 const PageHeaderWrapper = ({
-  children,
-  contentWidth,
-  fluid,
-  wrapperClassName,
-  home,
-  top,
-  title,
-  content,
-  logo,
-  extraContent,
-  hiddenBreadcrumb,
-  ...restProps
-}) => {
+                             children,
+                             contentWidth,
+                             fluid,
+                             wrapperClassName,
+                             home,
+                             top,
+                             title,
+                             content,
+                             logo,
+                             extraContent,
+                             hiddenBreadcrumb,
+                             ...restProps
+                           }) => {
   return (
-    <div style={{ margin: '-24px -24px 0' }} className={classNames(wrapperClassName, styles.main)}>
+    <div style={{margin: '-24px -24px 0'}} className={classNames(wrapperClassName, styles.main)}>
       {top}
       <MenuContext.Consumer>
         {value => {
@@ -63,7 +63,7 @@ const PageHeaderWrapper = ({
               >
                 <PageHeader
                   title={
-                    <>
+                    title ? (<>
                       {logo && <span className={styles.logo}>{logo}</span>}
                       <Title
                         level={4}
@@ -74,7 +74,7 @@ const PageHeaderWrapper = ({
                       >
                         {title}
                       </Title>
-                    </>
+                    </>) : null
                   }
                   key="pageheader"
                   {...restProps}
@@ -84,7 +84,7 @@ const PageHeaderWrapper = ({
                       ...value,
                       ...restProps,
                       ...(home !== null && {
-                        home: <FormattedMessage id="menu.home" defaultMessage="Home" />,
+                        home: <FormattedMessage id="menu.home" defaultMessage="Home"/>,
                       }),
                     })
                   }
@@ -115,6 +115,6 @@ const PageHeaderWrapper = ({
   );
 };
 
-export default connect(({ setting }) => ({
+export default connect(({setting}) => ({
   contentWidth: setting.contentWidth,
 }))(PageHeaderWrapper);

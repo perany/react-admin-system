@@ -98,6 +98,21 @@ const getBreadcrumbNameMap = menuData => {
 
 const memoizeOneGetBreadcrumbNameMap = memoizeOne(getBreadcrumbNameMap, isEqual);
 
+const matchSiderMenu = data => {
+  let res = null;
+  let path = window.location.hash.split('/')[1];
+  path = path ? `/${path}` : '';
+  data.forEach(item => {
+    if (item.path === path) {
+      res = item.children;
+    }
+  });
+  if (!res) {
+    res = data[0].children || [];
+  }
+  return res;
+};
+
 export default {
   namespace: 'menu',
 
@@ -117,7 +132,7 @@ export default {
       const menuData = filterMenuData(originalMenuData) || [];
       const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(originalMenuData);
       let headerMenuData = [];
-      let sliderMenuData = menuData[0].children || [];
+      let sliderMenuData = matchSiderMenu(menuData);
 
       if (layout === 'topmenu') {
         headerMenuData = menuData ;
@@ -145,7 +160,8 @@ export default {
     },
     setHeaderMenu(state, action) {
       const {selectedHeaderMenu} = action.payload;
-      const sliderMenuData = state.menuData.filter(item => item.path === selectedHeaderMenu)[0].children;
+      const headerMenuData = state.menuData.filter(item => item.path === selectedHeaderMenu)[0];
+      const sliderMenuData = headerMenuData && headerMenuData.children || [];
       return {
         ...state,
         selectedHeaderMenu,

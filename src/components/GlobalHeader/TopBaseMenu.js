@@ -27,7 +27,7 @@ const getIcon = icon => {
   return icon;
 };
 
-export default class TopBaseMenu extends PureComponent {
+export default class TopBaseMenu extends React.Component {
   /**
    * 获得菜单子节点
    * @memberof SiderMenu
@@ -134,6 +134,14 @@ export default class TopBaseMenu extends PureComponent {
   getRef = ref => {
     this.wrap = ref;
   };
+
+  componentDidMount() {
+    const {selectedHeaderMenu} = this.props;
+    let path = this.conversionPath(window.location.hash.split('/')[1]);
+    if (!selectedHeaderMenu && path !== '/') {
+      this.setHeaderMenu(this.conversionPath(path));
+    }
+  }
 
   render() {
     const {

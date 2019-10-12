@@ -45,7 +45,7 @@ const errorHandler = error => {
     return;
   }
   notification.error({
-    message: status && url ? `请求错误 ${status}: ${url}` : '请求错误',
+    message: status && url ? `请求错误 ${status}: ${url}` : "请求错误",
     description: errortext
   });
   // environment should not be used
@@ -81,18 +81,38 @@ request.interceptors.request.use((url, options) => {
   //access check
   let checkToken = false;
   let reqParams = {...options.params};
-  // if (checkToken) {
-  //     reqParams = {...options.params, token: token};
-  // }
-  // relative url
-  var isAbsoluteURL = url.substr(0, 4) === 'http';
-  if (!isAbsoluteURL && (process.env.MOCK === 'none' && process.env.NODE_ENV === 'development') || process.env.NODE_ENV === "production" || process.env.build_env) {
-    url = proxyConfig.postServer + url.substr(url.indexOf("/", 1));
+  let headers = {...options.headers};
+  if (checkToken) {
+    reqParams = {...options.params, token: "token"};
+    headers = {...options.headers, token: "token"};
   }
+  // url
+  let path = "";
+  var isAbsoluteURL = url.substr(0, 4) === "http";
+  // dev remove url-prefix
+  if (
+    (!isAbsoluteURL &&
+      (process.env.MOCK === "none" &&
+        process.env.NODE_ENV === "development")) ||
+    process.env.NODE_ENV === "production" ||
+    process.env.build_env
+  ) {
+    path = url.substr(url.indexOf("/", 1)) || "";
+    url = proxyConfig.postServer + path;
+  }
+  // proxy match
+  // if (proxyConfig.proxy) {
+  //   Object.keys(proxyConfig.proxy).forEach(value => {
+  //     if (new RegExp("^" + value, 'g').test(path)) {
+  //       url = proxyConfig.proxy[value] + path;
+  //     }
+  //   })
+  // }
   return {
     options: {
       ...options,
-      interceptors: true,
+      interceptors: options.interceptors !== false,
+      headers,
       params: reqParams
     },
     url: url
@@ -103,8 +123,13 @@ request.interceptors.request.use((url, options) => {
 request.interceptors.response.use(async (response, options) => {
   // response.headers.append('interceptors', 'yes yo');
   const res = await response.clone().json();
-  if (res.ret && res.ret !== 0 && res.msg) {
-    message.error(res.msg);
+  if (
+    options.interceptors &&
+    res.ret &&
+    res.ret !== 0 &&
+    (res.message || res.msg)
+  ) {
+    message.error(res.message || res.msg);
   }
   return response;
 });

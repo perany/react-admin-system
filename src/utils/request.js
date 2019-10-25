@@ -6,6 +6,7 @@ import {extend} from "umi-request";
 import {notification} from "antd";
 import router from "umi/router";
 import proxyConfig from "../../config/proxyConfig";
+import {getUser} from "@/utils/authority";
 
 const codeMessage = {
   200: "服务器成功返回请求的数据。",
@@ -30,7 +31,8 @@ const codeMessage = {
  */
 const errorHandler = error => {
   const {response = {}} = error;
-  const errortext = codeMessage[response.status] || response.statusText;
+  const errortext =
+    codeMessage[response.status] || response.statusText || response.message;
   const {status, url} = response;
 
   if (status === 401) {
@@ -60,6 +62,7 @@ const errorHandler = error => {
   if (status >= 404 && status < 422) {
     router.push("/exception/404");
   }
+  throw error;
 };
 
 /**
@@ -79,12 +82,12 @@ const request = extend({
 //request interceptor, change url or options.
 request.interceptors.request.use((url, options) => {
   //access check
-  let checkToken = false;
+  let user = getUser();
   let reqParams = {...options.params};
   let headers = {...options.headers};
-  if (checkToken) {
-    reqParams = {...options.params, token: "token"};
-    headers = {...options.headers, token: "token"};
+  if (user) {
+    reqParams = {...options.params, token: user.token};
+    headers = {...options.headers, token: user.token};
   }
   // url
   let path = "";
@@ -100,7 +103,7 @@ request.interceptors.request.use((url, options) => {
     path = url.substr(url.indexOf("/", 1)) || "";
     url = proxyConfig.postServer + path;
   }
-  // proxy match
+  // proxy match 前端实现生产环境多代理转发配置
   // if (proxyConfig.proxy) {
   //   Object.keys(proxyConfig.proxy).forEach(value => {
   //     if (new RegExp("^" + value, 'g').test(path)) {

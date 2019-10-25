@@ -1,14 +1,14 @@
-import React, {PureComponent, Suspense} from 'react';
-import {Layout} from 'antd';
-import classNames from 'classnames';
-import Link from 'umi/link';
-import styles from './index.less';
-import PageLoading from '../PageLoading';
-import {getDefaultCollapsedSubMenus} from './SiderMenuUtils';
-import {title} from '../../../config/defaultSettings';
+import React, {PureComponent, Suspense} from "react";
+import {Layout} from "antd";
+import classNames from "classnames";
+import Link from "umi/link";
+import styles from "./index.less";
+import PageLoading from "../PageLoading";
+import {getDefaultCollapsedSubMenus} from "./SiderMenuUtils";
+import {title} from "../../../config/defaultSettings";
 import Iconfont from "@/components/IconFont";
 
-const BaseMenu = React.lazy(() => import('./BaseMenu'));
+const BaseMenu = React.lazy(() => import("./BaseMenu"));
 const {Sider} = Layout;
 
 let firstMount = true;
@@ -17,17 +17,20 @@ export default class SiderMenu extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      openKeys: getDefaultCollapsedSubMenus(props),
+      openKeys: getDefaultCollapsedSubMenus(props)
     };
   }
 
   static getDerivedStateFromProps(props, state) {
     const {pathname, flatMenuKeysLen} = state;
-    if (props.location.pathname !== pathname || props.flatMenuKeys.length !== flatMenuKeysLen) {
+    if (
+      props.location.pathname !== pathname ||
+      props.flatMenuKeys.length !== flatMenuKeysLen
+    ) {
       return {
         pathname: props.location.pathname,
         flatMenuKeysLen: props.flatMenuKeys.length,
-        openKeys: getDefaultCollapsedSubMenus(props),
+        openKeys: getDefaultCollapsedSubMenus(props)
       };
     }
     return null;
@@ -48,22 +51,31 @@ export default class SiderMenu extends PureComponent {
   };
 
   handleOpenChange = openKeys => {
-    const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
+    const moreThanOne =
+      openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
     this.setState({
-      openKeys: moreThanOne ? [openKeys.pop()] : [...openKeys],
+      openKeys: moreThanOne ? [openKeys.pop()] : [...openKeys]
     });
   };
 
   render() {
-    const {logo, collapsed, onCollapse, fixSiderbar, theme, isMobile, topNavTheme} = this.props;
+    const {
+      logo,
+      collapsed,
+      onCollapse,
+      fixSiderbar,
+      theme,
+      isMobile,
+      topNavTheme
+    } = this.props;
     const {openKeys} = this.state;
     const defaultProps = collapsed ? {} : {openKeys};
 
     const siderClassName = classNames(styles.sider, {
       [styles.fixSiderBar]: fixSiderbar,
-      [styles.light]: theme === 'light',
+      [styles.light]: theme === "light"
     });
-    const logoTheme = topNavTheme || ('left-' + theme);
+    const logoTheme = topNavTheme || "left-" + theme;
     return (
       <Sider
         trigger={null}
@@ -81,7 +93,11 @@ export default class SiderMenu extends PureComponent {
       >
         <div className={`${styles.logo} ${styles[logoTheme]}`} id="logo">
           <Link to="/">
-            {typeof logo === 'string' ? <Iconfont type={logo}/> : <img src={logo} alt="logo"/>}
+            {typeof logo === "string" && !/^data:/.test(logo) ? (
+              <Iconfont type={logo}/>
+            ) : (
+              <img src={logo} alt="logo"/>
+            )}
             <h1>{title}</h1>
           </Link>
         </div>
@@ -91,7 +107,7 @@ export default class SiderMenu extends PureComponent {
             mode="inline"
             handleOpenChange={this.handleOpenChange}
             onOpenChange={this.handleOpenChange}
-            style={{padding: '16px 0', width: '100%'}}
+            style={{padding: "16px 0", width: "100%"}}
             {...defaultProps}
           />
         </Suspense>

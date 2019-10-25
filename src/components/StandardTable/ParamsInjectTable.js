@@ -1,6 +1,6 @@
 import React from 'react';
 import StandardTable from './index';
-import {handleRefresh} from "@/utils/utils";
+import {injectURLParams} from "@/utils/utils";
 
 class ParamsInjectTable extends React.Component {
 
@@ -12,7 +12,7 @@ class ParamsInjectTable extends React.Component {
   }
 
   handleStandardTableChange = (pagination, filters, sorter) => {
-    const {onChange, formValues} = this.props;
+    const {location, onChange, formValues} = this.props;
     if (onChange) {
       onChange(pagination, filters, sorter);
     } else {
@@ -31,14 +31,14 @@ class ParamsInjectTable extends React.Component {
       const params = {
         ...formValues,
         ...newFilters,
-        currentPage: pagination.current,
-        pageSize: pagination.pageSize,
+        page: pagination.current,
+        per_page: pagination.pageSize,
       };
       if (sorter.field) {
         params.sorter = `${sorter.field}_${sorter.order}`;
       }
 
-      handleRefresh(this, params);
+      injectURLParams(location.pathname, params);
     }
   };
 

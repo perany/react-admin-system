@@ -59,8 +59,8 @@ function getRule(req, res, u) {
   }
 
   let pageSize = 10;
-  if (params.pageSize) {
-    pageSize = params.pageSize * 1;
+  if (params.per_page) {
+    pageSize = params.per_page * 1;
   }
 
   const result = {
@@ -68,7 +68,7 @@ function getRule(req, res, u) {
     pagination: {
       total: dataSource.length,
       pageSize,
-      current: parseInt(params.currentPage, 10) || 1,
+      current: parseInt(params.page, 10) || 1,
     },
   };
 

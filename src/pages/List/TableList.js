@@ -24,7 +24,7 @@ import {
 } from 'antd';
 import ParamsInjectTable from '@/components/StandardTable/ParamsInjectTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import {handleRefresh} from '@/utils/utils';
+import {injectURLParams} from '@/utils/utils';
 
 import styles from './TableList.less';
 
@@ -383,7 +383,7 @@ class TableList extends PureComponent {
   handleSearch = e => {
     e.preventDefault();
 
-    const {dispatch, form, rule: {data}} = this.props;
+    const {location, dispatch, form, rule: {data}} = this.props;
 
     form.validateFields((err, fieldsValue) => {
       if (err) {
@@ -404,10 +404,10 @@ class TableList extends PureComponent {
       //   payload: values,
       // });
 
-      handleRefresh(this, {
+      injectURLParams(location.pathname, {
         ...values,
-        'currentPage': data.pagination.currentPage,
-        'pageSize': data.pagination.pageSize
+        'page': data.pagination.currentPage,
+        'per_page': data.pagination.pageSize
       }, true);
     });
   };

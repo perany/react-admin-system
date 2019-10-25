@@ -7,7 +7,11 @@ export default {
   state: {
     data: {
       list: [],
-      pagination: {},
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 1
+      },
       query: {},
     },
   },

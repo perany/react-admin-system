@@ -195,12 +195,10 @@ export const importCDN = (url, name) =>
   });
 
 // 固化查询参数至url
-export function handleRefresh(context, newQuery = {}, replace = false) {
-  const {location} = context.props;
-  const {pathname} = location;
+export function injectURLParams(pathname, newQuery = {}, replace = false) {
   const query = {...newQuery};
-  if (`${query.currentPage}` === '1') {
-    delete query.currentPage;
+  if (`${query.page}` === '1') {
+    delete query.page;
   }
   const routeData = {
     pathname,
@@ -216,4 +214,22 @@ export function handleRefresh(context, newQuery = {}, replace = false) {
   } else {
     router.push(routeData);
   }
+}
+
+// 列表分页参数：数据结构格式化
+export function paginationFormat(data) {
+  if (!data || !data.data) {
+    return {
+      list: [],
+      pagination: false,
+    }
+  }
+  return {
+    list: [...data.data],
+    pagination: {
+      current: data.current_page || 1,
+      pageSize: data.per_page || 3,
+      total: data.total || 1
+    },
+  };
 }

@@ -60,6 +60,17 @@ class HeaderView extends Component {
       dispatch({
         type: 'login/logout',
       });
+      dispatch({
+        type: 'menu/save',
+        payload: {
+          menuData: [],
+          headerMenuData: [],
+          selectedHeaderMenu: "",
+          sliderMenuData: [],
+          routerData: [],
+          breadcrumbNameMap: {}
+        }
+      });
     }
   };
 
@@ -143,8 +154,10 @@ class HeaderView extends Component {
   }
 }
 
-export default connect(({ user, global, setting, loading }) => ({
-  currentUser: user.currentUser,
+export default connect(({login, menu, global, setting, loading}) => ({
+  login,
+  menu,
+  currentUser: login.currentUser,
   collapsed: global.collapsed,
   fetchingMoreNotices: loading.effects['global/fetchMoreNotices'],
   fetchingNotices: loading.effects['global/fetchNotices'],

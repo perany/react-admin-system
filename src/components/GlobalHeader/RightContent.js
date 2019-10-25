@@ -1,16 +1,11 @@
-import React, {PureComponent} from 'react';
-import {Avatar, Icon, Menu, Spin} from 'antd';
-import HeaderDropdown from '../HeaderDropdown';
-import styles from './index.less';
+import React, {PureComponent} from "react";
+import {Avatar, Icon, Menu, Spin} from "antd";
+import HeaderDropdown from "../HeaderDropdown";
+import styles from "./index.less";
 
 export default class GlobalHeaderRight extends PureComponent {
-
   render() {
-    const {
-      currentUser,
-      onMenuClick,
-      topNavTheme,
-    } = this.props;
+    const {currentUser, onMenuClick, topNavTheme} = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="userCenter">
@@ -30,26 +25,24 @@ export default class GlobalHeaderRight extends PureComponent {
     );
 
     let className = styles.right;
-    if (topNavTheme === 'dark') {
+    if (topNavTheme === "dark") {
       className = `${styles.right}  ${styles.dark}`;
     }
     return (
       <div className={className}>
-        {currentUser.name ? (
+        {currentUser && currentUser.name ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
-              {currentUser.avatar ? <Avatar
-                size="small"
-                className={styles.avatar}
-                src={currentUser.avatar}
-                alt="avatar"
-              /> : <Avatar
-                size="small"
-                className={styles.avatar}
-                icon={"user"}
-                alt="avatar"
-              />}
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>Hi, {currentUser.name}!</span>
+              {currentUser.avatar ? (
+                <Avatar
+                  className={styles.avatar}
+                  src={currentUser.avatar}
+                  alt="avatar"
+                />
+              ) : (
+                <Avatar className={styles.avatar} icon={"user"} alt="avatar"/>
+              )}
             </span>
           </HeaderDropdown>
         ) : (

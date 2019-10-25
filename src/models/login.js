@@ -1,81 +1,114 @@
-import { routerRedux } from 'dva/router';
-import { stringify } from 'qs';
-import {login, getFakeCaptcha} from '@/services/api';
-import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
-import { reloadAuthorized } from '@/utils/Authorized';
+import {routerRedux} from "dva/router";
+import {stringify} from "qs";
+import {getCaptcha, login} from "@/services/login";
+import {getAuthority, getUser, setAuthority, setUser} from "@/utils/authority";
+import {getPageQuery} from "@/utils/utils";
+
+let loginErrorTimes = localStorage.getItem("loginErrorTimes");
+loginErrorTimes =
+  typeof loginErrorTimes === "string" ? parseInt(loginErrorTimes) : 0;
 
 export default {
-  namespace: 'login',
+  namespace: "login",
 
   state: {
-    status: undefined,
+    currentUser: getUser(),
+    currentAuthority: getAuthority(),
+    loginErrorTimes: loginErrorTimes
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
+    * login({payload, callback}, {call, put}) {
       const response = yield call(login, payload);
+      const info = response.data || {};
+      let redirect = "/";
+
+      //登陆错误次数 更新
+      loginErrorTimes = response.code === 0 ? 0 : loginErrorTimes + 1;
+      localStorage.setItem("loginErrorTimes", loginErrorTimes + "");
+
       yield put({
-        type: 'changeLoginStatus',
-        payload: response,
+        type: "changeLoginStatus",
+        payload: {
+          user: info,
+          currentAuthority: info.currentAuthority,
+          loginErrorTimes
+        }
       });
+
       // Login successfully
-      if (response.status === 'ok') {
-        reloadAuthorized();
+      if (response.code === 0) {
+        // redirect
         const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
+        redirect = getPageQuery().redirect;
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
             redirect = redirect.substr(urlParams.origin.length);
             if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
+              redirect = redirect.substr(redirect.indexOf("#") + 1);
             }
           } else {
             redirect = null;
           }
         }
-        yield put(routerRedux.replace(redirect || '/'));
+        // yield put(routerRedux.replace(redirect || "/"));
       }
+      callback ? callback(response, redirect || "/") : null;
     },
 
     *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
+      yield call(getCaptcha, payload);
     },
 
-    *logout(_, { put }) {
+    * logout({}, {put}) {
       yield put({
-        type: 'changeLoginStatus',
+        type: "changeLoginStatus",
         payload: {
-          status: false,
-          currentAuthority: 'guest',
-        },
+          user: null,
+          currentAuthority: "guest"
+        }
       });
-      reloadAuthorized();
       const { redirect } = getPageQuery();
       // redirect
-      if (window.location.pathname !== '/user/login' && !redirect) {
+      if (window.location.pathname !== "/user/login" && !redirect) {
         yield put(
           routerRedux.replace({
-            pathname: '/user/login',
+            pathname: "/user/login",
             search: stringify({
-              redirect: window.location.href,
-            }),
+              redirect: window.location.href
+            })
           })
         );
       }
-    },
+    }
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
+      const userInfo = payload.user
+        ? {
+          email: payload.user.email,
+          name: payload.user.name,
+          userId: payload.user.userId,
+          username: payload.user.username,
+          token: payload.user.token
+        }
+        : {};
+      setUser(userInfo);
       setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        loginErrorTimes: payload.loginErrorTimes,
+        currentUser: userInfo,
+        currentAuthority: payload.currentAuthority
       };
     },
-  },
+    saveCurrentUser(state, {payload}) {
+      return {
+        ...state,
+        currentUser: payload || {}
+      };
+    }
+  }
 };

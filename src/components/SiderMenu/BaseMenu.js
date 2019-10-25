@@ -16,7 +16,7 @@ const { SubMenu } = Menu;
 //   icon: 'http://demo.com/icon.png',
 //   icon: <Icon type="setting" />,
 const getIcon = icon => {
-  if (typeof icon === 'string') {
+  if (typeof icon === 'string' && icon !== '') {
     if (isUrl(icon)) {
       return <Icon component={() => <img src={icon} alt="icon" className={styles.icon} />} />;
     }

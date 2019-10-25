@@ -80,7 +80,6 @@ export default {
         if (articleUrlRegexp.test(location.pathname)) {
           const match = pathToRegexp('/list/table-list').exec(location.pathname);
           const payload = location.query;
-          console.log(payload)
           dispatch({
             type: 'fetch',
             payload: {

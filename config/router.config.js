@@ -37,6 +37,14 @@ export default [
           },
         ],
       },
+      //test
+      {
+        name: '测试页面',
+        icon: 'check-circle-o',
+        path: '/test',
+        authority: ["admin"],
+        component: './Test/KingrcTest',
+      },
       {
         name: 'exception',
         icon: 'warning',
@@ -66,14 +74,6 @@ export default [
             component: './Exception/TriggerException',
           },
         ],
-      },
-      //test
-      {
-        name: '测试页面',
-        icon: 'check-circle-o',
-        path: '/test',
-        component: './Test/KingrcTest',
-        authority: ['admin']
       },
       {
         component: '404',

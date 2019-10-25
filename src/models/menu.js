@@ -1,8 +1,11 @@
-import memoizeOne from 'memoize-one';
-import isEqual from 'lodash/isEqual';
-import {formatMessage} from 'umi-plugin-react/locale';
-import Authorized from '@/utils/Authorized';
-import { layout, menu, topNavTheme } from '../../config/defaultSettings';
+import memoizeOne from "memoize-one";
+import isEqual from "lodash/isEqual";
+import {formatMessage} from "umi-plugin-react/locale";
+import Authorized from "@/utils/Authorized";
+import {layout, menu, topNavTheme} from "../../config/defaultSettings";
+import {getMenus} from "../services/login";
+import {getAuthority, getUser} from "@/utils/authority";
+import routeConfig from "../../config/router.config";
 
 const {check} = Authorized;
 
@@ -17,8 +20,8 @@ function formatter(data, parentAuthority, parentName) {
         return null;
       }
 
-      let locale = 'menu';
-      if (parentName && parentName !== '/') {
+      let locale = "menu";
+      if (parentName && parentName !== "/") {
         locale = `${parentName}.${item.name}`;
       } else {
         locale = `menu.${item.name}`;
@@ -32,7 +35,7 @@ function formatter(data, parentAuthority, parentName) {
         ...item,
         name,
         locale,
-        authority: item.authority || parentAuthority,
+        authority: item.authority || parentAuthority
       };
       if (item.routes) {
         const children = formatter(item.routes, item.authority, locale);
@@ -52,10 +55,14 @@ const memoizeOneFormatter = memoizeOne(formatter, isEqual);
  */
 const getSubMenu = item => {
   // doc: add hideChildrenInMenu
-  if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
+  if (
+    item.children &&
+    !item.hideChildrenInMenu &&
+    item.children.some(child => child.name)
+  ) {
     return {
       ...item,
-      children: filterMenuData(item.children), // eslint-disable-line
+      children: filterMenuData(item.children) // eslint-disable-line
     };
   }
   return item;
@@ -96,12 +103,15 @@ const getBreadcrumbNameMap = menuData => {
   return routerMap;
 };
 
-const memoizeOneGetBreadcrumbNameMap = memoizeOne(getBreadcrumbNameMap, isEqual);
+const memoizeOneGetBreadcrumbNameMap = memoizeOne(
+  getBreadcrumbNameMap,
+  isEqual
+);
 
 const matchSiderMenu = data => {
   let res = null;
-  let path = window.location.hash.split('/')[1];
-  path = path ? `/${path}` : '';
+  let path = window.location.hash.split("/")[1];
+  path = path ? `/${path}` : "";
   data.forEach(item => {
     if (item.path === path) {
       res = item.children;
@@ -113,60 +123,118 @@ const matchSiderMenu = data => {
   return res;
 };
 
+const updateRouteAuthority = (serverRoutes, routes, auth, ignore) => {
+  if (Array.isArray(routes)) {
+    routes.forEach(route => {
+      let serverItem = serverRoutes.find(item => item.path === route.path);
+      serverItem = serverItem || ignore;
+      const notAuth = !(
+        serverItem ||
+        route.path === "/" ||
+        route.path === "exception"
+      );
+      route.authority = notAuth ? "guest" : auth;
+      if (route.routes) {
+        updateRouteAuthority(
+          serverItem.children || [],
+          route.routes,
+          notAuth ? "guest" : auth,
+          true
+        );
+      }
+    });
+  }
+  return routes;
+};
+
 export default {
-  namespace: 'menu',
+  namespace: "menu",
 
   state: {
     menuData: [],
     headerMenuData: [],
-    selectedHeaderMenu: '',
+    selectedHeaderMenu: "",
     sliderMenuData: [],
     routerData: [],
-    breadcrumbNameMap: {},
+    breadcrumbNameMap: {}
   },
 
   effects: {
-    * getMenuData({payload}, {put}) {
+    * getMenuData({payload}, {put, call}) {
+      // 未登录不获取
+      const user = getUser();
+      if (!user || JSON.stringify(user) === "{}") {
+        return;
+      }
       const {routes, authority, path} = payload;
-      const originalMenuData = memoizeOneFormatter(routes, authority, path);
+      let routerData = routes || routeConfig;
+
+      // 服务端控制菜单及权限
+      // const { data: serverRoutes = {} } = yield call(getMenus);
+      // routerData = updateRouteAuthority(
+      //   serverRoutes,
+      //   routerData,
+      //   getAuthority(),
+      //   false
+      // );
+      // const originalMenuData = memoizeOneFormatter(
+      //   serverRoutes,
+      //   authority,
+      //   path
+      // );
+
+      // 客户端维护菜单及权限
+      const originalMenuData = memoizeOneFormatter(routerData, authority, path);
+
       const menuData = filterMenuData(originalMenuData) || [];
-      const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(originalMenuData);
+      const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(
+        originalMenuData
+      );
+
       let headerMenuData = [];
       let sliderMenuData = matchSiderMenu(menuData);
 
-      if (layout === 'topmenu') {
-        headerMenuData = menuData ;
+      if (layout === "topmenu") {
+        headerMenuData = menuData;
       } else if (!topNavTheme) {
         sliderMenuData = menuData;
       } else {
-        headerMenuData = menuData.map((item) => {
+        headerMenuData = menuData.map(item => {
           return {...item, children: []};
         });
       }
 
       yield put({
-        type: 'save',
-        payload: {menuData, breadcrumbNameMap, routerData: routes, headerMenuData, sliderMenuData},
+        type: "save",
+        payload: {
+          menuData,
+          breadcrumbNameMap,
+          routerData,
+          headerMenuData,
+          sliderMenuData
+        }
       });
-    },
+    }
   },
 
   reducers: {
     save(state, action) {
       return {
         ...state,
-        ...action.payload,
+        ...action.payload
       };
     },
     setHeaderMenu(state, action) {
       const {selectedHeaderMenu} = action.payload;
-      const headerMenuData = state.menuData.filter(item => item.path === selectedHeaderMenu)[0];
-      const sliderMenuData = headerMenuData && headerMenuData.children || [];
+      const headerMenuData = state.menuData.filter(
+        item => item.path === selectedHeaderMenu
+      )[0];
+      const sliderMenuData = (headerMenuData && headerMenuData.children) || [];
       return {
         ...state,
         selectedHeaderMenu,
-        sliderMenuData,
+        sliderMenuData
       };
-    },
-  },
+    }
+  }
 };

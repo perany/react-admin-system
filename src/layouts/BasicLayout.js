@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Layout } from 'antd';
+import {Layout, Empty, ConfigProvider} from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { ContainerQuery } from 'react-container-query';
@@ -14,7 +14,7 @@ import getPageTitle from '@/utils/getPageTitle';
 import styles from './BasicLayout.less';
 
 // lazy load SettingDrawer
-const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
+// const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
 
 const { Content } = Layout;
 
@@ -49,9 +49,6 @@ class BasicLayout extends React.Component {
       dispatch,
       route: { routes, path, authority },
     } = this.props;
-    dispatch({
-      type: 'user/fetchCurrent',
-    });
     dispatch({
       type: 'setting/getSetting',
     });
@@ -101,6 +98,11 @@ class BasicLayout extends React.Component {
     return null;
   };
 
+  // table组件全局配置空数据模块
+  customizeRenderEmpty = () => (
+    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"暂无搜索记录"}/>
+  );
+
   render() {
     const {
       navTheme,
@@ -142,7 +144,9 @@ class BasicLayout extends React.Component {
             {...this.props}
           />
           <Content className={styles.content} style={contentStyle}>
-            {children}
+            <ConfigProvider renderEmpty={this.customizeRenderEmpty}>
+              {children}
+            </ConfigProvider>
           </Content>
           <Footer />
         </Layout>

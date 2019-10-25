@@ -1,8 +1,27 @@
-// use localStorage to store the authority info, which might be sent from server in actual project.
+import {reloadAuthorized} from "@/utils/Authorized";
+
+export function getUser() {
+  if (localStorage.getItem("user") !== null) {
+    return JSON.parse(localStorage.getItem("user"));
+  }
+  return {};
+}
+
+export function setUser(info) {
+  return localStorage.setItem("user", info ? JSON.stringify(info) : "");
+}
+
+export function getToken() {
+  const user = localStorage.getItem("user");
+  if (user && user !== "null") {
+    return JSON.parse(user).token;
+  }
+  return null;
+}
+
 export function getAuthority(str) {
-  // return localStorage.getItem('antd-pro-authority') || ['admin', 'user'];
   const authorityString =
-    typeof str === 'undefined' ? localStorage.getItem('antd-pro-authority') : str;
+    typeof str === "undefined" ? localStorage.getItem("authority") : str;
   // authorityString could be admin, "admin", ["admin"]
   let authority;
   try {
@@ -10,12 +29,15 @@ export function getAuthority(str) {
   } catch (e) {
     authority = authorityString;
   }
-  if (typeof authority === 'string') {
+  if (typeof authority === "string") {
     return [authority];
   }
   return authority;
 }
+
 export function setAuthority(authority) {
-  const proAuthority = typeof authority === 'string' ? [authority] : authority;
-  return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
+  const currentAuthority =
+    typeof authority === "string" ? [authority] : authority;
+  localStorage.setItem("authority", JSON.stringify(currentAuthority));
+  reloadAuthorized();
 }

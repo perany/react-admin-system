@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/aldznv2_admin.iml" filepath="$PROJECT_DIR$/.idea/aldznv2_admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/react-admin-system.iml" filepath="$PROJECT_DIR$/.idea/react-admin-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/react-admin-system.iml" filepath="$PROJECT_DIR$/.idea/react-admin-system.iml" />
     </modules>
   </component>
 </project>

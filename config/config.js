@@ -5,7 +5,7 @@ import webpackPlugin from "./plugin.config";
 import defaultSettings from "./defaultSettings";
 import slash from "slash2";
 
-const { pwa, primaryColor } = defaultSettings;
+const {pwa, resetTheme} = defaultSettings;
 // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 const { TEST, NODE_ENV, build_env, MOCK } = process.env;
 
@@ -68,9 +68,7 @@ export default {
   routes: pageRoutes,
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn
-  theme: {
-    "primary-color": primaryColor
-  },
+  theme: resetTheme,
   // proxy: {
   //   '/server/api/': {
   //     target: 'https://preview.pro.ant.design/',

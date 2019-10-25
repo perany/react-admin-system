@@ -1,7 +1,15 @@
 module.exports = {
   navTheme: 'dark', // theme for nav menu
   topNavTheme: false, // theme for top nav menu: dark,light,false
-  primaryColor: '#1890FF', // primary color of ant design
+  resetTheme: {
+    "primary-color": "#3188FF",
+    "heading-color": "#1e2023", // 标题色
+    "text-color": "#3f454a",// 主文本色
+    "text-color-secondary": "#a9b0b8",// 次文本色
+    "border-radius-base": "4px", // 组件/浮层圆角
+    "border-color-base": "#e0e5ec", // 边框色
+    "box-shadow-base": "0 2px 8px rgba(0, 0, 0, 0.15)",// 浮层阴影
+  }, // theme of ant design
   layout: 'sidemenu', // nav menu position: sidemenu or topmenu
   contentWidth: 'Fluid', // layout of content: Fluid or Fixed, only works when layout is topmenu
   fixedHeader: false, // sticky header

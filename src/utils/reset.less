@@ -1,0 +1,299 @@
+@layout-header-height: 54px;
+
+@layout-color: #0a2040;
+@primary-color: #3188ff;
+
+@sublayout-color: #071429;
+@hover-color: rgba(49, 136, 255, 0.1);
+@btn-info-color: #27cccc;
+@icon-main-color: #ff6731;
+
+@success-color: #51c41a;
+@warning-color: #faad13;
+@error-color: #f4212d;
+
+@text-color: #3f454a;
+@text-title-color: #1e2023;
+@text-subtitle-color: #5e6973;
+@text-placeholder-color: #a9b0b8;
+
+@background-color: #f5f7fa;
+@border-color: #e0e5ec;
+
+:global {
+  .ant-layout {
+    background-color: @background-color !important;
+  }
+
+  .ant-layout-header {
+    height: @layout-header-height;
+    line-height: @layout-header-height;
+    background: @layout-color;
+  }
+
+  .antd-pro-components-global-header-index-header {
+    height: @layout-header-height;
+  }
+
+  .antd-pro-components-global-header-index-trigger {
+    height: @layout-header-height;
+  }
+
+  .antd-pro-components-global-header-index-logo {
+    height: @layout-header-height;
+    line-height: @layout-header-height;
+  }
+
+  .antd-pro-components-sider-menu-index-logo {
+    height: @layout-header-height;
+    line-height: @layout-header-height;
+  }
+
+  .antd-pro-components-sider-menu-index-logo a {
+    height: @layout-header-height;
+    line-height: @layout-header-height;
+  }
+
+  .ant-layout-sider {
+    background-color: @layout-color;
+  }
+
+  .ant-menu-dark,
+  .ant-menu-dark .ant-menu-sub {
+    color: @text-placeholder-color;
+    background-color: @layout-color;
+  }
+
+  .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+    background: @sublayout-color;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) inset;
+  }
+
+  .ant-card {
+    margin-bottom: 20px !important;
+  }
+
+  .ant-card-body {
+    padding: 15px;
+  }
+
+  .ant-btn {
+    border: none;
+    background-color: @border-color;
+    color: @text-subtitle-color;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+    min-width: 90px;
+  }
+
+  .ant-btn:hover,
+  .ant-btn:focus {
+    background-color: @border-color;
+    color: @text-subtitle-color;
+    opacity: 0.9;
+    font-weight: bold;
+  }
+
+  .ant-btn-link {
+    color: #3188ff;
+    background-color: #0000;
+    border-color: #0000;
+    box-shadow: none;
+  }
+
+  .ant-btn-link:hover,
+  .ant-btn-link:focus,
+  .ant-btn-link:active {
+    border-color: #0000;
+  }
+
+  .ant-btn-link:hover,
+  .ant-btn-link:focus {
+    color: #59a4ff;
+    background-color: #0000;
+    border-color: #59a4ff;
+  }
+
+  .ant-btn-primary {
+    color: #fff;
+    background-color: @primary-color;
+    border-color: @primary-color;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+  }
+
+  .ant-btn-primary:hover,
+  .ant-btn-primary:focus {
+    color: #fff;
+    background-color: @primary-color;
+    border-color: @primary-color;
+  }
+
+  .ant-btn-primary-disabled,
+  .ant-btn-primary.disabled,
+  .ant-btn-primary[disabled],
+  .ant-btn-primary-disabled:hover,
+  .ant-btn-primary.disabled:hover,
+  .ant-btn-primary[disabled]:hover,
+  .ant-btn-primary-disabled:focus,
+  .ant-btn-primary.disabled:focus,
+  .ant-btn-primary[disabled]:focus,
+  .ant-btn-primary-disabled:active,
+  .ant-btn-primary.disabled:active,
+  .ant-btn-primary[disabled]:active,
+  .ant-btn-primary-disabled.active,
+  .ant-btn-primary.disabled.active,
+  .ant-btn-primary[disabled].active,
+  .ant-btn-info-disabled,
+  .ant-btn-info.disabled,
+  .ant-btn-info[disabled],
+  .ant-btn-info-disabled:hover,
+  .ant-btn-info.disabled:hover,
+  .ant-btn-info[disabled]:hover,
+  .ant-btn-info-disabled:focus,
+  .ant-btn-info.disabled:focus,
+  .ant-btn-info[disabled]:focus,
+  .ant-btn-info-disabled:active,
+  .ant-btn-info.disabled:active,
+  .ant-btn-info[disabled]:active,
+  .ant-btn-info-disabled.active,
+  .ant-btn-info.disabled.active,
+  .ant-btn-info[disabled].active {
+    color: @text-placeholder-color;
+    background-color: @background-color;
+    border: 1px solid @border-color;
+    text-shadow: none;
+    box-shadow: none;
+  }
+
+  .ant-btn-info {
+    color: #fff;
+    background-color: @btn-info-color;
+    border-color: @btn-info-color;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+  }
+
+  .ant-btn-info:hover,
+  .ant-btn-info:focus {
+    color: #fff;
+    background-color: @btn-info-color;
+    border-color: @btn-info-color;
+  }
+
+  .ant-table {
+    border: none;
+    border-radius: 4px;
+
+    .ant-table-thead {
+      background: @background-color;
+
+      th {
+        background: @background-color;
+        text-align: left;
+      }
+
+      th[colspan] {
+        text-align: left;
+      }
+    }
+  }
+
+  .page-wrap .ant-pagination, .ant-table-pagination.ant-pagination {
+    position: relative;
+    left: 0;
+    top: 0;
+    float: none;
+    margin: 16px 0;
+    display: flex;
+    justify-content: center;
+    color: @text-placeholder-color;
+
+    a {
+      color: @text-placeholder-color;
+    }
+
+    .ant-pagination-item-active {
+      font-weight: 500;
+      background: @primary-color;
+      border-color: @primary-color;
+
+      a {
+        color: #fff;
+      }
+    }
+
+    .ant-pagination-total-text {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: @text-placeholder-color;
+    }
+  }
+
+  .ant-form-item {
+    margin-bottom: 10px;
+  }
+
+  .has-error .ant-form-explain,
+  .has-error .ant-form-split {
+    color: @error-color;
+    font-size: 12px;
+    line-height: 12px;
+    margin-top: 3px;
+    height: 12px;
+    min-height: 14px;
+  }
+
+  .ant-modal {
+    width: 100px;
+
+    .ant-modal-header {
+      padding: 9px 24px;
+      background: @primary-color;
+      border-bottom: 1px solid @border-color;
+    }
+
+    .ant-modal-title {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .ant-modal-close-x {
+      width: 42px;
+      height: 42px;
+      font-size: 16px;
+      line-height: 42px;
+      color: #fff;
+    }
+
+    .ant-modal-footer {
+      padding: 16px;
+    }
+  }
+
+  .ant-progress-text {
+    color: @primary-color !important;
+    font-size: 14px;
+  }
+
+  .ant-message-notice-content {
+    padding: 8px;
+    background: #000000a6;
+    color: #fff;
+  }
+
+  .ant-message .anticon {
+    margin-right: 6px;
+    font-size: 18px;
+    border-radius: 18px;
+    background-color: #fff;
+  }
+
+  .ant-tooltip-arrow::before {
+    background-color: #000000a6;
+  }
+
+  .ant-tooltip-inner {
+    background-color: #000000a6;
+  }
+}

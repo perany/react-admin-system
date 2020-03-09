@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Tag, message } from "antd";
-import { connect } from "dva";
-import groupBy from "lodash/groupBy";
-import moment from "moment";
-import { NoticeItem } from "@/models/global";
-import NoticeIcon from "../NoticeIcon";
-import { CurrentUser } from "@/models/user";
-import { ConnectProps, ConnectState } from "@/models/connect";
-import styles from "./index.less";
+import React, {Component} from 'react';
+import {Tag, message} from 'antd';
+import {connect} from 'dva';
+import groupBy from 'lodash/groupBy';
+import moment from 'moment';
+import {NoticeItem} from '@/models/global';
+import {CurrentUser} from '@/models/user';
+import {ConnectProps, ConnectState} from '@/models/connect';
+import NoticeIcon from '../NoticeIcon';
+import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   notices?: NoticeItem[];
@@ -23,7 +23,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
     if (dispatch) {
       dispatch({
-        type: "global/fetchNotices"
+        type: 'global/fetchNotices',
       });
     }
   }
@@ -34,20 +34,20 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
     if (dispatch) {
       dispatch({
-        type: "global/changeNoticeReadState",
-        payload: id
+        type: 'global/changeNoticeReadState',
+        payload: id,
       });
     }
   };
 
   handleNoticeClear = (title: string, key: string) => {
     const { dispatch } = this.props;
-    message.success(`${"清空了"} ${title}`);
+    message.success(`${'清空了'} ${title}`);
 
     if (dispatch) {
       dispatch({
-        type: "global/clearNotices",
-        payload: key
+        type: 'global/clearNotices',
+        payload: key,
       });
     }
   };
@@ -57,7 +57,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
   } => {
     const { notices = [] } = this.props;
 
-    if (notices.length === 0) {
+    if (!notices || notices.length === 0) {
       return {};
     }
 
@@ -74,16 +74,16 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
       if (newNotice.extra && newNotice.status) {
         const color = {
-          todo: "",
-          processing: "blue",
-          urgent: "red",
-          doing: "gold"
+          todo: '',
+          processing: 'blue',
+          urgent: 'red',
+          doing: 'gold',
         }[newNotice.status];
         newNotice.extra = (
           <Tag
             color={color}
             style={{
-              marginRight: 0
+              marginRight: 0,
             }}
           >
             {newNotice.extra}
@@ -93,7 +93,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
       return newNotice;
     });
-    return groupBy(newNotices, "type");
+    return groupBy(newNotices, 'type');
   };
 
   getUnreadData = (noticeData: { [key: string]: NoticeItem[] }) => {
@@ -130,7 +130,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
         viewMoreText="查看更多"
         onClear={this.handleNoticeClear}
         onPopupVisibleChange={onNoticeVisibleChange}
-        onViewMore={() => message.info("Click on view more")}
+        onViewMore={() => message.info('Click on view more')}
         clearClose
       >
         <NoticeIcon.Tab
@@ -165,7 +165,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 export default connect(({ user, global, loading }: ConnectState) => ({
   currentUser: user.currentUser,
   collapsed: global.collapsed,
-  fetchingMoreNotices: loading.effects["global/fetchMoreNotices"],
-  fetchingNotices: loading.effects["global/fetchNotices"],
-  notices: global.notices
+  fetchingMoreNotices: loading.effects['global/fetchMoreNotices'],
+  fetchingNotices: loading.effects['global/fetchNotices'],
+  notices: global.notices,
 }))(GlobalHeaderRight);

@@ -1,7 +1,7 @@
-import { Effect } from "dva";
-import { Reducer } from "redux";
+import {Effect} from 'dva';
+import {Reducer} from 'redux';
 
-import { queryCurrent, query as queryUsers } from "@/services/user";
+import {queryCurrent, query as queryUsers} from '@/services/user';
 
 export interface CurrentUser {
   avatar?: string;
@@ -13,6 +13,7 @@ export interface CurrentUser {
     key: string;
     label: string;
   }[];
+  userid?: string;
   unreadCount?: number;
 }
 
@@ -21,7 +22,7 @@ export interface UserModelState {
 }
 
 export interface UserModelType {
-  namespace: "user";
+  namespace: 'user';
   state: UserModelState;
   effects: {
     fetch: Effect;
@@ -34,52 +35,52 @@ export interface UserModelType {
 }
 
 const UserModel: UserModelType = {
-  namespace: "user",
+  namespace: 'user',
 
   state: {
-    currentUser: {}
+    currentUser: {},
   },
 
   effects: {
     *fetch(_, { call, put }) {
       const response = yield call(queryUsers);
       yield put({
-        type: "save",
-        payload: response
+        type: 'save',
+        payload: response,
       });
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
       yield put({
-        type: "saveCurrentUser",
-        payload: response
+        type: 'saveCurrentUser',
+        payload: response,
       });
-    }
+    },
   },
 
   reducers: {
     saveCurrentUser(state, action) {
       return {
         ...state,
-        currentUser: action.payload || {}
+        currentUser: action.payload || {},
       };
     },
     changeNotifyCount(
       state = {
-        currentUser: {}
+        currentUser: {},
       },
-      action
+      action,
     ) {
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
           notifyCount: action.payload.totalCount,
-          unreadCount: action.payload.unreadCount
-        }
+          unreadCount: action.payload.unreadCount,
+        },
       };
-    }
-  }
+    },
+  },
 };
 
 export default UserModel;

@@ -1,9 +1,11 @@
-import { AnyAction, Reducer } from 'redux';
-import { EffectsCommandMap } from 'dva';
-import { routerRedux } from 'dva/router';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/user';
-import { getPageQuery, setAuthority } from '@/utils/utils';
-import { stringify } from "qs";
+import {Reducer} from 'redux';
+import {Effect} from 'dva';
+import {stringify} from 'querystring';
+import {router} from 'umi';
+
+import {fakeAccountLogin} from '@/services/login';
+import {setAuthority} from '@/utils/authority';
+import {getPageQuery} from '@/utils/utils';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -11,17 +13,11 @@ export interface StateType {
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
-export type Effect = (
-  action: AnyAction,
-  effects: EffectsCommandMap & { select: <T>(func: (state: StateType) => T) => T },
-) => void;
-
-export interface ModelType {
+export interface LoginModelType {
   namespace: string;
   state: StateType;
   effects: {
     login: Effect;
-    getCaptcha: Effect;
     logout: Effect;
   };
   reducers: {
@@ -29,8 +25,8 @@ export interface ModelType {
   };
 }
 
-const Login: ModelType = {
-  namespace: 'userLogin',
+const Model: LoginModelType = {
+  namespace: 'login',
 
   state: {
     status: undefined,
@@ -56,32 +52,26 @@ const Login: ModelType = {
               redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
           } else {
-            window.location.href = redirect;
+            window.location.href = '/';
             return;
           }
         }
-        yield put(routerRedux.replace(redirect || '/'));
+        router.replace(redirect || '/');
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
-    },
-
-    *logout(_, { put }) {
+    logout() {
       const { redirect } = getPageQuery();
-      // redirect
-      if (window.location.pathname !== "/user/login" && !redirect) {
-        yield put(
-            routerRedux.replace({
-              pathname: "/user/login",
-              search: stringify({
-                redirect: window.location.href
-              })
-            })
-        );
+      // Note: There may be security issues, please note
+      if (window.location.pathname !== '/user/login' && !redirect) {
+        router.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        });
       }
-    }
+    },
   },
 
   reducers: {
@@ -96,4 +86,4 @@ const Login: ModelType = {
   },
 };
 
-export default Login;
+export default Model;

@@ -1,25 +1,13 @@
-import request from "@/utils/request";
-import {FromDataType} from "@/pages/user/login";
+import request from '@/utils/request';
 
 export async function query(): Promise<any> {
-  return request("/api/users");
+  return request('/api/users');
 }
 
 export async function queryCurrent(): Promise<any> {
-  return request("/api/currentUser");
+  return request('/api/currentUser');
 }
 
 export async function queryNotices(): Promise<any> {
-  return request("/api/notices");
-}
-
-export async function fakeAccountLogin(params: FromDataType) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
-  });
-}
-
-export async function getFakeCaptcha(mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
+  return request('/api/notices');
 }

@@ -1,46 +1,63 @@
-import {Reducer} from 'redux';
-import {Effect} from 'dva';
-import {stringify} from 'querystring';
-import {router} from 'umi';
+import { AnyAction, Reducer } from "redux";
+import { parse } from "qs";
 
-import {fakeAccountLogin} from '@/services/login';
-import {setAuthority} from '@/utils/authority';
-import {getPageQuery} from '@/utils/utils';
+import { EffectsCommandMap } from "dva";
+import { routerRedux } from "dva/router";
+import { getUserInfo, removeUserInfo, setUserInfo } from "@/utils/utils";
+import defaultSettings from "../../config/defaultSettings";
+import { accountLoginOut, fakeAccountLogin } from "@/services/login";
 
-export interface StateType {
-  status?: 'ok' | 'error';
-  type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+export function getPageQuery(): {
+  [key: string]: string;
+} {
+  return parse(window.location.href.split("?")[1]);
+}
+
+export type Effect = (
+  action: AnyAction,
+  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T }
+) => void;
+
+export interface LoginModelState {
+  status?: boolean;
+  type?: any;
 }
 
 export interface LoginModelType {
   namespace: string;
-  state: StateType;
+  state: LoginModelState;
   effects: {
     login: Effect;
     logout: Effect;
   };
   reducers: {
-    changeLoginStatus: Reducer<StateType>;
+    changeLoginStatus: Reducer<{}>;
   };
 }
 
 const Model: LoginModelType = {
-  namespace: 'login',
+  namespace: "login",
 
   state: {
-    status: undefined,
+    status: undefined
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
+    *login({ payload, callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       yield put({
-        type: 'changeLoginStatus',
-        payload: response,
+        type: "changeLoginStatus",
+        payload: {
+          ...response,
+          status: payload.code === 0
+        }
       });
+      if (callback && response && response.code === 0) callback(response);
       // Login successfully
-      if (response.status === 'ok') {
+      if (response && response.code === 0) {
+        const user = response.data ? response.data : {};
+        setUserInfo(user);
+
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -49,41 +66,49 @@ const Model: LoginModelType = {
           if (redirectUrlParams.origin === urlParams.origin) {
             redirect = redirect.substr(urlParams.origin.length);
             if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
+              redirect = redirect.substr(redirect.indexOf("#") + 1);
             }
           } else {
-            window.location.href = '/';
+            window.location.href = redirect;
             return;
+            // redirect = null;
           }
         }
-        router.replace(redirect || '/');
+        yield put(routerRedux.replace(redirect || "/"));
       }
     },
-
-    logout() {
+    *logout(_, { call, put }) {
+      const paramsOut = {
+        userId: getUserInfo().userId,
+        projectId: defaultSettings.projectId
+        // isLoginout: true
+      };
+      yield call(accountLoginOut, paramsOut);
+      removeUserInfo();
       const { redirect } = getPageQuery();
-      // Note: There may be security issues, please note
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        router.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
+      // redirect
+      if (window.location.pathname !== "/user/login" && !redirect) {
+        yield put(
+          routerRedux.replace({
+            pathname: "/user/login"
+            // search: stringify({
+            //   redirect: window.location.href,
+            // }),
+          })
+        );
       }
-    },
+    }
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
       return {
         ...state,
         status: payload.status,
-        type: payload.type,
+        type: payload.type
       };
-    },
-  },
+    }
+  }
 };
 
 export default Model;

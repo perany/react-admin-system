@@ -1,0 +1,120 @@
+.login {
+  .container {
+    position: relative;
+    width: 100%;
+    min-width: 1200px;
+    height: 100vh;
+  }
+
+  .row {
+    padding: 0;
+  }
+
+  .col {
+    padding: 0;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #fff;
+  }
+
+  .leftContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    // eslint-disable-next-line global-require
+    background-image: url(./images/bg.png);
+  }
+
+  .logo {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    align-items: center;
+    padding-left: 20px;
+    height: 64px;
+  }
+
+  .logo-span {
+    margin-right: 1vw;
+  }
+
+  .logo-name {
+    // width:80px;
+    height: 28px;
+    font-size: 20px;
+    font-family: Helvetica Neue, serif;
+    font-weight: 500;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 1);
+    opacity: 1;
+  }
+
+  .ant-layout-sider-children {
+    height: 100%;
+    margin-top: -0.1px;
+    padding-top: 0.1px;
+  }
+
+  .antd-pro-components-sider-menu-index-logo {
+    position: relative;
+    height: 64px;
+    padding-left: 24px;
+    overflow: hidden;
+    line-height: 64px;
+    background: #002140;
+    transition: all 0.3s;
+  }
+
+  .antd-pro-components-sider-menu-index-logo h1 {
+    display: inline-block;
+    margin: 0 0 0 12px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+  }
+
+  .logoCon {
+    position: relative;
+    height: 64px;
+    padding-left: 24px;
+    overflow: hidden;
+    line-height: 64px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+
+  .logoCon h1 {
+    display: inline-block;
+    margin: 0 0 0 12px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+  }
+
+  .formTitle {
+    margin-bottom: 40px;
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: 4px;
+    text-align: center;
+  }
+
+  .formItem {
+    //margin-bottom: 20px;
+  }
+}

@@ -1,67 +1,67 @@
 export default [
   {
-    path: '/user',
-    component: '../layouts/UserLayout',
+    path: "/user",
+    component: "../layouts/BlankLayout",
     routes: [
       {
-        name: 'login',
-        path: '/user/login',
-        component: './user/login',
-      },
-    ],
+        name: "login",
+        path: "/user/login",
+        component: "./Login"
+      }
+    ]
   },
   {
-    path: '/',
-    component: '../layouts/SecurityLayout',
+    path: "/",
+    component: "../layouts/SecurityLayout",
     routes: [
       {
-        path: '/',
-        component: '../layouts/BasicLayout',
-        authority: ['admin', 'user'],
+        path: "/",
+        component: "../layouts/BasicLayout",
+        authority: ["admin", "user"],
         routes: [
           {
-            path: '/',
-            redirect: '/welcome',
+            path: "/",
+            redirect: "/welcome"
           },
           {
-            path: '/welcome',
-            name: 'welcome',
-            icon: 'smile',
-            component: './Welcome',
+            path: "/welcome",
+            name: "welcome",
+            icon: "smile",
+            component: "./Welcome"
           },
           {
-            path: '/admin',
-            name: 'admin',
-            icon: 'crown',
-            component: './Admin',
-            authority: ['admin'],
+            path: "/admin",
+            name: "admin",
+            icon: "crown",
+            component: "./Admin",
+            authority: ["admin"],
             routes: [
               {
-                path: '/admin/sub-page',
-                name: 'sub-page',
-                icon: 'smile',
-                component: './Welcome',
-                authority: ['admin'],
-              },
-            ],
+                path: "/admin/sub-page",
+                name: "sub-page",
+                icon: "smile",
+                component: "./Welcome",
+                authority: ["admin"]
+              }
+            ]
           },
           {
-            name: 'list.table-list',
-            icon: 'table',
-            path: '/list',
-            component: './ListTableList',
+            name: "list.table-list",
+            icon: "table",
+            path: "/list",
+            component: "./ListTableList"
           },
           {
-            component: './404',
-          },
-        ],
+            component: "./404"
+          }
+        ]
       },
       {
-        component: './404',
-      },
-    ],
+        component: "./404"
+      }
+    ]
   },
   {
-    component: './404',
-  },
+    component: "./404"
+  }
 ];

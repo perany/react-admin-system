@@ -1,19 +1,20 @@
-import request from '@/utils/request';
+import request from "@/utils/request";
+import { stringify } from "qs";
+import proxyConfig from "../../config/proxy.config";
 
-export interface LoginParamsType {
-  userName: string;
-  password: string;
-  mobile: string;
-  captcha: string;
-}
-
-export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
+export async function fakeAccountLogin(params: any) {
+  return request(`${proxyConfig.loginServer}/userservice/user/login`, {
+    method: "POST",
+    data: {
+      ...params
+      // isMock: true
+    }
   });
 }
 
-export async function getFakeCaptcha(mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
+// 退出登录
+export async function accountLoginOut(params: any) {
+  return request(
+    `${proxyConfig.loginServer}/userservice/user/logout?${stringify(params)}`
+  );
 }

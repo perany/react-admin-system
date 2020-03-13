@@ -1,6 +1,5 @@
 import React from 'react';
 import { CURRENT } from './renderAuthorize';
-// eslint-disable-next-line import/no-cycle
 import PromiseRender from './PromiseRender';
 
 export type IAuthorityType =
@@ -81,3 +80,5 @@ function check<T, K>(authority: IAuthorityType, target: T, Exception: K): T | K 
 }
 
 export default check;
+
+//

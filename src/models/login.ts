@@ -1,21 +1,21 @@
-import { AnyAction, Reducer } from "redux";
-import { parse } from "qs";
+import { AnyAction, Reducer } from 'redux';
+import { parse } from 'qs';
 
-import { EffectsCommandMap } from "dva";
-import { routerRedux } from "dva/router";
-import { getUserInfo, removeUserInfo, setUserInfo } from "@/utils/utils";
-import defaultSettings from "../../config/defaultSettings";
-import { accountLoginOut, fakeAccountLogin } from "@/services/login";
+import { EffectsCommandMap } from 'dva';
+import { routerRedux } from 'dva/router';
+import { getUserInfo, removeUserInfo, setUserInfo } from '@/utils/utils';
+import defaultSettings from '../../config/defaultSettings';
+import { accountLoginOut, fakeAccountLogin } from '@/services/login';
 
 export function getPageQuery(): {
   [key: string]: string;
 } {
-  return parse(window.location.href.split("?")[1]);
+  return parse(window.location.href.split('?')[1]);
 }
 
 export type Effect = (
   action: AnyAction,
-  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T }
+  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
 ) => void;
 
 export interface LoginModelState {
@@ -36,21 +36,21 @@ export interface LoginModelType {
 }
 
 const Model: LoginModelType = {
-  namespace: "login",
+  namespace: 'login',
 
   state: {
-    status: undefined
+    status: undefined,
   },
 
   effects: {
     *login({ payload, callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       yield put({
-        type: "changeLoginStatus",
+        type: 'changeLoginStatus',
         payload: {
           ...response,
-          status: payload.code === 0
-        }
+          status: payload.code === 0,
+        },
       });
       if (callback && response && response.code === 0) callback(response);
       // Login successfully
@@ -66,7 +66,7 @@ const Model: LoginModelType = {
           if (redirectUrlParams.origin === urlParams.origin) {
             redirect = redirect.substr(urlParams.origin.length);
             if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf("#") + 1);
+              redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
           } else {
             window.location.href = redirect;
@@ -74,30 +74,30 @@ const Model: LoginModelType = {
             // redirect = null;
           }
         }
-        yield put(routerRedux.replace(redirect || "/"));
+        yield put(routerRedux.replace(redirect || '/'));
       }
     },
     *logout(_, { call, put }) {
       const paramsOut = {
         userId: getUserInfo().userId,
-        projectId: defaultSettings.projectId
+        projectId: defaultSettings.projectId,
         // isLoginout: true
       };
       yield call(accountLoginOut, paramsOut);
       removeUserInfo();
       const { redirect } = getPageQuery();
       // redirect
-      if (window.location.pathname !== "/user/login" && !redirect) {
+      if (window.location.pathname !== '/user/login' && !redirect) {
         yield put(
           routerRedux.replace({
-            pathname: "/user/login"
+            pathname: '/user/login',
             // search: stringify({
             //   redirect: window.location.href,
             // }),
-          })
+          }),
         );
       }
-    }
+    },
   },
 
   reducers: {
@@ -105,10 +105,10 @@ const Model: LoginModelType = {
       return {
         ...state,
         status: payload.status,
-        type: payload.type
+        type: payload.type,
       };
-    }
-  }
+    },
+  },
 };
 
 export default Model;

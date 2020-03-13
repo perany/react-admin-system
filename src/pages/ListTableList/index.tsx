@@ -1,14 +1,14 @@
-import {DownOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Divider, Dropdown, Menu, message} from 'antd';
-import React, {useState, useRef} from 'react';
-import {PageHeaderWrapper} from '@ant-design/pro-layout';
-import ProTable, {ProColumns, ActionType} from '@ant-design/pro-table';
-import {SorterResult} from 'antd/es/table/interface';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import React, { useState, useRef } from 'react';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import { SorterResult } from 'antd/es/table/interface';
 
 import CreateForm from './components/CreateForm';
-import UpdateForm, {FormValueType} from './components/UpdateForm';
-import {TableListItem} from './data.d';
-import {queryRule, updateRule, addRule, removeRule} from './service';
+import UpdateForm, { FormValueType } from './components/UpdateForm';
+import { TableListItem } from './data.d';
+import { queryRule, updateRule, addRule, removeRule } from './service';
 
 /**
  * 添加节点
@@ -17,7 +17,7 @@ import {queryRule, updateRule, addRule, removeRule} from './service';
 const handleAdd = async (fields: TableListItem) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({...fields});
+    await addRule({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -106,10 +106,10 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
-        0: {text: '关闭', status: 'Default'},
-        1: {text: '运行中', status: 'Processing'},
-        2: {text: '已上线', status: 'Success'},
-        3: {text: '异常', status: 'Error'},
+        0: { text: '关闭', status: 'Default' },
+        1: { text: '运行中', status: 'Processing' },
+        2: { text: '已上线', status: 'Success' },
+        3: { text: '异常', status: 'Error' },
       },
     },
     {
@@ -133,7 +133,7 @@ const TableList: React.FC<{}> = () => {
           >
             配置
           </a>
-          <Divider type="vertical"/>
+          <Divider type="vertical" />
           <a href="">订阅警报</a>
         </>
       ),
@@ -155,9 +155,9 @@ const TableList: React.FC<{}> = () => {
         params={{
           sorter,
         }}
-        toolBarRender={(action, {selectedRows}) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined/> 新建
+        toolBarRender={(action, { selectedRows }) => [
+          <Button key={'btn'} type="primary" onClick={() => handleModalVisible(true)}>
+            <PlusOutlined /> 新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
@@ -177,14 +177,14 @@ const TableList: React.FC<{}> = () => {
               }
             >
               <Button>
-                批量操作 <DownOutlined/>
+                批量操作 <DownOutlined />
               </Button>
             </Dropdown>
           ),
         ]}
         tableAlertRender={(selectedRowKeys, selectedRows) => (
           <div>
-            已选择 <a style={{fontWeight: 600}}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
+            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
             <span>
               服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
             </span>

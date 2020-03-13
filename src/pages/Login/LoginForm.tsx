@@ -1,25 +1,35 @@
-import React, { Component } from "react";
-import { Tabs, Row, Col, Form, message, Button, Input, Checkbox } from "antd";
-import styles from "./index.less";
-import { connect } from "dva";
-import { Dispatch } from "redux";
-import defaultSettings from "../../../config/defaultSettings";
-import { LoginModelState } from "@/models/login";
+import React, { Component } from 'react';
+import { Tabs, Row, Col, Form, message, Button, Input, Checkbox } from 'antd';
+import { connect } from 'dva';
+import { Dispatch } from 'redux';
+import { LoginModelState } from '@/models/login';
+import defaultSettings from '../../../config/defaultSettings';
+import styles from './index.less';
 
-const displayName = "LoginFrom";
+const displayName = 'LoginFrom';
 
 const tabs = [
-  { tab: "域帐号", key: "domain", content: "域帐号", source: "oa" },
-  { tab: "系统账号", key: "partner", content: "系统账号", source: "local" }
+  {
+    tab: '域帐号',
+    key: 'domain',
+    content: '域帐号',
+    source: 'oa',
+  },
+  {
+    tab: '系统账号',
+    key: 'partner',
+    content: '系统账号',
+    source: 'local',
+  },
 ];
 
 const config = [
   {
-    label: "账号",
-    component: "Input",
+    label: '账号',
+    component: 'Input',
     componentProps: {
-      placeholder: "账号",
-      size: "large",
+      placeholder: '账号',
+      size: 'large',
       maxLength: 20,
       style: {
         // width: '320px',
@@ -27,68 +37,68 @@ const config = [
         borderTop: 0,
         borderLeft: 0,
         borderRight: 0,
-        borderColor: "#ebedf2"
-      }
+        borderColor: '#ebedf2',
+      },
     },
     formBinderProps: {
-      name: "name",
+      name: 'name',
       rules: [
         {
           required: true,
-          message: "请输入账号!"
-        }
-      ]
-    }
+          message: '请输入账号!',
+        },
+      ],
+    },
   },
   {
-    label: "密码",
-    component: "Input",
+    label: '密码',
+    component: 'Input',
     componentProps: {
-      placeholder: "密码",
-      type: "password",
+      placeholder: '密码',
+      type: 'password',
       style: {
         // width: '320px',
         borderRadius: 0,
         borderTop: 0,
         borderLeft: 0,
         borderRight: 0,
-        borderColor: "#ebedf2"
-      }
+        borderColor: '#ebedf2',
+      },
     },
     formBinderProps: {
-      name: "passwd",
+      name: 'passwd',
       rules: [
         {
           required: true,
-          message: "请输入密码!"
-        }
-      ]
-    }
+          message: '请输入密码!',
+        },
+      ],
+    },
   },
   {
-    label: "记住我",
-    component: "Checkbox",
+    label: '记住我',
+    component: 'Checkbox',
     componentProps: {
-      defaultChecked: true
+      defaultChecked: true,
     },
     formBinderProps: {
-      name: "remember",
-      initialValue: true
-    }
+      name: 'remember',
+      initialValue: true,
+    },
   },
   {
-    label: "登录",
-    component: "Button",
+    label: '登录',
+    component: 'Button',
     componentProps: {
-      type: "primary",
+      type: 'primary',
       style: {
-        width: "100%"
-      }
+        width: '100%',
+      },
     },
     formBinderProps: {
-      name: "submit"
-    }
-  }
+      name: 'submit',
+    },
+  },
 ];
 
 interface configItem {
@@ -109,7 +119,7 @@ interface LoginFromProps {
 @connect(
   ({
     login,
-    loading
+    loading,
   }: {
     login: LoginModelState;
     loading: {
@@ -119,14 +129,14 @@ interface LoginFromProps {
     };
   }) => ({
     login,
-    submitting: loading.effects["login/login"]
-  })
+    submitting: loading.effects['login/login'],
+  }),
 )
 class LoginFrom extends Component<LoginFromProps> {
   static displayName = displayName;
 
   state = {
-    source: "oa"
+    source: 'oa',
   };
 
   loginSuccessCallback = async () => {
@@ -137,7 +147,7 @@ class LoginFrom extends Component<LoginFromProps> {
 
   onTabChange = (key: string) => {
     this.setState({
-      source: key
+      source: key,
     });
   };
 
@@ -146,20 +156,20 @@ class LoginFrom extends Component<LoginFromProps> {
     const { source } = this.state;
     if (dispatch) {
       dispatch({
-        type: "login/login",
+        type: 'login/login',
         payload: {
           username: values.name,
           password: values.passwd,
-          verify_type: "token",
+          verify_type: 'token',
           source,
           projectId: defaultSettings.projectId,
-          isLogin: true
+          isLogin: true,
         },
         callback: () => {
           // 登陆成功，保存数据
-          message.success("登录成功");
+          message.success('登录成功');
           this.loginSuccessCallback();
-        }
+        },
       });
     }
   };
@@ -202,13 +212,13 @@ class LoginFrom extends Component<LoginFromProps> {
 
   renderFromItem = (): any =>
     config.map(item => {
-      if (item.component === "Input") {
+      if (item.component === 'Input') {
         return this.renderInput(item);
       }
-      if (item.component === "Checkbox") {
+      if (item.component === 'Checkbox') {
         return this.renderCheckbox(item);
       }
-      if (item.component === "Button") {
+      if (item.component === 'Button') {
         return this.renderButton(item);
       }
       return null;
@@ -216,17 +226,14 @@ class LoginFrom extends Component<LoginFromProps> {
 
   render() {
     return (
-      <Row style={{ paddingTop: "20%" }}>
+      <Row style={{ paddingTop: '20%' }}>
         <Col offset={8} span={8}>
           <h4 className={styles.formTitle}>登录</h4>
           <Tabs onChange={this.onTabChange}>
             {tabs.map(item => (
               <Tabs.TabPane key={item.source} tab={item.tab}>
                 <div>
-                  <Form
-                    onFinish={this.onSubmit}
-                    onFinishFailed={this.onSubmitFailed}
-                  >
+                  <Form onFinish={this.onSubmit} onFinishFailed={this.onSubmitFailed}>
                     {this.renderFromItem()}
                   </Form>
                 </div>

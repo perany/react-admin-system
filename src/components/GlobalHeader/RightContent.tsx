@@ -1,14 +1,15 @@
-import {Tooltip, Tag} from 'antd';
-import {QuestionCircleOutlined} from '@ant-design/icons';
+import { Tooltip, Tag } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import {connect} from 'dva';
-import {ConnectProps, ConnectState} from '@/models/connect';
+import { connect } from 'dva';
+import { ConnectProps, ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
+
 export interface GlobalHeaderRightProps extends ConnectProps {
   theme?: SiderTheme;
   layout: 'sidemenu' | 'topmenu';
@@ -21,7 +22,7 @@ const ENVTagColor = {
 };
 
 const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
-  const {theme, layout} = props;
+  const { theme, layout } = props;
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'topmenu') {
@@ -35,7 +36,10 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         placeholder="站内搜索"
         defaultValue="umi ui"
         options={[
-          {label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>, value: 'umi ui'},
+          {
+            label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>,
+            value: 'umi ui',
+          },
           {
             label: <a href="next.ant.design">Ant Design</a>,
             value: 'Ant Design',
@@ -60,21 +64,21 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
           rel="noopener noreferrer"
           className={styles.action}
         >
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </a>
       </Tooltip>
-      <Avatar/>
+      <Avatar />
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      <SelectLang className={styles.action}/>
+      <SelectLang className={styles.action} />
     </div>
   );
 };
 
-export default connect(({settings}: ConnectState) => ({
+export default connect(({ settings }: ConnectState) => ({
   theme: settings.navTheme,
   layout: settings.layout,
 }))(GlobalHeaderRight);

@@ -1,9 +1,9 @@
-import {BellOutlined} from '@ant-design/icons';
-import {Badge, Spin, Tabs} from 'antd';
+import { BellOutlined } from '@ant-design/icons';
+import { Badge, Spin, Tabs } from 'antd';
 import useMergeValue from 'use-merge-value';
 import React from 'react';
 import classNames from 'classnames';
-import NoticeList, {NoticeIconTabProps} from './NoticeList';
+import NoticeList, { NoticeIconTabProps } from './NoticeList';
 
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
@@ -62,7 +62,7 @@ const NoticeIcon: React.FC<NoticeIconProps> & {
       if (!child) {
         return;
       }
-      const {list, title, count, tabKey, showClear, showViewMore} = child.props;
+      const { list, title, count, tabKey, showClear, showViewMore } = child.props;
       const len = list && list.length ? list.length : 0;
       const msgCount = count || count === 0 ? count : len;
       const tabTitle: string = msgCount > 0 ? `${title} (${msgCount})` : title;
@@ -92,7 +92,7 @@ const NoticeIcon: React.FC<NoticeIconProps> & {
     );
   };
 
-  const {className, count, bell} = props;
+  const { className, count, bell } = props;
 
   const [visible, setVisible] = useMergeValue<boolean>(false, {
     value: props.popupVisible,
@@ -100,10 +100,10 @@ const NoticeIcon: React.FC<NoticeIconProps> & {
   });
   const noticeButtonClass = classNames(className, styles.noticeButton);
   const notificationBox = getNotificationBox();
-  const NoticeBellIcon = bell || <BellOutlined className={styles.icon}/>;
+  const NoticeBellIcon = bell || <BellOutlined className={styles.icon} />;
   const trigger = (
-    <span className={classNames(noticeButtonClass, {opened: visible})}>
-      <Badge count={count} style={{boxShadow: 'none'}} className={styles.badge}>
+    <span className={classNames(noticeButtonClass, { opened: visible })}>
+      <Badge count={count} style={{ boxShadow: 'none' }} className={styles.badge}>
         {NoticeBellIcon}
       </Badge>
     </span>

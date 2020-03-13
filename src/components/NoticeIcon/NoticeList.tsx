@@ -2,8 +2,18 @@ import { Avatar, List } from 'antd';
 
 import React from 'react';
 import classNames from 'classnames';
-import { NoticeIconData } from './index';
 import styles from './NoticeList.less';
+
+export interface NoticeIconData {
+  avatar?: string | React.ReactNode;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  datetime?: React.ReactNode;
+  extra?: React.ReactNode;
+  style?: React.CSSProperties;
+  key?: string | number;
+  read?: boolean;
+}
 
 export interface NoticeIconTabProps {
   count?: number;
@@ -47,10 +57,10 @@ const NoticeList: React.SFC<NoticeIconTabProps> = ({
   }
   return (
     <div>
-      <List<NoticeIconData>
+      <List
         className={styles.list}
         dataSource={data}
-        renderItem={(item, i) => {
+        renderItem={(item: any, i: number) => {
           const itemCls = classNames(styles.item, {
             [styles.read]: item.read,
           });

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Col, Row } from "antd";
-import LoginIntro from "./LoginIntro";
-import LoginForm from "./LoginForm";
-import styles from "./index.less";
+import React, { Component } from 'react';
+import { Col, Row } from 'antd';
+import LoginIntro from './LoginIntro';
+import LoginForm from './LoginForm';
+import styles from './index.less';
 
 class Login extends Component {
   state = {};

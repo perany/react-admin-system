@@ -86,12 +86,18 @@
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.8.4",
     "@types/react-helmet": "^5.0.13",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
     "@umijs/fabric": "^2.0.3",
     "chalk": "^3.0.0",
     "cross-env": "^7.0.0",
     "cross-port-killer": "^1.1.1",
     "enzyme": "^3.11.0",
     "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "express": "^4.17.1",
     "gh-pages": "^2.0.1",
     "husky": "^4.0.7",
@@ -121,5 +127,8 @@
     "src/**/*.less",
     "config/**/*.js*",
     "scripts/**/*.js"
+  ],
+  "eslintIgnore": [
+    "*.test.ts"
   ]
 }

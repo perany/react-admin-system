@@ -1,19 +1,19 @@
-import { reloadAuthorized } from "./Authorized";
+import { reloadAuthorized } from './Authorized';
 
 export function getUser() {
-  if (localStorage.getItem("user") !== null) {
-    return JSON.parse(localStorage.getItem("user") || "");
+  if (localStorage.getItem('user') !== null) {
+    return JSON.parse(localStorage.getItem('user') || '');
   }
   return {};
 }
 
 export function setUser(info: any) {
-  return localStorage.setItem("user", info ? JSON.stringify(info) : "");
+  return localStorage.setItem('user', info ? JSON.stringify(info) : '');
 }
 
 export function getToken() {
-  const user = localStorage.getItem("user");
-  if (user && user !== "null") {
+  const user = localStorage.getItem('user');
+  if (user && user !== 'null') {
     return JSON.parse(user).token;
   }
   return null;
@@ -22,9 +22,7 @@ export function getToken() {
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority(str?: string): string | string[] {
   const authorityString =
-    typeof str === "undefined" && localStorage
-      ? localStorage.getItem("antd-pro-authority")
-      : str;
+    typeof str === 'undefined' && localStorage ? localStorage.getItem('antd-pro-authority') : str;
   // authorityString could be admin, "admin", ["admin"]
   let authority;
   try {
@@ -34,20 +32,20 @@ export function getAuthority(str?: string): string | string[] {
   } catch (e) {
     authority = authorityString;
   }
-  if (typeof authority === "string") {
+  if (typeof authority === 'string') {
     return [authority];
   }
   // preview.pro.ant.design only do not use in your production.
   // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
   if (!authority) {
-    return ["admin"];
+    return ['admin'];
   }
   return authority;
 }
 
 export function setAuthority(authority: string | string[]): void {
-  const proAuthority = typeof authority === "string" ? [authority] : authority;
-  localStorage.setItem("antd-pro-authority", JSON.stringify(proAuthority));
+  const proAuthority = typeof authority === 'string' ? [authority] : authority;
+  localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
   // auto reload
   reloadAuthorized();
 }

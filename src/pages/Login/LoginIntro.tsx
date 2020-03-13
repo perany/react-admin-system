@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./index.less";
+import React from 'react';
+import styles from './index.less';
 
-const logo = require("../../assets/logo-kingnet.png");
+const logo = require('../../assets/logo-kingnet.png');
 
 export default () => (
   <div className={styles.leftContainer}>
@@ -12,7 +12,7 @@ export default () => (
             src={logo}
             alt="log"
             height="32"
-            style={{ display: "inline-block", verticalAlign: "middle" }}
+            style={{ display: 'inline-block', verticalAlign: 'middle' }}
           />
           {/* <h1> {Title}</h1> */}
         </a>

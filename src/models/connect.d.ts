@@ -1,10 +1,10 @@
-import {AnyAction} from 'redux';
-import {MenuDataItem} from '@ant-design/pro-layout';
-import {RouterTypes} from 'umi';
-import {GlobalModelState} from './global';
-import {DefaultSettings as SettingModelState} from '../../config/defaultSettings';
-import {UserModelState} from './user';
-import {StateType} from './login';
+import { AnyAction } from 'redux';
+import { MenuDataItem } from '@ant-design/pro-layout';
+import { RouterTypes } from 'umi';
+import { GlobalModelState } from './global';
+import { DefaultSettings as SettingModelState } from '../../config/defaultSettings';
+import { UserModelState } from './user';
+import { LoginModelState } from './login';
 
 export { GlobalModelState, SettingModelState, UserModelState };
 
@@ -25,7 +25,7 @@ export interface ConnectState {
   loading: Loading;
   settings: SettingModelState;
   user: UserModelState;
-  login: StateType;
+  login: LoginModelState;
 }
 
 export interface Route extends MenuDataItem {

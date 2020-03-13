@@ -1,6 +1,6 @@
-import {Request, Response} from 'express';
-import {parse} from 'url';
-import {TableListItem, TableListParams} from './data.d';
+import { Request, Response } from 'express';
+import { parse } from 'url';
+import { TableListItem, TableListParams } from './data.d';
 
 // mock tableListDataSource
 const genList = (current: number, pageSize: number) => {
@@ -38,7 +38,7 @@ function getRule(req: Request, res: Response, u: string) {
     // eslint-disable-next-line prefer-destructuring
     url = req.url;
   }
-  const {current = 1, pageSize = 10} = req.query;
+  const { current = 1, pageSize = 10 } = req.query;
   const params = (parse(url, true).query as unknown) as TableListParams;
 
   let dataSource = [...tableListDataSource].slice((current - 1) * pageSize, current * pageSize);
@@ -90,7 +90,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   }
 
   const body = (b && b.body) || req.body;
-  const {method, name, desc, key} = body;
+  const { method, name, desc, key } = body;
 
   switch (method) {
     /* eslint no-case-declarations:0 */
@@ -126,8 +126,8 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
         let newRule = {};
         tableListDataSource = tableListDataSource.map(item => {
           if (item.key === key) {
-            newRule = {...item, desc, name};
-            return {...item, desc, name};
+            newRule = { ...item, desc, name };
+            return { ...item, desc, name };
           }
           return item;
         });

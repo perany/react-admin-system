@@ -1,5 +1,5 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { Menu, Spin } from 'antd';
 import { ClickParam } from 'antd/es/menu';
 import React from 'react';
 import { connect } from 'dva';
@@ -11,6 +11,7 @@ import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   currentUser?: CurrentUser;
+  role?: string;
   menu?: boolean;
 }
 
@@ -36,9 +37,11 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
   render(): React.ReactNode {
     const {
       currentUser = {
-        avatar: '',
-        name: '',
+        username: '',
+        nickname: '',
+        email: '',
       },
+      role = '',
       menu,
     } = this.props;
     const menuHeaderDropdown = (
@@ -57,17 +60,25 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         )}
         {menu && <Menu.Divider />}
 
+        <div className={styles.userInfo}>
+          <div>账号：{currentUser.username}</div>
+          <div>角色：{role}</div>
+          <div>邮箱：{currentUser.email}</div>
+        </div>
+
+        <Menu.Divider />
         <Menu.Item key="logout">
           <LogoutOutlined />
           退出登录
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.name ? (
+    return currentUser && currentUser.username ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{currentUser.name}</span>
+          {/*<Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />*/}
+          <span>Hi，</span>
+          <span className={styles.name}>{currentUser.username}</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -84,4 +95,5 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
 export default connect(({ user }: ConnectState) => ({
   currentUser: user.currentUser,
+  role: user.role,
 }))(AvatarDropdown);

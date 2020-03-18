@@ -56,6 +56,7 @@ const Model: LoginModelType = {
       // Login successfully
       if (response && response.code === 0) {
         const user = response.data ? response.data : {};
+        // 更新用户信息
         setUserInfo(user);
 
         const urlParams = new URL(window.location.href);

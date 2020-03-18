@@ -151,7 +151,7 @@ class LoginFrom extends Component<LoginFromProps> {
   onSubmit = (values: any) => {
     const { dispatch } = this.props;
     const { source } = this.state;
-    console.log('login submit', values);
+    // console.log('login submit', values);
     if (dispatch) {
       dispatch({
         type: 'login/login',
@@ -182,14 +182,11 @@ class LoginFrom extends Component<LoginFromProps> {
     );
   };
 
-  renderInput = (item: configItem) => {
-    console.log(999, item);
-    return (
-      <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
-        <Input {...item.componentProps} />
-      </Form.Item>
-    );
-  };
+  renderInput = (item: configItem) => (
+    <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
+      <Input {...item.componentProps} />
+    </Form.Item>
+  );
 
   renderCheckbox = (item: configItem) => (
     <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>

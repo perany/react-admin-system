@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './index.less';
 import defaultSettings from '../../../config/defaultSettings';
 
-const logo = require('../../assets/logo-kingnet.png');
+const logo = require('../../assets/logo-fff.png');
 
 export default () => (
   <div className={styles.leftContainer}>

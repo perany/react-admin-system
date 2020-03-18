@@ -31,6 +31,12 @@ export interface CurrentUser {
   userId?: any;
 }
 
+export interface RoleInfo {
+  roleId?: string;
+  cnName?: string;
+  name?: string;
+}
+
 export interface UserModelState {
   currentUser?: CurrentUser;
   appId?: string;
@@ -38,7 +44,7 @@ export interface UserModelState {
   msgCount?: any;
   msgData?: any;
   msgConfig?: any[];
-  role?: string;
+  roleInfo?: RoleInfo;
   moduleDataObj?: any;
 }
 
@@ -73,7 +79,7 @@ const UserModel: UserModelType = {
     msgCount: 0,
     msgData: {},
     msgConfig: [],
-    role: 'user',
+    roleInfo: {},
   },
 
   effects: {
@@ -201,7 +207,7 @@ const UserModel: UserModelType = {
     saveRoleInfo(state, { payload }) {
       return {
         ...state,
-        role: payload,
+        roleInfo: payload,
       };
     },
   },

@@ -11,7 +11,7 @@ import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   currentUser?: CurrentUser;
-  role?: string;
+  roleInfo?: any;
   menu?: boolean;
 }
 
@@ -41,7 +41,9 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         nickname: '',
         email: '',
       },
-      role = '',
+      roleInfo = {
+        cnName: '',
+      },
       menu,
     } = this.props;
     const menuHeaderDropdown = (
@@ -62,7 +64,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
         <div className={styles.userInfo}>
           <div>账号：{currentUser.username}</div>
-          <div>角色：{role}</div>
+          <div>角色：{roleInfo && roleInfo.cnName}</div>
           <div>邮箱：{currentUser.email}</div>
         </div>
 
@@ -95,5 +97,5 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
 export default connect(({ user }: ConnectState) => ({
   currentUser: user.currentUser,
-  role: user.role,
+  roleInfo: user.roleInfo,
 }))(AvatarDropdown);

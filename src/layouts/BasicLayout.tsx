@@ -133,6 +133,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       dispatch({
         type: 'user/fetchCurrent',
       });
+      // 更新用户权限
+      dispatch({
+        type: 'user/fetchRoleInfo',
+      });
     }
   }, []);
   /**

@@ -32,13 +32,7 @@ export async function msgConfig(params: any) {
 
 // 获取用户角色
 export async function getRoleInfo(params: any) {
-  let obj: any = {
-    // data: { isMock: true }
-  };
-  if (params && params.appId !== undefined) {
-    obj.headers = {
-      'App-Id': params.appId,
-    };
-  }
-  return request(`/kun/auth/roleinfo`, obj);
+  return request(`/kun/auth/roleinfo`, {
+    data: { isMock: true },
+  });
 }

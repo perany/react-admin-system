@@ -3,6 +3,36 @@ import { Request, Response } from 'express';
 function getFakeCaptcha(req: Request, res: Response) {
   return res.json('captcha-xxx');
 }
+
+const getRole = (req: Request, res: Response) => {
+  const mapZhName = {
+    '51': '用户', //安全中心
+    '41': '开发者', //数据开发-测试
+    '19': '管理员', //数据中心管理
+    '10': '超级管理员', //数据开发组
+    '-1': '超级管理员',
+    '-2': '隐藏管理员',
+  };
+  const mapName = {
+    '51': 'user', //安全中心
+    '41': 'developer', //数据开发-测试
+    '19': 'admin', //数据中心管理
+    '10': 'superAdmin', //数据开发组
+    '-1': 'superAdmin',
+    '-2': 'hiddenAdmin',
+  };
+  const appID: string =
+    req.headers['app-id'] && req.headers['app-id'] !== '0' ? req.headers['app-id'] : '19';
+  return res.json({
+    code: 0,
+    message: 'successful',
+    data: {
+      roleId: 5,
+      cnName: mapZhName[appID],
+      name: mapName[appID],
+    },
+  });
+};
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
@@ -151,4 +181,6 @@ export default {
   },
 
   'GET  /api/login/captcha': getFakeCaptcha,
+
+  'GET  /kun/auth/roleinfo': getRole,
 };

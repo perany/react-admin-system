@@ -3,7 +3,6 @@ import { Tabs, Row, Col, Form, message, Button, Input, Checkbox } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'redux';
 import { LoginModelState } from '@/models/login';
-import defaultSettings from '../../../config/defaultSettings';
 import styles from './index.less';
 
 const displayName = 'LoginFrom';
@@ -66,7 +65,7 @@ const config = [
       },
     },
     formBinderProps: {
-      name: 'passwd',
+      name: 'password',
       rules: [
         {
           required: true,
@@ -75,17 +74,17 @@ const config = [
       ],
     },
   },
-  {
-    label: '记住我',
-    component: 'Checkbox',
-    componentProps: {
-      defaultChecked: true,
-    },
-    formBinderProps: {
-      name: 'remember',
-      initialValue: true,
-    },
-  },
+  // {
+  //   label: '记住我',
+  //   component: 'Checkbox',
+  //   componentProps: {
+  //     defaultChecked: true,
+  //   },
+  //   formBinderProps: {
+  //     name: 'remember',
+  //     initialValue: true,
+  //   },
+  // },
   {
     label: '登录',
     component: 'Button',
@@ -94,9 +93,7 @@ const config = [
       style: {
         width: '100%',
       },
-    },
-    formBinderProps: {
-      name: 'submit',
+      htmlType: 'submit',
     },
   },
 ];
@@ -154,21 +151,14 @@ class LoginFrom extends Component<LoginFromProps> {
   onSubmit = (values: any) => {
     const { dispatch } = this.props;
     const { source } = this.state;
+    console.log('login submit', values);
     if (dispatch) {
       dispatch({
         type: 'login/login',
         payload: {
           username: values.name,
-          password: values.passwd,
-          verify_type: 'token',
+          password: values.password,
           source,
-          projectId: defaultSettings.projectId,
-          isLogin: true,
-        },
-        callback: () => {
-          // 登陆成功，保存数据
-          message.success('登录成功');
-          this.loginSuccessCallback();
         },
       });
     }
@@ -178,40 +168,37 @@ class LoginFrom extends Component<LoginFromProps> {
     message.error(error);
   };
 
-  renderButton = (item: configItem) => (
-    <Row key={item.label}>
-      <Col>
-        <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
-          <Button {...item.componentProps} onClick={this.onSubmit}>
-            {item.label}
-          </Button>
-        </Form.Item>
-      </Col>
-    </Row>
-  );
+  renderButton = (item: configItem) => {
+    const props: any = item.formBinderProps
+      ? {
+          ...item.formBinderProps,
+          name: item.formBinderProps.name,
+        }
+      : {};
+    return (
+      <Form.Item {...props}>
+        <Button {...item.componentProps}>{item.label}</Button>
+      </Form.Item>
+    );
+  };
 
-  renderInput = (item: configItem) => (
-    <Row className={styles.formItem} key={item.label}>
-      <Col>
-        <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
-          <Input {...item.componentProps} />
-        </Form.Item>
-      </Col>
-    </Row>
-  );
+  renderInput = (item: configItem) => {
+    console.log(999, item);
+    return (
+      <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
+        <Input {...item.componentProps} />
+      </Form.Item>
+    );
+  };
 
   renderCheckbox = (item: configItem) => (
-    <Row className={styles.formItem} key={item.label}>
-      <Col>
-        <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
-          <Checkbox {...item.componentProps}>{item.label}</Checkbox>
-        </Form.Item>
-      </Col>
-    </Row>
+    <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
+      <Checkbox {...item.componentProps}>{item.label}</Checkbox>
+    </Form.Item>
   );
 
   renderFromItem = (): any =>
-    config.map(item => {
+    config.map((item: any) => {
       if (item.component === 'Input') {
         return this.renderInput(item);
       }

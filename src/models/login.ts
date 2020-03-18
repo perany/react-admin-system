@@ -3,9 +3,9 @@ import { parse } from 'qs';
 
 import { EffectsCommandMap } from 'dva';
 import { routerRedux } from 'dva/router';
-import { getUserInfo, removeUserInfo, setUserInfo } from '@/utils/utils';
-import defaultSettings from '../../config/defaultSettings';
+import { removeUserInfo, setUserInfo } from '@/utils/utils';
 import { accountLoginOut, fakeAccountLogin } from '@/services/login';
+import { message } from 'antd';
 
 export function getPageQuery(): {
   [key: string]: string;
@@ -75,12 +75,14 @@ const Model: LoginModelType = {
           }
         }
         yield put(routerRedux.replace(redirect || '/'));
+      } else {
+        message.error(response.message || '登录失败');
       }
     },
     *logout(_, { call, put }) {
       const paramsOut = {
-        userId: getUserInfo().userId,
-        projectId: defaultSettings.projectId,
+        // userId: getUserInfo().userId,
+        // projectId: defaultSettings.projectId,
         // isLoginout: true
       };
       yield call(accountLoginOut, paramsOut);

@@ -59,15 +59,15 @@ const request = extend({
 request.interceptors.request.use((url: string, options: any) => {
   // access check
   const user = getUser();
-  let reqParams = { ...options.params };
+  let newParams = { ...options.params };
   let newHeaders = { ...options.headers };
+  let newData = { ...(options.data || {}) };
   if (user) {
-    reqParams = { ...options.params, token: user.token };
+    newParams = { ...options.params, token: user.token };
     newHeaders = { ...options.headers, token: user.token };
   }
   // url
-  let path = '';
-  let newURL = url;
+  let newUrl = url;
   const isAbsoluteURL = url.substr(0, 4) === 'http';
   // dev remove url-prefix
   if (
@@ -75,8 +75,17 @@ request.interceptors.request.use((url: string, options: any) => {
     process.env.NODE_ENV === 'production' ||
     process.env.build_env
   ) {
-    path = url.substr(url.indexOf('/', 1)) || '';
-    newURL = proxyConfig.postServer + path;
+    newUrl = proxyConfig.postServer + newUrl;
+  }
+  // login api
+  if (options.data && options.data.login) {
+    newUrl = proxyConfig.loginServer + url;
+    delete newData.login;
+  }
+  // mock
+  if (options.data && options.data.mock) {
+    newUrl = url;
+    delete newData.mock;
   }
   // proxy match 前端实现生产环境多代理转发配置
   // if (proxyConfig.proxy) {
@@ -91,9 +100,10 @@ request.interceptors.request.use((url: string, options: any) => {
       ...options,
       interceptors: options.interceptors,
       headers: newHeaders,
-      params: reqParams,
+      params: newParams,
+      data: newData,
     },
-    url: newURL,
+    url: newUrl,
   };
 });
 
@@ -101,7 +111,7 @@ request.interceptors.request.use((url: string, options: any) => {
 request.interceptors.response.use(async (response, options: any) => {
   // response.headers.append('interceptors', 'yes yo');
   const res = await response.clone().json();
-  if (options.interceptors && res.ret && res.ret !== 0 && (res.message || res.msg)) {
+  if (options.interceptors && res.code && res.code !== 0 && (res.message || res.msg)) {
     message.error(res.message || res.msg);
   }
   return response;

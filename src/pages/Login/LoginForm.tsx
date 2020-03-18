@@ -173,6 +173,7 @@ class LoginFrom extends Component<LoginFromProps> {
       ? {
           ...item.formBinderProps,
           name: item.formBinderProps.name,
+          key: item.formBinderProps.name,
         }
       : {};
     return (
@@ -183,13 +184,21 @@ class LoginFrom extends Component<LoginFromProps> {
   };
 
   renderInput = (item: configItem) => (
-    <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
+    <Form.Item
+      name={item.formBinderProps.name}
+      key={item.formBinderProps.name}
+      {...item.formBinderProps}
+    >
       <Input {...item.componentProps} />
     </Form.Item>
   );
 
   renderCheckbox = (item: configItem) => (
-    <Form.Item name={item.formBinderProps.name} {...item.formBinderProps}>
+    <Form.Item
+      name={item.formBinderProps.name}
+      key={item.formBinderProps.name}
+      {...item.formBinderProps}
+    >
       <Checkbox {...item.componentProps}>{item.label}</Checkbox>
     </Form.Item>
   );

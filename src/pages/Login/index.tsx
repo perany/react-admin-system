@@ -12,10 +12,10 @@ class Login extends Component {
       <div className={styles.login}>
         <div className={styles.container}>
           <Row className={styles.row}>
-            <Col span={12} className={styles.col}>
+            <Col xl={12} lg={12} md={10} xs={8} className={styles.col}>
               <LoginIntro />
             </Col>
-            <Col span={12} className={styles.col}>
+            <Col xl={12} lg={12} md={14} xs={16} className={styles.col}>
               <LoginForm />
             </Col>
           </Row>

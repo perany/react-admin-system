@@ -213,8 +213,8 @@ class LoginFrom extends Component<LoginFromProps> {
 
   render() {
     return (
-      <Row style={{ paddingTop: '20%' }}>
-        <Col offset={8} span={8}>
+      <Row justify="center" style={{ paddingTop: '20%' }}>
+        <Col flex="0 0 300px">
           <h4 className={styles.formTitle}>登录</h4>
           <Tabs onChange={this.onTabChange}>
             {tabs.map(item => (

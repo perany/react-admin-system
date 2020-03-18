@@ -1,24 +1,5 @@
 import { reloadAuthorized } from './Authorized';
 
-export function getUser() {
-  if (localStorage.getItem('user') !== null) {
-    return JSON.parse(localStorage.getItem('user') || '');
-  }
-  return {};
-}
-
-export function setUser(info: any) {
-  return localStorage.setItem('user', info ? JSON.stringify(info) : '');
-}
-
-export function getToken() {
-  const user = localStorage.getItem('user');
-  if (user && user !== 'null') {
-    return JSON.parse(user).token;
-  }
-  return null;
-}
-
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority(str?: string): string | string[] {
   const authorityString =

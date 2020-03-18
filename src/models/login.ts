@@ -83,7 +83,6 @@ const Model: LoginModelType = {
       const paramsOut = {
         // userId: getUserInfo().userId,
         // projectId: defaultSettings.projectId,
-        // isLoginout: true
       };
       yield call(accountLoginOut, paramsOut);
       removeUserInfo();

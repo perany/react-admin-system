@@ -4,7 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification, message } from 'antd';
-import { getUser } from '@/utils/authority';
+import { getUserInfo } from '@/utils/utils';
 import proxyConfig from '../../config/proxy.config';
 
 const codeMessage = {
@@ -58,13 +58,14 @@ const request = extend({
 // request interceptor, change url or options.
 request.interceptors.request.use((url: string, options: any) => {
   // access check
-  const user = getUser();
+  const user = getUserInfo();
   let newParams = { ...options.params };
   let newHeaders = { ...options.headers };
   let newData = { ...(options.data || {}) };
-  if (user) {
-    newParams = { ...options.params, token: user.token };
-    newHeaders = { ...options.headers, token: user.token };
+  // headers
+  if (user && user.token && user.userId) {
+    // newParams = { ...options.params, token: user.token };
+    newHeaders = { ...options.headers, 'Kdc-Token': user.token, 'User-Id': user.userId };
   }
   // url
   let newUrl = url;

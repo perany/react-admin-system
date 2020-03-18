@@ -1,22 +1,22 @@
 import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
 import { Route } from '@/models/connect';
-import defaultSettings from '../../config/defaultSettings';
+import defaultSettings from './../../config/defaultSettings';
 
 declare const ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: any;
 
 // 保存用户信息
-export function setUserInfo(data: any) {
+export const setUserInfo = (data: any) => {
   const { storageName } = defaultSettings;
   if (!window.localStorage) {
     // eslint-disable-next-line no-console
     console.log('浏览器不支持localstorage');
   }
   localStorage.setItem(storageName, JSON.stringify(data));
-}
+};
 
 // 获取用户信息
-export function getUserInfo() {
+export const getUserInfo = () => {
   if (!window.localStorage) {
     // eslint-disable-next-line no-console
     console.log('浏览器不支持localstorage');
@@ -24,27 +24,27 @@ export function getUserInfo() {
   }
   const { storageName } = defaultSettings;
   return JSON.parse(localStorage.getItem(storageName) || '{}');
-}
+};
 
 // 更新用户信息
-export function updateUserInfo(key: string, value: any) {
+export const updateUserInfo = (key: string, value: any) => {
   const userInfo = getUserInfo();
   if (!userInfo[key]) {
     userInfo[key] = {};
   }
   userInfo[key] = value;
   setUserInfo(userInfo);
-}
+};
 
 // 移除用户信息
-export function removeUserInfo() {
+export const removeUserInfo = () => {
   if (!window.localStorage) {
     // eslint-disable-next-line no-console
     console.log('浏览器不支持localstorage');
   }
   const { storageName } = defaultSettings;
   localStorage.removeItem(storageName);
-}
+};
 
 /* eslint no-useless-escape:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;

@@ -12,7 +12,6 @@ import {
 } from '@/services/user';
 import { getUserInfo, updateUserInfo } from '@/utils/utils';
 import { setAuthority } from '@/utils/authority';
-import { reloadAuthorized } from '@/utils/Authorized';
 
 export interface CurrentUser {
   title?: string;
@@ -144,7 +143,6 @@ const UserModel: UserModelType = {
         // 更新用户角色
         const { cnName, name } = response.data;
         setAuthority(name);
-        reloadAuthorized();
         updateUserInfo('role', name);
         updateUserInfo('roleName', cnName);
         yield put({

@@ -1,4 +1,5 @@
 import { updateUserInfo, getUserInfo } from './utils';
+import { reloadAuthorized } from './Authorized';
 
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority(str?: string): string | string[] {
@@ -27,5 +28,5 @@ export function setAuthority(authority: string | string[]): void {
   const proAuthority = typeof authority === 'string' ? [authority] : authority;
   updateUserInfo('role', JSON.stringify(proAuthority));
   // auto reload
-  // reloadAuthorized();
+  reloadAuthorized();
 }

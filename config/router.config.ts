@@ -17,7 +17,7 @@ export default [
       {
         path: '/',
         component: '../layouts/BasicLayout',
-        authority: ['admin', 'user'],
+        Routes: ['src/pages/Authorized'],
         routes: [
           {
             path: '/',
@@ -50,6 +50,19 @@ export default [
             icon: 'table',
             path: '/list',
             component: './ListTableList',
+          },
+          {
+            path: '/exception',
+            routes: [
+              {
+                path: '/exception/403',
+                component: './403',
+              },
+              {
+                path: '/exception/404',
+                component: './404',
+              },
+            ],
           },
           {
             component: './404',

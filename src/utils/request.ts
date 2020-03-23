@@ -52,16 +52,16 @@ const errorHandler = (error: { response: Response }): Response => {
  */
 const request = extend({
   errorHandler, // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
+  // credentials: 'include', // 默认请求是否带上cookie
 });
 
 // request interceptor, change url or options.
 request.interceptors.request.use((url: string, options: any) => {
   // access check
   const user = getUserInfo();
-  let newParams = { ...options.params };
+  const newParams = { ...options.params };
   let newHeaders = { ...options.headers };
-  let newData = { ...(options.data || {}) };
+  const newData = { ...(options.data || {}) };
   // headers
   if (user && user.token && user.userId) {
     // newParams = { ...options.params, token: user.token };

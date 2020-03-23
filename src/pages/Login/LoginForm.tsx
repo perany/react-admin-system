@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Tabs, Row, Col, Form, message, Button, Input, Checkbox } from 'antd';
-import { connect } from 'dva';
-import { Dispatch } from 'redux';
+import { connect, Dispatch } from 'umi';
 import { LoginModelState } from '@/models/login';
 import styles from './index.less';
 
@@ -110,25 +109,9 @@ interface configItem {
 }
 
 interface LoginFromProps {
-  dispatch?: Dispatch<any>;
+  dispatch?: Dispatch;
 }
 
-@connect(
-  ({
-    login,
-    loading,
-  }: {
-    login: LoginModelState;
-    loading: {
-      effects: {
-        [key: string]: string;
-      };
-    };
-  }) => ({
-    login,
-    submitting: loading.effects['login/login'],
-  }),
-)
 class LoginFrom extends Component<LoginFromProps> {
   static displayName = displayName;
 
@@ -214,7 +197,7 @@ class LoginFrom extends Component<LoginFromProps> {
       if (item.component === 'Button') {
         return this.renderButton(item);
       }
-      return null;
+      return <div key={`div-${item.name}`} />;
     });
 
   render() {
@@ -223,13 +206,15 @@ class LoginFrom extends Component<LoginFromProps> {
         <Col flex="0 0 300px">
           <h4 className={styles.formTitle}>登录</h4>
           <Tabs onChange={this.onTabChange}>
-            {tabs.map(item => (
+            {tabs.map((item: any) => (
               <Tabs.TabPane key={item.source} tab={item.tab}>
-                <div>
-                  <Form onFinish={this.onSubmit} onFinishFailed={this.onSubmitFailed}>
-                    {this.renderFromItem()}
-                  </Form>
-                </div>
+                <Form
+                  key={`${item.source}form`}
+                  onFinish={this.onSubmit}
+                  onFinishFailed={this.onSubmitFailed}
+                >
+                  {this.renderFromItem()}
+                </Form>
               </Tabs.TabPane>
             ))}
           </Tabs>
@@ -239,4 +224,19 @@ class LoginFrom extends Component<LoginFromProps> {
   }
 }
 
-export default LoginFrom;
+export default connect(
+  ({
+    login,
+    loading,
+  }: {
+    login: LoginModelState;
+    loading: {
+      effects: {
+        [key: string]: string;
+      };
+    };
+  }) => ({
+    login,
+    submitting: loading.effects['login/login'],
+  }),
+)(LoginFrom);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Spin } from 'antd';
 import isEqual from 'lodash/isEqual';
 import { isComponentClass } from './Secured';
+// eslint-disable-next-line import/no-cycle
 
 interface PromiseRenderProps<T, K> {
   ok: T;
@@ -13,7 +14,10 @@ interface PromiseRenderState {
   component: React.ComponentClass | React.FunctionComponent;
 }
 
-class PromiseRender<T, K> extends React.Component<PromiseRenderProps<T, K>, PromiseRenderState> {
+export default class PromiseRender<T, K> extends React.Component<
+  PromiseRenderProps<T, K>,
+  PromiseRenderState
+> {
   state: PromiseRenderState = {
     component: () => null,
   };
@@ -87,5 +91,3 @@ class PromiseRender<T, K> extends React.Component<PromiseRenderProps<T, K>, Prom
     );
   }
 }
-
-export default PromiseRender;

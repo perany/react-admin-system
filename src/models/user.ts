@@ -1,5 +1,4 @@
-import { Effect } from 'dva';
-import { Reducer } from 'redux';
+import { Reducer, Effect } from 'umi';
 
 import {
   getRoleInfo,
@@ -89,7 +88,7 @@ const UserModel: UserModelType = {
         payload: response,
       });
     },
-    *fetchCurrent(_, { call, put }) {
+    *fetchCurrent(_, { put }) {
       yield put({
         type: 'saveCurrentUser',
         payload: getUserInfo(),
@@ -100,30 +99,30 @@ const UserModel: UserModelType = {
       const response = yield call(messageCount, payload);
       yield put({
         type: 'saveMessageCount',
-        payload: (response && response.code == 0 && response.data) || 0,
+        payload: (response && response.code === 0 && response.data) || 0,
       });
-      if (response && response.code == 0 && callback) callback(response);
+      if (response && response.code === 0 && callback) callback(response);
     },
     // 用户消息列表
     *fetchMessageMsgs({ payload, callback }, { call, put }) {
       const response = yield call(messageMsgs, payload);
       yield put({
         type: 'saveMessageMsgs',
-        payload: (response && response.code == 0 && response.data && response.data.body) || {},
+        payload: (response && response.code === 0 && response.data && response.data.body) || {},
       });
-      if (response && response.code == 0 && callback) callback(response);
+      if (response && response.code === 0 && callback) callback(response);
     },
 
     // 消息全部已读
     *fetchMessageReaded({ payload, callback }, { call }) {
       const response = yield call(msgReaded, payload);
-      if (response && response.code == 0 && callback) callback(response);
+      if (response && response.code === 0 && callback) callback(response);
     },
 
     // 单个消息已读
     *fetchMessageUpdate({ payload, callback }, { call }) {
       const response = yield call(msgStatusUpdate, payload);
-      if (response && response.code == 0 && callback) callback(response);
+      if (response && response.code === 0 && callback) callback(response);
     },
 
     // 消息来源
@@ -131,15 +130,15 @@ const UserModel: UserModelType = {
       const response = yield call(msgConfig, payload);
       yield put({
         type: 'saveMsgConfig',
-        payload: (response && response.code == 0 && response.data) || [],
+        payload: (response && response.code === 0 && response.data) || [],
       });
-      if (response && response.code == 0 && callback) callback(response);
+      if (response && response.code === 0 && callback) callback(response);
     },
 
     // 获取用户角色
     *fetchRoleInfo({ payload, callback }, { call, put }) {
       const response = yield call(getRoleInfo, payload);
-      if (response && response.code == 0 && response.data) {
+      if (response && response.code === 0 && response.data) {
         // 更新用户角色
         const { cnName, name } = response.data;
         setAuthority(name);
@@ -153,9 +152,9 @@ const UserModel: UserModelType = {
       }
       yield put({
         type: 'saveRoleInfo',
-        payload: (response && response.code == 0 && response.data) || {},
+        payload: (response && response.code === 0 && response.data) || {},
       });
-      if (response && response.code == 0 && callback) callback(response);
+      if (response && response.code === 0 && callback) callback(response);
     },
   },
 

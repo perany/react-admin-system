@@ -1,6 +1,10 @@
 import request from '@/utils/request';
 import { stringify } from 'qs';
 
+export async function queryNotices(): Promise<any> {
+  return request('/api/notices');
+}
+
 export async function query(): Promise<any> {
   return request('/api/users');
 }
@@ -32,7 +36,7 @@ export async function msgConfig(params: any) {
 
 // 获取用户角色
 export async function getRoleInfo(params: any) {
-  return request(`/kun/auth/roleinfo`, {
+  return request(`/kun/auth/roleinfo?${stringify(params)}`, {
     data: { isMock: true },
   });
 }

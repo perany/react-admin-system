@@ -18,22 +18,22 @@
   }
 
   .leftContainer {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 1;
     height: 100vh;
     background-image: url('./images/bg.png');
-    background-size: cover;
     background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .logoCon {
     position: absolute;
-    left: 0;
     top: 12px;
+    left: 0;
     height: 32px;
     padding-left: 24px;
     overflow: hidden;
@@ -46,8 +46,8 @@
       color: #fff;
       font-weight: 600;
       font-size: 20px;
-      line-height: 20px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      line-height: 20px;
       vertical-align: bottom;
     }
   }

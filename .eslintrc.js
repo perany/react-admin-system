@@ -1,35 +1,8 @@
-const fabric = require('@umijs/fabric');
 module.exports = {
-  ...fabric.eslint,
-  env: {
-    browser: true,
-    es6: true,
-  },
-  extends: [
-    // 'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-  ],
+  extends: [require.resolve('@umijs/fabric/dist/eslint')],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-    page: 'writable',
-    REACT_APP_ENV: 'writable',
-  },
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
-  plugins: ['react', '@typescript-eslint'],
-  rules: {
-    'react/prop-types': 0,
-    'import/no-cycle': 0,
-    'eslint-comments/disable-enable-pair': 0,
-    'import/no-mutable-exports': 0,
-    'react/display-name': 0,
+    ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: true,
+    page: true,
+    REACT_APP_ENV: true,
   },
 };

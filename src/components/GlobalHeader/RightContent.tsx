@@ -1,14 +1,14 @@
 import { Tooltip, Tag } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { connect } from 'dva';
-import { ConnectProps, ConnectState } from '@/models/connect';
+import { connect, ConnectProps } from 'umi';
+import { ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
 
-export interface GlobalHeaderRightProps extends ConnectProps {
+export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
   theme?: SiderTheme;
   layout: 'sidemenu' | 'topmenu';
 }
@@ -45,7 +45,6 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      {/*<SelectLang className={styles.action} />*/}
     </div>
   );
 };

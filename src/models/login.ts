@@ -1,22 +1,9 @@
-import { AnyAction, Reducer } from 'redux';
-import { parse } from 'qs';
+import { stringify } from 'querystring';
+import { history, Reducer, Effect } from 'umi';
 
-import { EffectsCommandMap } from 'dva';
-import { routerRedux } from 'dva/router';
-import { removeUserInfo, setUserInfo } from '@/utils/utils';
 import { accountLoginOut, fakeAccountLogin } from '@/services/login';
+import { removeUserInfo, setUserInfo, getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
-
-export function getPageQuery(): {
-  [key: string]: string;
-} {
-  return parse(window.location.href.split('?')[1]);
-}
-
-export type Effect = (
-  action: AnyAction,
-  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
-) => void;
 
 export interface LoginModelState {
   status?: boolean;
@@ -70,17 +57,16 @@ const Model: LoginModelType = {
               redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
           } else {
-            window.location.href = redirect;
+            window.location.href = '/';
             return;
-            // redirect = null;
           }
         }
-        yield put(routerRedux.replace(redirect || '/'));
+        history.replace(redirect || '/');
       } else {
         message.error(response.message || '登录失败');
       }
     },
-    *logout(_, { call, put }) {
+    *logout(state, { call }) {
       const paramsOut = {
         // userId: getUserInfo().userId,
         // projectId: defaultSettings.projectId,
@@ -90,14 +76,12 @@ const Model: LoginModelType = {
       const { redirect } = getPageQuery();
       // redirect
       if (window.location.pathname !== '/user/login' && !redirect) {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            // search: stringify({
-            //   redirect: window.location.href,
-            // }),
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
           }),
-        );
+        });
       }
     },
   },

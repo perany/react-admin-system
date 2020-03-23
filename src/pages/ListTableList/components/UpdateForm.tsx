@@ -17,7 +17,6 @@ export interface UpdateFormProps {
   updateModalVisible: boolean;
   values: Partial<TableListItem>;
 }
-
 const FormItem = Form.Item;
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -134,13 +133,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         <FormItem
           name="desc"
           label="规则描述"
-          rules={[
-            {
-              required: true,
-              message: '请输入至少五个字符的规则描述！',
-              min: 5,
-            },
-          ]}
+          rules={[{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }]}
         >
           <TextArea rows={4} placeholder="请输入至少五个字符" />
         </FormItem>

@@ -3,21 +3,45 @@
 
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
 
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+  :global(.ant-dropdown-menu-item) {
+    min-width: 160px;
+  }
+}
+
 .right {
   display: flex;
   float: right;
   height: @layout-header-height;
   margin-left: auto;
   overflow: hidden;
-
+  .action {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    > span {
+      color: @text-color;
+      vertical-align: middle;
+    }
+    &:hover {
+      background: @pro-header-hover-bg;
+    }
+    &:global(.opened) {
+      background: @pro-header-hover-bg;
+    }
+  }
   .search {
     padding: 0 12px;
-
     &:hover {
       background: transparent;
     }
   }
-
   .account {
     .avatar {
       margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
@@ -29,58 +53,28 @@
   }
 }
 
-.dark .action {
-  color: rgba(255, 255, 255, 0.85);
-
-  & > span {
+.dark {
+  .action {
     color: rgba(255, 255, 255, 0.85);
+    > span {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    &:hover,
+    &:global(.opened) {
+      background: @primary-color;
+    }
   }
-}
-
-.right .action {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 0 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  > span {
-    color: @text-color;
-    vertical-align: middle;
-  }
-}
-
-.dark .action:hover,
-.dark .action:global(.opened) {
-  background: @primary-color;
-}
-
-.right .action:hover {
-  background: @pro-header-hover-bg;
-}
-
-.right .action:global(.opened) {
-  background: @pro-header-hover-bg;
-}
-
-.userInfo {
-  padding: 5px 10px;
-  font-size: 12px;
 }
 
 :global(.ant-pro-global-header) {
   .dark {
     .action {
       color: @text-color;
-
       > span {
         color: @text-color;
       }
-
       &:hover {
         color: rgba(255, 255, 255, 0.85);
-
         > span {
           color: rgba(255, 255, 255, 0.85);
         }
@@ -89,38 +83,29 @@
   }
 }
 
-.menu {
-  :global(.anticon) {
-    margin-right: 8px;
-  }
-
-  :global(.ant-dropdown-menu-item) {
-    min-width: 160px;
-  }
-}
-
 @media only screen and (max-width: @screen-md) {
   :global(.ant-divider-vertical) {
     vertical-align: unset;
   }
-
   .name {
     display: none;
   }
-
   .right {
     position: absolute;
     top: 0;
     right: 12px;
-
     .account {
       .avatar {
         margin-right: 0;
       }
     }
-
     .search {
       display: none;
     }
   }
+}
+
+.userInfo {
+  padding: 5px 10px;
+  font-size: 12px;
 }

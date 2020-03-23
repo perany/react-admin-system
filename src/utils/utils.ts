@@ -1,7 +1,7 @@
 import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
 import { Route } from '@/models/connect';
-import defaultSettings from './../../config/defaultSettings';
+import defaultSettings from '../../config/defaultSettings';
 
 declare const ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: any;
 

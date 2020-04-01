@@ -158,7 +158,9 @@ class LoginFrom extends Component<LoginFromProps> {
           name: item.formBinderProps.name,
           key: item.formBinderProps.name,
         }
-      : {};
+      : {
+          key: item.label,
+        };
     return (
       <Form.Item {...props}>
         <Button {...item.componentProps}>{item.label}</Button>

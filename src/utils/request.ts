@@ -99,7 +99,7 @@ request.interceptors.request.use((url: string, options: any) => {
   return {
     options: {
       ...options,
-      interceptors: options.interceptors,
+      interceptors: options.interceptors !== false,
       headers: newHeaders,
       params: newParams,
       data: newData,

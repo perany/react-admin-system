@@ -59,20 +59,30 @@ const request = extend({
 request.interceptors.request.use((url: string, options: any) => {
   // access check
   const user = getUserInfo();
-  const newParams = { ...options.params };
-  let newHeaders = { ...options.headers };
-  const newData = { ...(options.data || {}) };
+  const newParams = {
+    ...options.params,
+  };
+  let newHeaders = {
+    ...options.headers,
+  };
+  const newData = {
+    ...(options.data || {}),
+  };
   // headers
   if (user && user.token && user.userId) {
     // newParams = { ...options.params, token: user.token };
-    newHeaders = { ...options.headers, 'Kdc-Token': user.token, 'User-Id': user.userId };
+    newHeaders = {
+      ...options.headers,
+      'Kdc-Token': user.token,
+      'User-Id': user.userId,
+    };
   }
   // url
   let newUrl = url;
   const isAbsoluteURL = url.substr(0, 4) === 'http';
   // dev remove url-prefix
   if (
-    (!isAbsoluteURL && process.env.MOCK === 'none' && process.env.NODE_ENV === 'development') ||
+    (!isAbsoluteURL && process.env.NODE_ENV === 'development') ||
     process.env.NODE_ENV === 'production' ||
     process.env.build_env
   ) {
@@ -84,10 +94,11 @@ request.interceptors.request.use((url: string, options: any) => {
     delete newData.login;
   }
   // mock
-  if (options.data && options.data.mock) {
-    newUrl = url;
+  const { mock } = options.data;
+  if (mock !== undefined) {
     delete newData.mock;
   }
+  if (mock) newUrl = url;
   // proxy match 前端实现生产环境多代理转发配置
   // if (proxyConfig.proxy) {
   //   Object.keys(proxyConfig.proxy).forEach(value => {

@@ -94,7 +94,7 @@ request.interceptors.request.use((url: string, options: any) => {
     delete newData.login;
   }
   // mock
-  const { mock } = options.data;
+  const { mock } = options.data || {};
   if (mock !== undefined) {
     delete newData.mock;
   }
@@ -123,8 +123,8 @@ request.interceptors.request.use((url: string, options: any) => {
 request.interceptors.response.use(async (response, options: any) => {
   // response.headers.append('interceptors', 'yes yo');
   const res = await response.clone().json();
-  if (options.interceptors && res.code && res.code !== 0 && (res.message || res.msg)) {
-    message.error(res.message || res.msg);
+  if (options.interceptors && res?.code !== 0) {
+    message.error(res?.message || `请求错误：${res?.code ?? '未知'}`);
   }
   return response;
 });

@@ -4,7 +4,7 @@ export default [
     component: '../layouts/BlankLayout',
     routes: [
       {
-        name: 'login',
+        name: '登录',
         path: '/user/login',
         component: './Login',
       },
@@ -25,20 +25,20 @@ export default [
           },
           {
             path: '/welcome',
-            name: 'welcome',
+            name: '欢迎页',
             icon: 'smile',
             component: './Welcome',
           },
           {
             path: '/admin',
-            name: 'admin',
+            name: '管理页',
             icon: 'crown',
             component: './Admin',
             authority: ['admin'],
             routes: [
               {
                 path: '/admin/sub-page',
-                name: 'sub-page',
+                name: '子页面',
                 icon: 'smile',
                 component: './Welcome',
                 authority: ['admin'],
@@ -46,10 +46,10 @@ export default [
             ],
           },
           {
-            name: 'list.table-list',
+            name: '列表查询',
             icon: 'table',
             path: '/list',
-            component: './ListTableList',
+            component: './ListTable',
           },
           {
             path: '/exception',

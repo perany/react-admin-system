@@ -40,7 +40,6 @@ export interface DefaultSettings {
   // Usage: https://github.com/ant-design/ant-design-pro/pull/3517
   iconfontUrl: string;
   colorWeak: boolean;
-  projectId: string;
   storageName: string; // localstorage name
   /*
    * 消息模块:
@@ -65,7 +64,6 @@ export default {
   title: '后台管理系统',
   pwa: false,
   iconfontUrl: '',
-  projectId: '2',
   storageName: 'user',
   notice: true,
 } as DefaultSettings;

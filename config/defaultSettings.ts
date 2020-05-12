@@ -42,6 +42,11 @@ export interface DefaultSettings {
   colorWeak: boolean;
   projectId: string;
   storageName: string; // localstorage name
+  /*
+   * 消息模块:
+   * true启用(需要在proxy.config.ts内配置消息服务域名器) false关闭
+   */
+  notice: boolean;
 }
 
 export default {
@@ -62,4 +67,5 @@ export default {
   iconfontUrl: '',
   projectId: '2',
   storageName: 'user',
+  notice: true,
 } as DefaultSettings;

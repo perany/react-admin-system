@@ -1,8 +1,7 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet } from 'react-helmet';
-import { Link, useIntl, ConnectProps, connect } from 'umi';
+import { Link, ConnectProps, connect } from 'umi';
 import React from 'react';
-import SelectLang from '@/components/SelectLang';
 import { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.png';
 import styles from './UserLayout.less';
@@ -13,7 +12,7 @@ export interface UserLayoutProps extends Partial<ConnectProps> {
   };
 }
 
-const UserLayout: React.FC<UserLayoutProps> = props => {
+const UserLayout: React.FC<UserLayoutProps> = (props) => {
   const {
     route = {
       routes: [],
@@ -26,11 +25,9 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
       pathname: '',
     },
   } = props;
-  const { formatMessage } = useIntl();
   const { breadcrumb } = getMenuData(routes);
   const title = getPageTitle({
     pathname: location.pathname,
-    formatMessage,
     breadcrumb,
     ...props,
   });
@@ -42,9 +39,6 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
       </Helmet>
 
       <div className={styles.container}>
-        <div className={styles.lang}>
-          <SelectLang />
-        </div>
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>

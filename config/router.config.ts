@@ -17,7 +17,7 @@ export default [
       {
         path: '/',
         component: '../layouts/BasicLayout',
-        Routes: ['src/pages/Authorized'],
+        // Routes: ['src/pages/Authorized'],
         routes: [
           {
             path: '/',
@@ -34,14 +34,18 @@ export default [
             name: '管理页',
             icon: 'crown',
             component: './Admin',
-            authority: ['admin'],
             routes: [
               {
-                path: '/admin/sub-page',
-                name: '子页面',
+                path: '/admin/sub1',
+                name: '管理列表1',
                 icon: 'smile',
                 component: './Welcome',
-                authority: ['admin'],
+              },
+              {
+                path: '/admin/sub2',
+                name: '管理列表2',
+                icon: 'smile',
+                component: './Welcome',
               },
             ],
           },

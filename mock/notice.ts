@@ -139,11 +139,11 @@ const successResult = {
 };
 
 export default {
-  'GET /kun/message/msgs': queryList,
-  'GET /kun/message/count': getCount,
-  'GET /kun/message/status/update': successResult,
-  'GET /kun/message/readed': successResult,
-  'GET /kun/message/config': {
+  'GET /api/message/msgs': queryList,
+  'GET /api/message/count': getCount,
+  'GET /api/message/status/update': successResult,
+  'GET /api/message/readed': successResult,
+  'GET /api/message/config': {
     code: 0,
     message: 'successful',
     data: [{ name: '系统', id: 1 }],

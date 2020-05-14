@@ -5,7 +5,7 @@ const noticeServer = proxyConfig?.noticeServer ?? '';
 
 // 未读消息数量
 export async function messageCount(params?: any) {
-  return request(`${noticeServer}/kun/message/count`, {
+  return request(`${noticeServer}/api/message/count`, {
     params,
     data: {
       mock: true,
@@ -15,7 +15,7 @@ export async function messageCount(params?: any) {
 
 // 用户消息列表
 export async function messageMsgs(params: any) {
-  return request(`${noticeServer}/kun/message/msgs`, {
+  return request(`${noticeServer}/api/message/msgs`, {
     params,
     data: {
       mock: true,
@@ -25,7 +25,7 @@ export async function messageMsgs(params: any) {
 
 // 消息全部已读
 export async function allMsgReaded(params: any) {
-  return request(`${noticeServer}/kun/message/readed`, {
+  return request(`${noticeServer}/api/message/readed`, {
     params,
     data: {
       mock: true,
@@ -35,7 +35,7 @@ export async function allMsgReaded(params: any) {
 
 // 单个消息已读
 export async function msgStatusUpdate(params: any) {
-  return request(`${noticeServer}/kun/message/status/update`, {
+  return request(`${noticeServer}/api/message/status/update`, {
     params,
     data: {
       mock: true,
@@ -45,7 +45,7 @@ export async function msgStatusUpdate(params: any) {
 
 // 消息来源
 export async function msgConfig(params: any) {
-  return request(`${noticeServer}/kun/message/config`, {
+  return request(`${noticeServer}/api/message/config`, {
     params,
     data: {
       mock: true,

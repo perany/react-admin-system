@@ -1,5 +1,5 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Link, ConnectProps, connect } from 'umi';
 import React from 'react';
 import { ConnectState } from '@/models/connect';
@@ -32,7 +32,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     ...props,
   });
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={title} />
@@ -53,7 +53,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
         </div>
         <DefaultFooter />
       </div>
-    </>
+    </HelmetProvider>
   );
 };
 

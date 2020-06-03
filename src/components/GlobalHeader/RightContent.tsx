@@ -4,6 +4,7 @@ import React from 'react';
 import { connect, ConnectProps } from 'umi';
 import { ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
+import SystemNotice from '@/components/SystemNotice';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
@@ -11,6 +12,7 @@ export type SiderTheme = 'light' | 'dark';
 export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
   theme?: SiderTheme;
   layout: 'sidemenu' | 'topmenu';
+  notice: boolean;
 }
 
 const ENVTagColor = {
@@ -19,8 +21,8 @@ const ENVTagColor = {
   pre: '#87d068',
 };
 
-const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
-  const { theme, layout } = props;
+const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
+  const { theme, layout, notice } = props;
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'topmenu') {
@@ -39,6 +41,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
           <QuestionCircleOutlined />
         </a>
       </Tooltip>
+      {notice && <SystemNotice />}
       <Avatar />
       {REACT_APP_ENV && (
         <span>
@@ -52,4 +55,5 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
 export default connect(({ settings }: ConnectState) => ({
   theme: settings.navTheme,
   layout: settings.layout,
+  notice: settings.notice,
 }))(GlobalHeaderRight);

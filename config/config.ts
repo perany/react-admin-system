@@ -3,20 +3,13 @@ import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import pageRoutes from './router.config';
 
-const { REACT_APP_ENV } = process.env;
+const { REACT_APP_ENV, build_env, NODE_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
   antd: {},
   dva: {
     hmr: true,
-  },
-  locale: {
-    // default zh-CN
-    default: 'zh-CN',
-    // default true, when it is true, will use `navigator.language` overwrite default
-    antd: true,
-    baseNavigator: true,
   },
   dynamicImport: {
     loading: '@/components/PageLoading/index',
@@ -33,6 +26,10 @@ export default defineConfig({
   },
   define: {
     REACT_APP_ENV: REACT_APP_ENV || false,
+    'process.env': {
+      NODE_ENV: NODE_ENV,
+      build_env: build_env,
+    },
   },
   ignoreMomentLocale: true,
   manifest: {

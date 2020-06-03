@@ -4,7 +4,7 @@ export default [
     component: '../layouts/BlankLayout',
     routes: [
       {
-        name: 'login',
+        name: '登录',
         path: '/user/login',
         component: './Login',
       },
@@ -17,7 +17,7 @@ export default [
       {
         path: '/',
         component: '../layouts/BasicLayout',
-        Routes: ['src/pages/Authorized'],
+        // Routes: ['src/pages/Authorized'],
         routes: [
           {
             path: '/',
@@ -25,31 +25,35 @@ export default [
           },
           {
             path: '/welcome',
-            name: 'welcome',
+            name: '欢迎页',
             icon: 'smile',
             component: './Welcome',
           },
           {
             path: '/admin',
-            name: 'admin',
+            name: '管理页',
             icon: 'crown',
             component: './Admin',
-            authority: ['admin'],
             routes: [
               {
-                path: '/admin/sub-page',
-                name: 'sub-page',
+                path: '/admin/sub1',
+                name: '管理列表1',
                 icon: 'smile',
                 component: './Welcome',
-                authority: ['admin'],
+              },
+              {
+                path: '/admin/sub2',
+                name: '管理列表2',
+                icon: 'smile',
+                component: './Welcome',
               },
             ],
           },
           {
-            name: 'list.table-list',
+            name: '列表查询',
             icon: 'table',
             path: '/list',
-            component: './ListTableList',
+            component: './ListTable',
           },
           {
             path: '/exception',

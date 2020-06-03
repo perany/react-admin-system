@@ -6,22 +6,22 @@ function getFakeCaptcha(req: Request, res: Response) {
 
 const getRole = (req: Request, res: Response) => {
   const mapZhName = {
-    '51': '用户', //安全中心
-    '41': '开发者', //数据开发-测试
-    '19': '管理员', //数据中心管理
-    '10': '超级管理员', //数据开发组
+    '51': '用户', // 安全中心
+    '41': '开发者', // 数据开发-测试
+    '19': '管理员', // 数据中心管理
+    '10': '超级管理员', // 数据开发组
     '-1': '超级管理员',
     '-2': '隐藏管理员',
   };
   const mapName = {
-    '51': 'user', //安全中心
-    '41': 'developer', //数据开发-测试
-    '19': 'admin', //数据中心管理
-    '10': 'superAdmin', //数据开发组
+    '51': 'user', // 安全中心
+    '41': 'developer', // 数据开发-测试
+    '19': 'admin', // 数据中心管理
+    '10': 'superAdmin', // 数据开发组
     '-1': 'superAdmin',
     '-2': 'hiddenAdmin',
   };
-  const appID: string =
+  const appID: any =
     req.headers['app-id'] && req.headers['app-id'] !== '0' ? req.headers['app-id'] : '19';
   return res.json({
     code: 0,
@@ -182,5 +182,42 @@ export default {
 
   'GET  /api/login/captcha': getFakeCaptcha,
 
-  'GET  /kun/auth/roleinfo': getRole,
+  'GET  /api/user/roleinfo': getRole,
+
+  'GET /api/user/menu': {
+    code: 0,
+    message: 'successful',
+    data: [
+      {
+        name: '欢迎页',
+        path: '/welcome',
+      },
+      {
+        name: '管理页',
+        path: '/admin',
+        routes: [
+          {
+            path: '/admin/sub1',
+            name: '管理列表1',
+          },
+          // {
+          //   path: '/admin/sub2',
+          //   name: '管理列表2',
+          // },
+        ],
+      },
+      {
+        name: '列表查询',
+        path: '/list',
+      },
+      {
+        name: '403',
+        path: '/exception/403',
+      },
+      {
+        name: '404',
+        path: '/exception/404',
+      },
+    ],
+  },
 };

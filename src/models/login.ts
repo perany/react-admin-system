@@ -63,7 +63,7 @@ const Model: LoginModelType = {
         }
         history.replace(redirect || '/');
       } else {
-        message.error(response.message || '登录失败');
+        message.error(response?.message || '登录失败');
       }
     },
     *logout(state, { call }) {

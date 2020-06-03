@@ -7,30 +7,20 @@ import ProLayout, {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
   Settings,
-  DefaultFooter,
 } from '@ant-design/pro-layout';
-import React, { useEffect } from 'react';
-import { Link, useIntl, connect, Dispatch } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
-import { Result, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Link, connect, Dispatch, history } from 'umi';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
+
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState } from '@/models/connect';
-import { getAuthorityFromRouter } from '@/utils/utils';
+import { ConnectState, Route } from '@/models/connect';
+import { getAuthorityFromRouter, getRouteIcon } from '@/utils/utils';
 import logo from '../assets/logo.png';
+import NoAccessPage from '@/pages/403';
+import NoFoundPage from '@/pages/404';
 
-const noMatch = (
-  <Result
-    status={403}
-    title="403"
-    subTitle="Sorry, you are not authorized to access this page."
-    extra={
-      <Button type="primary">
-        <Link to="/user/login">Go Login</Link>
-      </Button>
-    }
-  />
-);
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
@@ -42,48 +32,46 @@ export interface BasicLayoutProps extends ProLayoutProps {
   dispatch: Dispatch;
 }
 
-export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
-  breadcrumbNameMap: {
-    [path: string]: MenuDataItem;
-  };
-};
 /**
- * use Authorized check all menu item
+ * 前端管理菜单(从route.config.ts获取配置)
+ * @param menuList
  */
+// const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
+//   menuList.map((item) => {
+//     const localItem = {
+//       ...item,
+//       children: item.children ? menuDataRender(item.children) : [],
+//     };
+//     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
+//   });
+//
+// const getMenuData = (menuList: MenuDataItem[]): MenuDataItem[] => {
+//   const result = menuDataRender(menuList);
+//   console.log(99, result);
+//   let newResult: MenuDataItem[] = [];
+//   result.forEach((item) => {
+//     newResult.push(item);
+//     // newResult.push((undefined as unknown) as MenuDataItem);
+//   });
+//   return newResult;
+// };
 
-const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
-  menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
+/**
+ * 服务端下发菜单
+ * @param menuList
+ * @param routes
+ */
+const menuDataRender = (menuList: MenuDataItem[], routes: Route[]): MenuDataItem[] =>
+  menuList.map((item) => {
+    const localItem = {
+      ...item,
+      icon: getRouteIcon(item.path || '', routes),
+      children: item.children ? menuDataRender(item.children, routes) : [],
+    };
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
 
-const defaultFooterDom = (
-  <DefaultFooter
-    copyright="2019 蚂蚁金服体验技术部出品"
-    links={[
-      {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
-        blankTarget: true,
-      },
-      {
-        key: 'github',
-        title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
-    ]}
-  />
-);
-
-const BasicLayout: React.FC<BasicLayoutProps> = props => {
+const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
     dispatch,
     children,
@@ -91,13 +79,23 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     location = {
       pathname: '/',
     },
+    route: { routes },
   } = props;
-  /**
-   * constructor
-   */
 
+  /**
+   * init variables
+   */
+  const [authRoute, setAuthRoute] = useState<MenuDataItem[]>([] as MenuDataItem[]);
   useEffect(() => {
     if (dispatch) {
+      // 获取菜单信息
+      dispatch({
+        type: 'user/getMenu',
+        callback: (data: MenuDataItem[]) => {
+          setAuthRoute(data);
+        },
+      });
+      // 获取用户信息
       dispatch({
         type: 'user/fetchCurrent',
       });
@@ -107,9 +105,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
     }
   }, []);
-  /**
-   * init variables
-   */
 
   const handleMenuCollapse = (payload: boolean): void => {
     if (dispatch) {
@@ -118,17 +113,39 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         payload,
       });
     }
-  }; // get children authority
-
-  const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
-    authority: undefined,
   };
-  const { formatMessage } = useIntl();
+
+  // get authority
+  let authority: any = true;
+  if (location.pathname && location.pathname !== '/') {
+    const serverAuthorized = getAuthorityFromRouter(
+      authRoute,
+      location?.pathname ?? '/',
+      'menu',
+    ) || {
+      authority: 'noAccess',
+    };
+    authority = getAuthorityFromRouter(routes, location?.pathname ?? '/')
+      ? serverAuthorized
+      : { authority: 'noFound' };
+  } else {
+    // find first page path in serverRoute
+    const findFirstRoute = (searchRoute: Route[]): string => {
+      let name: string = searchRoute[0]?.path ?? '';
+      if (searchRoute[0]?.routes) {
+        name = findFirstRoute(searchRoute[0].routes);
+      }
+      return name;
+    };
+    // redirect to first page in serverRoute
+    history.push({
+      pathname: findFirstRoute(authRoute),
+    });
+  }
 
   return (
     <ProLayout
       logo={logo}
-      formatMessage={formatMessage}
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
@@ -150,23 +167,29 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         },
         ...routers,
       ]}
-      itemRender={(route, params, routes, paths) => {
-        const first = routes.indexOf(route) === 0;
+      itemRender={(route, params, allRoutes, paths) => {
+        const first = allRoutes.indexOf(route) === 0;
         return first ? (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
         ) : (
           <span>{route.breadcrumbName}</span>
         );
       }}
-      footerRender={() => defaultFooterDom}
-      menuDataRender={menuDataRender}
+      // footerRender={() => defaultFooterDom}
+      menuDataRender={() => menuDataRender(authRoute, routes as Route[])}
+      // menuDataRender={getMenuData}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
     >
-      <Authorized authority={authorized!.authority} noMatch={noMatch}>
-        {children}
-      </Authorized>
+      <ConfigProvider locale={zhCN}>
+        <Authorized
+          authority={authority!.authority}
+          noMatch={authority!.authority === 'noAccess' ? <NoAccessPage /> : <NoFoundPage />}
+        >
+          {children}
+        </Authorized>
+      </ConfigProvider>
     </ProLayout>
   );
 };

@@ -40,8 +40,12 @@ export interface DefaultSettings {
   // Usage: https://github.com/ant-design/ant-design-pro/pull/3517
   iconfontUrl: string;
   colorWeak: boolean;
-  projectId: string;
   storageName: string; // localstorage name
+  /*
+   * 消息模块:
+   * true启用(需要在proxy.config.ts内配置消息服务域名器) false关闭
+   */
+  notice: boolean;
 }
 
 export default {
@@ -60,6 +64,6 @@ export default {
   title: '后台管理系统',
   pwa: false,
   iconfontUrl: '',
-  projectId: '2',
   storageName: 'user',
+  notice: true,
 } as DefaultSettings;

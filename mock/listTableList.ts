@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Request, Response } from 'express';
 import { parse } from 'url';
-import { TableListItem, TableListParams } from '@/pages/ListTableList/data';
+import { TableListItem, TableListParams } from '@/pages/ListTable/data';
 
 // mock tableListDataSource
 const genList = (current: number, pageSize: number) => {
@@ -57,7 +57,7 @@ function getRule(req: Request, res: Response, u: string) {
     let filterDataSource: TableListItem[] = [];
     status.forEach((s: string) => {
       filterDataSource = filterDataSource.concat(
-        dataSource.filter(item => {
+        dataSource.filter((item) => {
           if (parseInt(`${item.status}`, 10) === parseInt(s.split('')[0], 10)) {
             return true;
           }
@@ -69,7 +69,7 @@ function getRule(req: Request, res: Response, u: string) {
   }
 
   if (params.name) {
-    dataSource = dataSource.filter(data => data.name.includes(params.name || ''));
+    dataSource = dataSource.filter((data) => data.name.includes(params.name || ''));
   }
   const result = {
     data: dataSource,
@@ -94,7 +94,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   switch (method) {
     /* eslint no-case-declarations:0 */
     case 'delete':
-      tableListDataSource = tableListDataSource.filter(item => key.indexOf(item.key) === -1);
+      tableListDataSource = tableListDataSource.filter((item) => key.indexOf(item.key) === -1);
       break;
     case 'post':
       (() => {
@@ -123,7 +123,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
     case 'update':
       (() => {
         let newRule = {};
-        tableListDataSource = tableListDataSource.map(item => {
+        tableListDataSource = tableListDataSource.map((item) => {
           if (item.key === key) {
             newRule = { ...item, desc, name };
             return { ...item, desc, name };

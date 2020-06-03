@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 
 const login = (req: Request, res: Response) => {
-  const { password, username, type } = req.body;
+  const { password, username } = req.body;
   if (password === '123456' && username === 'admin') {
     res.send({
       code: 0,
       message: 'successful',
       data: {
-        nickname: 'test',
+        nickname: 'admin',
         isAdmin: false,
         userId: 47,
-        email: 'zhangsan@kingnet.com',
-        username: 'test',
+        email: 'admin@kingnet.com',
+        username: 'admin',
         token: '4aade192df48c64d0137e67fec9d07ea',
       },
     });
@@ -19,9 +19,16 @@ const login = (req: Request, res: Response) => {
   }
   if (password === '123456' && username === 'user') {
     res.send({
-      status: 'ok',
-      type,
-      currentAuthority: 'user',
+      code: 0,
+      message: 'successful',
+      data: {
+        nickname: 'user',
+        isAdmin: false,
+        userId: 66,
+        email: 'user@kingnet.com',
+        username: 'user',
+        token: '4aade192df48c64d0137e67fec9d07ea',
+      },
     });
     return;
   }

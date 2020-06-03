@@ -10,6 +10,9 @@ import ProLayout, {
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
 import { Link, connect, Dispatch, history } from 'umi';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
+
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, Route } from '@/models/connect';
@@ -179,12 +182,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       {...props}
       {...settings}
     >
-      <Authorized
-        authority={authority!.authority}
-        noMatch={authority!.authority === 'noAccess' ? <NoAccessPage /> : <NoFoundPage />}
-      >
-        {children}
-      </Authorized>
+      <ConfigProvider locale={zhCN}>
+        <Authorized
+          authority={authority!.authority}
+          noMatch={authority!.authority === 'noAccess' ? <NoAccessPage /> : <NoFoundPage />}
+        >
+          {children}
+        </Authorized>
+      </ConfigProvider>
     </ProLayout>
   );
 };

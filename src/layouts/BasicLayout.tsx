@@ -9,7 +9,7 @@ import ProLayout, {
   Settings,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
-import { Link, connect, Dispatch } from 'umi';
+import { Link, connect, Dispatch, history } from 'umi';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, Route } from '@/models/connect';
@@ -82,7 +82,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   /**
    * init variables
    */
-  const [authRoute, setAuthRoute] = useState<MenuDataItem[]>(routes as MenuDataItem[]);
+  const [authRoute, setAuthRoute] = useState<MenuDataItem[]>([] as MenuDataItem[]);
   useEffect(() => {
     if (dispatch) {
       // 获取菜单信息
@@ -113,12 +113,32 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   };
 
   // get authority
-  const serverAuthorized = getAuthorityFromRouter(authRoute, location.pathname || '/') || {
-    authority: 'noAccess',
-  };
-  const authority = getAuthorityFromRouter(routes, location.pathname || '/')
-    ? serverAuthorized
-    : { authority: 'noFound' };
+  let authority: any = true;
+  if (location.pathname && location.pathname !== '/') {
+    const serverAuthorized = getAuthorityFromRouter(
+      authRoute,
+      location?.pathname ?? '/',
+      'menu',
+    ) || {
+      authority: 'noAccess',
+    };
+    authority = getAuthorityFromRouter(routes, location?.pathname ?? '/')
+      ? serverAuthorized
+      : { authority: 'noFound' };
+  } else {
+    // find first page path in serverRoute
+    const findFirstRoute = (searchRoute: Route[]): string => {
+      let name: string = searchRoute[0]?.path ?? '';
+      if (searchRoute[0]?.routes) {
+        name = findFirstRoute(searchRoute[0].routes);
+      }
+      return name;
+    };
+    // redirect to first page in serverRoute
+    history.push({
+      pathname: findFirstRoute(authRoute),
+    });
+  }
 
   return (
     <ProLayout

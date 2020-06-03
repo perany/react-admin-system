@@ -238,15 +238,28 @@ export const isAntDesignProOrDev = (): boolean => {
  * props.route.routes   !!! match childs
  * @param router [{}]
  * @param pathname string
+ * @param type
  */
 export const getAuthorityFromRouter = <T extends Route>(
   router: T[] = [],
   pathname: string,
+  type?: string,
 ): T | undefined => {
-  const authority = router.find(({ routes, path = '/' }) => {
-    return Array.isArray(routes) && routes.length > 0
-      ? getAuthorityFromRouter(routes, pathname)
-      : path && pathRegexp(`${path}/(.*)`).exec(`${pathname}/`);
+  const authority = router.find(({ routes, path = '/', target = '_self' }) => {
+    // match url and children
+    const matchChildren = pathRegexp(`${path}/(.*)`).exec(`${pathname}/`);
+    // route level
+    const level = path.match(/\/[a-zA-Z0-9]+/g)?.length || 1;
+    return (
+      (path && target !== '_blank' && pathRegexp(path).exec(pathname)) ||
+      (routes && getAuthorityFromRouter(routes, pathname, type)) ||
+      (type === 'menu' && // 判断菜单权限时：菜单无子路由 - 该路由的所有子路由有权限
+        !routes &&
+        matchChildren) ||
+      (type === 'menu' && // 判断菜单权限时：三级或以上菜单路由 - 该路由的所有子路由有权限
+        level >= 3 &&
+        matchChildren)
+    );
   });
   if (authority) return authority;
   return undefined;

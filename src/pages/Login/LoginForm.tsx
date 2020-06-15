@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Tabs, Row, Col, Form, message, Button, Input, Checkbox } from 'antd';
 import { connect, Dispatch } from 'umi';
+import CryptoJS from 'crypto-js';
 import { LoginModelState } from '@/models/login';
+import proxyConfig from '../../../config/proxy.config';
 import styles from './index.less';
 
 const displayName = 'LoginFrom';
@@ -140,7 +142,8 @@ class LoginFrom extends Component<LoginFromProps> {
         type: 'login/login',
         payload: {
           username: values.name,
-          password: values.password,
+          password: CryptoJS.AES.encrypt(values.password, proxyConfig.encryptKey).toString(),
+          verify_type: 'token',
           source,
         },
       });

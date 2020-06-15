@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
 const login = (req: Request, res: Response) => {
-  const { password, username } = req.body;
-  if (password === '123456' && username === 'admin') {
+  const { username } = req.body;
+  if (username === 'admin') {
     res.send({
       code: 0,
       message: 'successful',
@@ -17,7 +17,7 @@ const login = (req: Request, res: Response) => {
     });
     return;
   }
-  if (password === '123456' && username === 'user') {
+  if (username === 'user') {
     res.send({
       code: 0,
       message: 'successful',

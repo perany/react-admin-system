@@ -6,6 +6,8 @@ export interface proxyConfigType {
   loginServer: string;
   // 项目ID
   projectId: string;
+  // 登录密码加密串
+  encryptKey: string;
   // 消息服务域名
   noticeServer?: string;
 }
@@ -19,6 +21,7 @@ switch (process.env.build_env ? process.env.build_env : process.env.NODE_ENV) {
       loginServer: 'http://login.cn',
       noticeServer: '',
       projectId: '',
+      encryptKey: '1d0d94042fa2c8e9f521cd1e798a85fd',
     };
     break;
   case 'prod':
@@ -28,6 +31,7 @@ switch (process.env.build_env ? process.env.build_env : process.env.NODE_ENV) {
       loginServer: 'http://login.cn',
       noticeServer: '',
       projectId: '',
+      encryptKey: '794c2bc6dff894358b75e25aae09def3',
     };
     break;
   case 'development':
@@ -37,6 +41,7 @@ switch (process.env.build_env ? process.env.build_env : process.env.NODE_ENV) {
       loginServer: 'http://login.cn',
       noticeServer: '',
       projectId: '',
+      encryptKey: '1d0d94042fa2c8e9f521cd1e798a85fd',
     };
     break;
   case 'production':
@@ -46,6 +51,7 @@ switch (process.env.build_env ? process.env.build_env : process.env.NODE_ENV) {
       loginServer: 'http://login.cn',
       noticeServer: '',
       projectId: '',
+      encryptKey: '794c2bc6dff894358b75e25aae09def3',
     };
     break;
   default:
@@ -55,6 +61,7 @@ switch (process.env.build_env ? process.env.build_env : process.env.NODE_ENV) {
       loginServer: 'http://login.cn',
       noticeServer: '',
       projectId: '',
+      encryptKey: '794c2bc6dff894358b75e25aae09def3',
     };
 }
 

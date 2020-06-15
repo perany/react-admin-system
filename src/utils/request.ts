@@ -3,7 +3,9 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification, message } from 'antd';
+import { message, Modal, notification } from 'antd';
+import { getDvaApp } from 'umi';
+
 import { getUserInfo } from '@/utils/utils';
 import proxyConfig from '../../config/proxy.config';
 
@@ -23,6 +25,28 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
+};
+
+// 登录失效错误弹窗
+const showErrorModal = (title: string, content: string, reLogin: boolean) => {
+  // 避免多个接口报错同时出现多个弹窗
+  const modalLength = document.getElementsByClassName('ant-modal-confirm-error');
+  const noModal = modalLength && modalLength.length < 1;
+  if (!noModal) {
+    return;
+  }
+  Modal.error({
+    title,
+    content,
+    onOk: () => {
+      if (reLogin) {
+        // eslint-disable-next-line no-underscore-dangle
+        getDvaApp()._store.dispatch({
+          type: 'login/logout',
+        });
+      }
+    },
+  });
 };
 
 /**
@@ -121,11 +145,22 @@ request.interceptors.request.use((url: string, options: any) => {
 
 // response interceptor, handling response
 request.interceptors.response.use(async (response, options: any) => {
-  // response.headers.append('interceptors', 'yes yo');
   const res = await response.clone().json();
-  if (options.interceptors && res?.code !== 0) {
+  if (res?.code === 0) {
+    return response;
+  }
+
+  // 接口错误
+  if (res?.code === 211) {
+    // 如果账户是失效账户，直接重新登录
+    showErrorModal('登录信息异常，请重新登录', res?.message, true);
+  } else if (res.code === 310) {
+    // 接口没有权限
+    showErrorModal('当前用户没有权限', res?.message, false);
+  } else if (options.interceptors && res?.code !== 0) {
     message.error(res?.message || `请求错误：${res?.code ?? '未知'}`);
   }
+
   return response;
 });
 

@@ -92,6 +92,9 @@ request.interceptors.request.use((url: string, options: any) => {
   const newData = {
     ...(options.data || {}),
   };
+  const newOption = {
+    ...options,
+  };
   // headers
   if (user && user.token && user.userId) {
     // newParams = { ...options.params, token: user.token };
@@ -115,6 +118,7 @@ request.interceptors.request.use((url: string, options: any) => {
   // login api
   if (options.data && options.data.login) {
     newUrl = proxyConfig.loginServer + url;
+    newOption.interceptors = false;
     delete newData.login;
   }
   // mock
@@ -133,8 +137,8 @@ request.interceptors.request.use((url: string, options: any) => {
   // }
   return {
     options: {
-      ...options,
-      interceptors: options.interceptors !== false,
+      ...newOption,
+      interceptors: newOption.interceptors !== false,
       headers: newHeaders,
       params: newParams,
       data: newData,

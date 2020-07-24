@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export async function fakeAccountLogin(params: any) {
-  return request(`/uniteservice/user/login `, {
+  return request(`/uniteservice/user/login`, {
     method: 'POST',
     data: {
       ...params,

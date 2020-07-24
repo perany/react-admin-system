@@ -3,8 +3,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 import { connect, ConnectProps } from 'umi';
 import { ConnectState } from '@/models/connect';
-import Avatar from './AvatarDropdown';
 import SystemNotice from '@/components/SystemNotice';
+import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
@@ -13,6 +13,7 @@ export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
   theme?: SiderTheme;
   layout: 'sidemenu' | 'topmenu';
   notice: boolean;
+  helpPage: any;
 }
 
 const ENVTagColor = {
@@ -22,25 +23,25 @@ const ENVTagColor = {
 };
 
 const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
-  const { theme, layout, notice } = props;
+  const { theme, layout, notice, helpPage } = props;
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'topmenu') {
     className = `${styles.right}  ${styles.dark}`;
   }
 
+  // help link
+  const helpDom = helpPage?.link && (
+    <Tooltip title={helpPage?.tooltip ?? '帮助文档'}>
+      <a target="_blank" href={helpPage?.link} rel="noopener noreferrer" className={styles.action}>
+        <QuestionCircleOutlined />
+      </a>
+    </Tooltip>
+  );
+
   return (
     <div className={className}>
-      <Tooltip title="使用文档">
-        <a
-          target="_blank"
-          // href="https://pro.ant.design/docs/getting-started"
-          rel="noopener noreferrer"
-          className={styles.action}
-        >
-          <QuestionCircleOutlined />
-        </a>
-      </Tooltip>
+      {helpDom}
       {notice && <SystemNotice />}
       <Avatar />
       {REACT_APP_ENV && (
@@ -56,4 +57,5 @@ export default connect(({ settings }: ConnectState) => ({
   theme: settings.navTheme,
   layout: settings.layout,
   notice: settings.notice,
+  helpPage: settings.helpPage,
 }))(GlobalHeaderRight);

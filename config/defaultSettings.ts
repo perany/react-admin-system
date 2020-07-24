@@ -46,6 +46,10 @@ export interface DefaultSettings {
    * true启用(需要在proxy.config.ts内配置消息服务域名器) false关闭
    */
   notice: boolean;
+  /*
+   * 帮助文档: 配置帮助文档跳转地址和tooltip文案 {link:'xxx',tooltip:'xxx'}
+   */
+  helpPage: any;
 }
 
 export default {
@@ -66,4 +70,8 @@ export default {
   iconfontUrl: '',
   storageName: 'user',
   notice: true,
+  helpPage: {
+    tooltip: '帮助文档：跳转google测试',
+    link: 'https://google.com',
+  },
 } as DefaultSettings;

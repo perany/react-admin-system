@@ -14,10 +14,12 @@
 
 .right {
   display: flex;
+  align-items: center;
   float: right;
   height: @layout-header-height;
   margin-left: auto;
   overflow: hidden;
+
   .action {
     display: flex;
     align-items: center;
@@ -108,4 +110,10 @@
 .userInfo {
   padding: 5px 10px;
   font-size: 12px;
+}
+
+.icon {
+  margin-left: 8px;
+  color: @primary-color !important;
+  background-color: ~'@{primary-color}33';
 }

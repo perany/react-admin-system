@@ -149,7 +149,7 @@ export const requestPageFormat = (data: any) => {
 
 // 列表分页参数：数据结构格式化
 export const paginationFormat = (data: any): any => {
-  if (!data || !data.body) {
+  if (!data) {
     return {
       body: [],
       pagination: {
@@ -161,14 +161,14 @@ export const paginationFormat = (data: any): any => {
     };
   }
   return {
-    body: [...data.body],
+    body: Array.isArray(data.body) ? [...data.body] : [],
     pagination: {
       current: data.page ? data.page.pageNum : 1,
       pageSize: data.page ? data.page.pageSize : 10,
-      total: data.page ? data.page.totalRows : 0,
+      total: data.page ? data.page.total : 0,
     },
     thead: [...(data.thead || [])],
-    total: data.page ? data.page.totalRows : 0,
+    total: data.page ? data.page.total : 0,
   };
 };
 
@@ -213,6 +213,35 @@ export const removeUserInfo = () => {
   localStorage.removeItem(storageName);
 };
 
+// 获取用户信息
+export const getLocalItem = (name: string) => {
+  if (!window.localStorage) {
+    // eslint-disable-next-line no-console
+    console.log('浏览器不支持localstorage');
+    return {};
+  }
+  const value = localStorage.getItem(name);
+  return value ? JSON.parse(value) : null;
+};
+
+// 更新用户信息
+export const setLocalItem = (name: string, value: any) => {
+  if (!window.localStorage) {
+    // eslint-disable-next-line no-console
+    console.log('浏览器不支持localstorage');
+  }
+  localStorage.setItem(name, JSON.stringify(value));
+};
+
+// 移除用户信息
+export const removeLocalItem = (name: string) => {
+  if (!window.localStorage) {
+    // eslint-disable-next-line no-console
+    console.log('浏览器不支持localstorage');
+  }
+  localStorage.removeItem(name);
+};
+
 /* eslint no-useless-escape:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
 
@@ -252,13 +281,13 @@ export const getAuthorityFromRouter = <T extends Route>(
     const level = path.match(/\/[a-zA-Z0-9]+/g)?.length || 1;
     return (
       (path && target !== '_blank' && pathRegexp(path).exec(pathname)) ||
-      (routes && getAuthorityFromRouter(routes, pathname, type)) ||
-      (type === 'menu' && // 判断菜单权限时：菜单无子路由 - 该路由的所有子路由有权限
+      (type === 'menu' && // 判断菜单权限时：菜单无子路由 - 匹配该路由的所有子路由
         !routes &&
         matchChildren) ||
-      (type === 'menu' && // 判断菜单权限时：三级或以上菜单路由 - 该路由的所有子路由有权限
+      (type === 'menu' && // 判断菜单权限时：三级或以上菜单路由 - 匹配该路由的所有子路由
         level >= 3 &&
-        matchChildren)
+        matchChildren) ||
+      (routes && getAuthorityFromRouter(routes, pathname, type))
     );
   });
   if (authority) return authority;

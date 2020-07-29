@@ -46,6 +46,18 @@ const Model: LoginModelType = {
         // 更新用户信息
         setUserInfo(user);
 
+        // JSSDK: dana 数据上报 - 生产环境
+        if (
+          ['prod'].indexOf(
+            process.env.build_env ? process.env.build_env : process.env.NODE_ENV || 'dev',
+          ) > -1 &&
+          window.KINGNET_TRACK_SDK
+        ) {
+          window.KINGNET_TRACK_SDK.setProperties({
+            openid: user?.username || user?.userId,
+          });
+        }
+
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -73,6 +85,19 @@ const Model: LoginModelType = {
       };
       yield call(accountLoginOut, paramsOut);
       removeUserInfo();
+
+      // JSSDK: dana 数据上报 - 生产环境
+      if (
+        ['prod'].indexOf(
+          process.env.build_env ? process.env.build_env : process.env.NODE_ENV || 'dev',
+        ) > -1 &&
+        window.KINGNET_TRACK_SDK
+      ) {
+        window.KINGNET_TRACK_SDK.setProperties({
+          openid: '',
+        });
+      }
+
       const { redirect } = getPageQuery();
       // redirect
       if (window.location.pathname !== '/user/login' && !redirect) {

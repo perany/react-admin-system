@@ -18,3 +18,10 @@ export async function getMenu(params: any) {
     data: { mock: true },
   });
 }
+
+// 获取用户角色
+export async function getLocalInfoByCrossSystemToken(params: any) {
+  return request(`/api/user/crossToken?${stringify(params)}`, {
+    data: { mock: true },
+  });
+}

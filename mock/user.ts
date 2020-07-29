@@ -220,4 +220,16 @@ export default {
       },
     ],
   },
+
+  'GET /api/user/crossToken': {
+    code: 0,
+    message: 'successful',
+    data: {
+      nickname: 'admin',
+      userId: 47,
+      email: 'admin@kingnet.com',
+      username: 'admin',
+      token: '4aade192df48c64d0137e67fec9d07ea',
+    },
+  },
 };

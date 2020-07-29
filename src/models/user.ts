@@ -1,8 +1,14 @@
 import { Reducer, Effect } from 'umi';
 import { MenuDataItem } from '@ant-design/pro-layout';
+import Cookies from 'js-cookie';
 
-import { getRoleInfo, getMenu, query as queryUsers } from '@/services/user';
-import { getUserInfo, updateUserInfo } from '@/utils/utils';
+import {
+  getRoleInfo,
+  getMenu,
+  query as queryUsers,
+  getLocalInfoByCrossSystemToken,
+} from '@/services/user';
+import { getUserInfo, setUserInfo, updateUserInfo } from '@/utils/utils';
 import { setAuthority } from '@/utils/authority';
 
 export interface CurrentUser {
@@ -76,11 +82,48 @@ const UserModel: UserModelType = {
         payload: response,
       });
     },
-    *fetchCurrent(_, { put }) {
+    *fetchCurrent(_, { put, call }) {
+      // get token from localStorage
+      let localUserInfo = getUserInfo();
+      // get token from cookie
+      const cookieToken = Cookies.get('dataCenterCrossSystemToken');
+      // check cookie token
+      if (cookieToken !== undefined) {
+        const response = yield call(getLocalInfoByCrossSystemToken, {
+          token: cookieToken,
+        });
+        if (response?.code === 0 && response?.data) {
+          // valid: exchange userinfo
+          const exchangeInfo = response?.data ?? {};
+          setUserInfo({
+            ...localUserInfo,
+            ...exchangeInfo,
+          });
+          localUserInfo = exchangeInfo;
+          Cookies.remove('dataCenterCrossSystemToken');
+        } else {
+          // invalid: clear token
+          delete localUserInfo?.token;
+          setUserInfo(localUserInfo);
+        }
+      }
+      // update state
       yield put({
         type: 'saveCurrentUser',
-        payload: getUserInfo(),
+        payload: localUserInfo,
       });
+
+      // JSSDK: dana 数据上报 - 生产环境
+      if (
+        ['prod'].indexOf(
+          process.env.build_env ? process.env.build_env : process.env.NODE_ENV || 'dev',
+        ) > -1 &&
+        window.KINGNET_TRACK_SDK
+      ) {
+        window.KINGNET_TRACK_SDK.setProperties({
+          openid: localUserInfo?.username || localUserInfo?.userId,
+        });
+      }
     },
 
     // 获取用户角色

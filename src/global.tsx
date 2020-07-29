@@ -80,3 +80,28 @@ if (pwa) {
     });
   }
 }
+
+// JSSDK: dana 数据上报 - 生产环境
+if (
+  ['prod'].indexOf(process.env.build_env ? process.env.build_env : process.env.NODE_ENV || 'dev') >
+    -1 &&
+  window.KINGNET_TRACK_SDK
+) {
+  window.KINGNET_TRACK_SDK.init({
+    appKey: '284C6259168A4C24AB1658AC0E484E61', // todo test data
+    topic: 'system_statistics',
+    config: {
+      project: 'system_statistics',
+      https_support: false,
+      cross_subdomain: true,
+      show_log: false,
+      is_single_page: true,
+      openpage_auto_track: true,
+      click_auto_track: true,
+      heartbeat_auto_track: false,
+    },
+    properties: {
+      channel: '后台管理系统', // todo test data
+    },
+  });
+}

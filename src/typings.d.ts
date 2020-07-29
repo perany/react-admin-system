@@ -27,6 +27,7 @@ interface Window {
     fieldsObject: GAFieldsObject | string,
   ) => void;
   reloadAuthorized: () => void;
+  KINGNET_TRACK_SDK: any;
 }
 
 declare let ga: Function;

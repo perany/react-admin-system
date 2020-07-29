@@ -15,6 +15,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
+import PageLoading from '@/components/PageLoading';
 import { ConnectState, Route } from '@/models/connect';
 import { getAuthorityFromRouter, getRouteIcon } from '@/utils/utils';
 import logo from '../assets/logo.png';
@@ -30,6 +31,7 @@ export interface BasicLayoutProps extends ProLayoutProps {
   };
   settings: Settings;
   dispatch: Dispatch;
+  menuLoading?: boolean;
 }
 
 /**
@@ -80,6 +82,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       pathname: '/',
     },
     route: { routes },
+    menuLoading,
   } = props;
 
   /**
@@ -142,6 +145,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       pathname: findFirstRoute(authRoute),
     });
   }
+  const noAuthPage = authority!.authority === 'noAccess' ? <NoAccessPage /> : <NoFoundPage />;
 
   return (
     <ProLayout
@@ -185,7 +189,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       <ConfigProvider locale={zhCN}>
         <Authorized
           authority={authority!.authority}
-          noMatch={authority!.authority === 'noAccess' ? <NoAccessPage /> : <NoFoundPage />}
+          noMatch={menuLoading ? <PageLoading /> : noAuthPage}
         >
           {children}
         </Authorized>
@@ -194,7 +198,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default connect(({ global, settings }: ConnectState) => ({
+export default connect(({ global, settings, loading }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
+  menuLoading: loading.effects['user/getMenu'],
 }))(BasicLayout);

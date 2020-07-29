@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Dropdown, Menu, Popconfirm, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
+import styles from './index.less';
 
 interface OperationItem {
   key: string;
-  label?: ((record: any) => string) | string;
+  label?: ((record: any) => string | ReactNode) | string | ReactNode;
   disabled?: (record: any) => boolean;
   popConfirm?: any;
   onClick?: (record: any) => void;
@@ -97,10 +98,10 @@ const PTableOperation = ({
   );
 
   return (
-    <>
+    <div className={styles.PTableOperation}>
       {showBtnArr.map((item: any) => renderItem(item, false))}
       {moreDom}
-    </>
+    </div>
   );
 };
 

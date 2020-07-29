@@ -18,9 +18,9 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import PageLoading from '@/components/PageLoading';
 import { ConnectState, Route } from '@/models/connect';
 import { getAuthorityFromRouter, getRouteIcon } from '@/utils/utils';
-import logo from '../assets/logo.png';
 import NoAccessPage from '@/pages/403';
 import NoFoundPage from '@/pages/404';
+import logo from '../assets/logo.png';
 
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
@@ -84,7 +84,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     route: { routes },
     menuLoading,
   } = props;
-
   /**
    * init variables
    */
@@ -128,9 +127,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     ) || {
       authority: 'noAccess',
     };
-    authority = getAuthorityFromRouter(routes, location?.pathname ?? '/')
-      ? serverAuthorized
-      : { authority: 'noFound' };
+    const routeAuthorized = getAuthorityFromRouter(routes, location?.pathname ?? '/');
+    authority = routeAuthorized ? serverAuthorized : { authority: 'noFound' };
   } else {
     // find first page path in serverRoute
     const findFirstRoute = (searchRoute: Route[]): string => {
@@ -161,7 +159,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
           return defaultDom;
         }
-
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
       breadcrumbRender={(routers = []) => [

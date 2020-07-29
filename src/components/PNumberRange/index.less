@@ -1,0 +1,64 @@
+.numberRange {
+  .inputSplit {
+    width: 17px;
+    padding: 4px;
+    border-right: 0;
+    border-left: 0;
+    pointer-events: none;
+  }
+
+  .inputUnit {
+    width: 24px;
+    padding: 4px;
+    border-left: 0;
+    pointer-events: none;
+  }
+
+  .inputLeft {
+    width: 100px;
+    padding-right: 5px;
+    padding-left: 6px;
+    text-align: center;
+  }
+
+  .inputRight {
+    width: 100px;
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: center;
+    border-left-width: 0;
+  }
+
+  .inputRight:hover,
+  .inputRight:focus {
+    border-left-width: 1px;
+  }
+
+  .ant-input-rtl.inputRight {
+    border-right-width: 0;
+  }
+
+  .ant-input-rtl.inputRight:hover,
+  .ant-input-rtl.inputRight:focus {
+    border-right-width: 1px;
+  }
+
+  :global {
+    .label.ant-input[disabled] {
+      background-color: #fff;
+    }
+    .ant-input-suffix {
+      color: #a9b0b8;
+    }
+    .ant-input-group.ant-input-group-compact > *:not(:last-child) {
+      margin-right: 0;
+      border-right-width: 0;
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-right-width: 1px;
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { PageHeader } from 'antd';
-import back from '@/assets/back.svg';
 import { Link, history } from 'umi';
+
+import back from './back.svg';
 import styles from './index.less';
 
 const PPageHeaderWrapper = ({

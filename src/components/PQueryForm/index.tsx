@@ -98,7 +98,7 @@ const PQueryForm = (props: PQueryFormProps) => {
     // 文本输入框
     input: (item: ItemProps) => (
       <Input
-        allowClear
+        // allowClear
         placeholder={`请输入${item.label}`}
         style={{ width: 150 }}
         onPressEnter={() => onInputPressEnter()}

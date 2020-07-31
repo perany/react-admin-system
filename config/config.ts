@@ -11,6 +11,12 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
+  locale: {
+    default: 'zh-CN',
+    antd: true,
+    baseNavigator: true,
+  },
+  title: false,
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },

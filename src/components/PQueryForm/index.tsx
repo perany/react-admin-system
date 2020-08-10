@@ -1,6 +1,7 @@
 import React from 'react';
 import { ConfigProvider, Button, DatePicker, Form, Input, Select, Radio } from 'antd';
 import { FormProps } from 'antd/es/form';
+import classNames from 'classnames';
 
 import { updateURLParams } from '@/utils/utils';
 import PNumberRange from '@/components/PNumberRange';
@@ -44,6 +45,13 @@ interface ItemProps {
   render?: (item?: any) => void;
   extend?: any;
   data?: any;
+  /**
+   * for select type
+   * @param option: option data
+   * @param item: select props
+   * need to reset filterOption prop
+   */
+  renderChildren?: (option?: any, item?: any) => any;
 }
 
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -52,7 +60,7 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const PQueryForm = (props: PQueryFormProps) => {
-  const { items, updateValues, getFormInstance, searchManual, ...rests } = props;
+  const { items, updateValues, getFormInstance, searchManual, className, ...rests } = props;
   const [form] = Form.useForm();
 
   // update values
@@ -98,7 +106,6 @@ const PQueryForm = (props: PQueryFormProps) => {
     // 文本输入框
     input: (item: ItemProps) => (
       <Input
-        // allowClear
         placeholder={`请输入${item.label}`}
         style={{ width: 150 }}
         onPressEnter={() => onInputPressEnter()}
@@ -119,6 +126,7 @@ const PQueryForm = (props: PQueryFormProps) => {
           placeholder={`请选择${item.label}`}
           optionFilterProp="children"
           filterOption={(input: any, option: any) =>
+            typeof option.children === 'string' &&
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           style={{ minWidth: 150 }}
@@ -130,11 +138,15 @@ const PQueryForm = (props: PQueryFormProps) => {
           }
         >
           {Array.isArray(item.data) &&
-            [...item.data].map((option: any) => (
-              <Option value={option.value} key={option.value}>
-                {`${option.text}`}
-              </Option>
-            ))}
+            [...item.data].map((option: any) =>
+              item?.renderChildren && typeof item?.renderChildren === 'function' ? (
+                item.renderChildren(option, item)
+              ) : (
+                <Option value={option.value} key={option.value}>
+                  {`${option.text}`}
+                </Option>
+              ),
+            )}
         </Select>
       );
     },
@@ -210,8 +222,9 @@ const PQueryForm = (props: PQueryFormProps) => {
         btnProps.onClick = (e: any) => {
           if (extend && typeof extend?.onClick === 'function') {
             extend.onClick(e);
+          } else {
+            form.submit();
           }
-          form.submit();
         };
       }
       return <Button {...btnProps}>{label || '搜索'}</Button>;
@@ -240,7 +253,12 @@ const PQueryForm = (props: PQueryFormProps) => {
 
   return (
     <ConfigProvider input={{ autoComplete: 'off' }}>
-      <Form form={form} className={styles.PQueryForm} layout="inline" {...rests}>
+      <Form
+        form={form}
+        layout="inline"
+        {...rests}
+        className={classNames(styles.PQueryForm, className)}
+      >
         {ItemsDom}
         <Form.Item className={styles.toolBtn}>
           {toolbarDom.map((item) => itemTypeMap.toolbar(item))}

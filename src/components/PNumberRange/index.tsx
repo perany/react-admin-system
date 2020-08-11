@@ -4,12 +4,12 @@ import classNames from 'classnames';
 
 import styles from './index.less';
 
-declare type numberType = number | string | undefined;
+declare type NumberType = number | string | undefined;
 
 interface PNumberRangeProps {
   extend?: any;
   onChange?: (e: any) => void;
-  value?: numberType[];
+  value?: NumberType[];
   unit?: any;
   split?: any;
   minProps?: any;
@@ -19,8 +19,8 @@ interface PNumberRangeProps {
 const PNumberRange = (props: PNumberRangeProps) => {
   const { unit = '', split = '~', minProps = {}, maxProps = {}, onChange, value = [] } = props;
 
-  const [min, setMin] = useState<numberType>(Array.isArray(value) ? value[0] : undefined);
-  const [max, setMax] = useState<numberType>(Array.isArray(value) ? value[1] : undefined);
+  const [min, setMin] = useState<NumberType>(Array.isArray(value) ? value[0] : undefined);
+  const [max, setMax] = useState<NumberType>(Array.isArray(value) ? value[1] : undefined);
 
   // value change effect
   useEffect(() => {
@@ -30,12 +30,12 @@ const PNumberRange = (props: PNumberRangeProps) => {
   }, [min, max]);
 
   // minimal number changed
-  const onMinChange = (minValue: numberType) => {
+  const onMinChange = (minValue: NumberType) => {
     setMin(minValue);
   };
 
   // maximal number changed
-  const onMaxChange = (maxValue: numberType) => {
+  const onMaxChange = (maxValue: NumberType) => {
     setMax(maxValue);
   };
 

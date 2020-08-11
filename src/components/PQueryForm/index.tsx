@@ -260,9 +260,11 @@ const PQueryForm = (props: PQueryFormProps) => {
         className={classNames(styles.PQueryForm, className)}
       >
         {ItemsDom}
-        <Form.Item className={styles.toolBtn}>
-          {toolbarDom.map((item) => itemTypeMap.toolbar(item))}
-        </Form.Item>
+        {toolbarDom?.length > 0 && (
+          <Form.Item className={styles.toolBtn}>
+            {toolbarDom.map((item) => itemTypeMap.toolbar(item))}
+          </Form.Item>
+        )}
       </Form>
     </ConfigProvider>
   );

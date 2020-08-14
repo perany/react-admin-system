@@ -10,6 +10,7 @@ const PTable = (props: any) => {
         showQuickJumper: true,
         // hideOnSinglePage: true,
         showSizeChanger: true,
+        pageSizeOptions: ['10', '15', '20', '50', '100'],
         showTotal: (total: any) => `总计${total}条`,
         // `共${total}条记录，每页${pageSize}条，共${Math.ceil(total / Number(pageSize))}页`,
         ...pagination,

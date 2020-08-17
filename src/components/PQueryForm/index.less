@@ -1,8 +1,14 @@
 @import '../../utils/reset';
+
+:global {
+  .ant-form-inline .ant-form-item {
+    margin: 5px 16px 5px 0;
+  }
+}
+
 .PQueryForm {
   display: flex;
-  margin-top: 0;
-  margin-bottom: 0;
+  //margin-bottom: 10px;
 
   .toolBtn {
     margin-right: 0;
@@ -17,16 +23,9 @@
     }
   }
 
-  :global {
-    .ant-form-inline .ant-form-item {
-      margin: 5px 16px 5px 0;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-    .ant-form-item-label > label {
-      color: @text-color;
+  .collapse {
+    button {
+      padding: 0;
     }
   }
 }

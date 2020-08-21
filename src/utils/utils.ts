@@ -111,11 +111,12 @@ export const updateURLParams = (params: any, isReplace?: boolean) => {
 
 // 请求分页参数处理
 export const requestPageFormat = (data: any) => {
+  const defaultPageSize = 15;
   if (!data) {
     return {
       page: {
         pageNum: '',
-        pageSize: '',
+        pageSize: defaultPageSize,
         orders: [],
       },
     };
@@ -124,7 +125,7 @@ export const requestPageFormat = (data: any) => {
   const params: any = {
     page: {
       pageNum: newData.current,
-      pageSize: newData.pageSize,
+      pageSize: newData.pageSize ?? defaultPageSize,
       orders: [],
     },
   };
@@ -149,12 +150,13 @@ export const requestPageFormat = (data: any) => {
 
 // 列表分页参数：数据结构格式化
 export const paginationFormat = (data: any): any => {
+  const defaultPageSize = 15;
   if (!data) {
     return {
       body: [],
       pagination: {
         currentPage: 1,
-        pageSize: 10,
+        pageSize: defaultPageSize,
         total: 0,
       },
       thead: [],
@@ -164,7 +166,7 @@ export const paginationFormat = (data: any): any => {
     body: Array.isArray(data.body) ? [...data.body] : [],
     pagination: {
       current: data.page ? data.page.pageNum : 1,
-      pageSize: data.page ? data.page.pageSize : 10,
+      pageSize: data.page ? data.page.pageSize : defaultPageSize,
       total: data.page ? data.page.total : 0,
     },
     thead: [...(data.thead || [])],

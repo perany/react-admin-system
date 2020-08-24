@@ -1,9 +1,17 @@
 import React from 'react';
 import { Table } from 'antd';
+import { TablePaginationConfig, TableProps } from 'antd/es/table';
 
-const PTable = (props: any) => {
-  const { pagination = {} } = props;
-  const { current, pageSize } = pagination;
+export interface PTableProps extends TableProps<any> {
+  pagination?: any;
+  scroll?: any;
+}
+
+const PTable = (props: PTableProps) => {
+  const { pagination = {}, scroll, ...restProps } = props;
+
+  // pagination
+  const { current, pageSize } = pagination as TablePaginationConfig;
   const paginationParams = pagination
     ? {
         size: 'default',
@@ -18,6 +26,15 @@ const PTable = (props: any) => {
         pageSize: Number(pageSize),
       }
     : false;
+
+  // config overwrite
+  const overwriteConfig: any = {};
+
+  // scroll
+  if (scroll !== false) {
+    overwriteConfig.scroll = scroll || { x: true };
+  }
+
   return (
     <Table
       bordered
@@ -26,10 +43,10 @@ const PTable = (props: any) => {
           ? record?.id ?? JSON.stringify(record)
           : Math.random()
       }
-      scroll={{ x: true }}
       size="middle"
-      {...props}
-      pagination={paginationParams}
+      {...restProps}
+      {...overwriteConfig}
+      pagination={paginationParams as TablePaginationConfig}
     />
   );
 };

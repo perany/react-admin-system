@@ -1,10 +1,62 @@
-import { parse } from 'querystring';
+import { parse, stringify } from 'qs';
 import pathRegexp from 'path-to-regexp';
-import { Route } from '@/models/connect';
 import { history } from 'umi';
+import { Route } from '@/models/connect';
 import defaultSettings from '../../config/defaultSettings';
 
 declare const ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: any;
+
+/* 秒格式化：70(s) -> 00:01:10 */
+export const formatSeconds = (number: any) => {
+  if (!number || Number.isNaN(number as number)) {
+    return '00:00:00';
+  }
+  const secNum = parseInt(number, 10); // don't forget the second param
+  let hours: any = Math.floor(secNum / 3600);
+  let minutes: any = Math.floor((secNum - hours * 3600) / 60);
+  let seconds: any = secNum - hours * 3600 - minutes * 60;
+
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+  if (seconds < 10) {
+    seconds = `0${seconds}`;
+  }
+  return `${hours}:${minutes}:${seconds}`;
+};
+
+/**
+ * number的货币显示法
+ * 123456.456123 -> 123,456.45
+ */
+export const numberFormat = (number: any, long?: number): string => {
+  if (!number || Number.isNaN(Number(number))) {
+    return '';
+  }
+  // 指定小数位
+  if (long !== undefined) {
+    return Number(number)
+      .toFixed(long)
+      .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  }
+  // 有小数
+  if (String(number).indexOf('.') > -1) {
+    return Number(number)
+      .toFixed(2)
+      .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  }
+  // 无小数
+  if (String(number).indexOf('.') === -1) {
+    return Number(number)
+      .toFixed(1)
+      .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+      .split('.')[0];
+  }
+  return number;
+};
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
 
@@ -90,12 +142,7 @@ export const injectURLParams = (pathname: string, newQuery = {}, replace = false
   if (`${query.page}` === '1') {
     delete query.page;
   }
-  const routeData = {
-    pathname,
-    query: {
-      ...query,
-    },
-  };
+  const routeData = `${pathname}?${stringify(query, { arrayFormat: 'indices' })}`;
   if (replace) {
     history.replace(routeData);
   } else {
@@ -213,35 +260,6 @@ export const removeUserInfo = () => {
   }
   const { storageName } = defaultSettings;
   localStorage.removeItem(storageName);
-};
-
-// 获取用户信息
-export const getLocalItem = (name: string) => {
-  if (!window.localStorage) {
-    // eslint-disable-next-line no-console
-    console.log('浏览器不支持localstorage');
-    return {};
-  }
-  const value = localStorage.getItem(name);
-  return value ? JSON.parse(value) : null;
-};
-
-// 更新用户信息
-export const setLocalItem = (name: string, value: any) => {
-  if (!window.localStorage) {
-    // eslint-disable-next-line no-console
-    console.log('浏览器不支持localstorage');
-  }
-  localStorage.setItem(name, JSON.stringify(value));
-};
-
-// 移除用户信息
-export const removeLocalItem = (name: string) => {
-  if (!window.localStorage) {
-    // eslint-disable-next-line no-console
-    console.log('浏览器不支持localstorage');
-  }
-  localStorage.removeItem(name);
 };
 
 /* eslint no-useless-escape:0 */

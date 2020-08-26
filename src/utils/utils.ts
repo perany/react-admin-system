@@ -33,7 +33,7 @@ export const formatSeconds = (number: any) => {
  * 123456.456123 -> 123,456.45
  */
 export const numberFormat = (number: any, long?: number): string => {
-  if (!number || Number.isNaN(Number(number))) {
+  if (number !== 0 && (!number || Number.isNaN(Number(number)))) {
     return '';
   }
   // 指定小数位

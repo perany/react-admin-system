@@ -99,7 +99,7 @@ const config = [
   },
 ];
 
-interface configItem {
+interface ConfigItem {
   label: string;
   component: string;
   componentProps: any;
@@ -154,7 +154,7 @@ class LoginFrom extends Component<LoginFromProps> {
     message.error(error);
   };
 
-  renderButton = (item: configItem) => {
+  renderButton = (item: ConfigItem) => {
     const props: any = item.formBinderProps
       ? {
           ...item.formBinderProps,
@@ -171,7 +171,7 @@ class LoginFrom extends Component<LoginFromProps> {
     );
   };
 
-  renderInput = (item: configItem) => (
+  renderInput = (item: ConfigItem) => (
     <Form.Item
       name={item.formBinderProps.name}
       key={item.formBinderProps.name}
@@ -181,7 +181,7 @@ class LoginFrom extends Component<LoginFromProps> {
     </Form.Item>
   );
 
-  renderCheckbox = (item: configItem) => (
+  renderCheckbox = (item: ConfigItem) => (
     <Form.Item
       name={item.formBinderProps.name}
       key={item.formBinderProps.name}

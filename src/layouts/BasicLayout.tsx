@@ -131,17 +131,23 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     authority = routeAuthorized ? serverAuthorized : { authority: 'noFound' };
   } else {
     // find first page path in serverRoute
-    const findFirstRoute = (searchRoute: Route[]): string => {
-      let name: string = searchRoute[0]?.path ?? '';
-      if (searchRoute[0]?.routes) {
+    const findFirstRoute = (searchRoute: Route[]): any => {
+      if (!searchRoute?.length) {
+        return undefined;
+      }
+      let name: any = searchRoute[0]?.path;
+      if (Array.isArray(searchRoute[0]?.routes) && searchRoute[0]?.routes?.length > 0) {
         name = findFirstRoute(searchRoute[0].routes);
       }
       return name;
     };
     // redirect to first page in serverRoute
-    history.push({
-      pathname: findFirstRoute(authRoute),
-    });
+    const redirectRoute = findFirstRoute(authRoute);
+    if (redirectRoute) {
+      history.push({
+        pathname: redirectRoute,
+      });
+    }
   }
   const noAuthPage = authority!.authority === 'noAccess' ? <NoAccessPage /> : <NoFoundPage />;
 

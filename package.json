@@ -88,6 +88,7 @@
     "@umijs/preset-ant-design-pro": "^1.2.0",
     "@umijs/preset-react": "^1.4.15",
     "@umijs/preset-ui": "^2.0.9",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "chalk": "^4.0.0",
     "cross-env": "^7.0.0",
     "cross-port-killer": "^1.1.1",

@@ -46,7 +46,7 @@ export default defineConfig({
   history: { type: 'hash' },
   extraBabelPlugins: [
     ['production', 'prod'].includes((build_env ? build_env : NODE_ENV) as string)
-      ? 'transform-remove-console'
+      ? ['transform-remove-console', { exclude: ['error', 'warn'] }]
       : '',
   ],
 });

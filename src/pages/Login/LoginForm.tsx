@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Row, Col, Form, message, Button, Input, Checkbox } from 'antd';
+import { Tabs, Row, Col, Form, Button, Input, Checkbox } from 'antd';
 import { connect, Dispatch } from 'umi';
 import CryptoJS from 'crypto-js';
 import { LoginModelState } from '@/models/login';
@@ -150,10 +150,6 @@ class LoginFrom extends Component<LoginFromProps> {
     }
   };
 
-  onSubmitFailed = (error: any) => {
-    message.error(error);
-  };
-
   renderButton = (item: ConfigItem) => {
     const props: any = item.formBinderProps
       ? {
@@ -172,21 +168,13 @@ class LoginFrom extends Component<LoginFromProps> {
   };
 
   renderInput = (item: ConfigItem) => (
-    <Form.Item
-      name={item.formBinderProps.name}
-      key={item.formBinderProps.name}
-      {...item.formBinderProps}
-    >
+    <Form.Item key={item.formBinderProps.name} {...item.formBinderProps}>
       <Input {...item.componentProps} />
     </Form.Item>
   );
 
   renderCheckbox = (item: ConfigItem) => (
-    <Form.Item
-      name={item.formBinderProps.name}
-      key={item.formBinderProps.name}
-      {...item.formBinderProps}
-    >
+    <Form.Item key={item.formBinderProps.name} {...item.formBinderProps}>
       <Checkbox {...item.componentProps}>{item.label}</Checkbox>
     </Form.Item>
   );
@@ -213,11 +201,7 @@ class LoginFrom extends Component<LoginFromProps> {
           <Tabs onChange={this.onTabChange}>
             {tabs.map((item: any) => (
               <Tabs.TabPane key={item.source} tab={item.tab}>
-                <Form
-                  key={`${item.source}form`}
-                  onFinish={this.onSubmit}
-                  onFinishFailed={this.onSubmitFailed}
-                >
+                <Form key={`${item.source}form`} onFinish={this.onSubmit}>
                   {this.renderFromItem()}
                 </Form>
               </Tabs.TabPane>

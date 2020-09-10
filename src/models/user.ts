@@ -2,12 +2,7 @@ import { Reducer, Effect } from 'umi';
 import { MenuDataItem } from '@ant-design/pro-layout';
 import Cookies from 'js-cookie';
 
-import {
-  getRoleInfo,
-  getMenu,
-  query as queryUsers,
-  getLocalInfoByCrossSystemToken,
-} from '@/services/user';
+import { getRoleInfo, getMenu, query as queryUsers } from '@/services/user';
 import { getUserInfo, setUserInfo, updateUserInfo } from '@/utils/utils';
 import { setAuthority } from '@/utils/authority';
 
@@ -68,6 +63,7 @@ const UserModel: UserModelType = {
   state: {
     currentUser: {},
     msgCount: 0,
+    appId: undefined,
     msgData: {},
     msgConfig: [],
     roleInfo: {},
@@ -82,30 +78,27 @@ const UserModel: UserModelType = {
         payload: response,
       });
     },
-    *fetchCurrent(_, { put, call }) {
+    *fetchCurrent(_, { put }) {
       // get token from localStorage
-      let localUserInfo = getUserInfo();
-      // get token from cookie
-      const cookieToken = Cookies.get('dataCenterCrossSystemToken');
+      const localUserInfo = getUserInfo();
+      // get token & userInfo from cookie
+      const cookieUserInfo: any = Cookies.get('dataCenterCrossSystemUserInfo');
+
       // check cookie token
-      if (cookieToken !== undefined) {
-        const response = yield call(getLocalInfoByCrossSystemToken, {
-          token: cookieToken,
-        });
-        if (response?.code === 0 && response?.data) {
-          // valid: exchange userinfo
-          const exchangeInfo = response?.data ?? {};
+      if (cookieUserInfo !== undefined) {
+        const cookieInfo = JSON.parse(cookieUserInfo || '{}');
+        // update
+        if (cookieInfo?.userId && cookieInfo?.token) {
           setUserInfo({
             ...localUserInfo,
-            ...exchangeInfo,
+            ...cookieInfo,
           });
-          localUserInfo = exchangeInfo;
-          Cookies.remove('dataCenterCrossSystemToken');
         } else {
           // invalid: clear token
           delete localUserInfo?.token;
           setUserInfo(localUserInfo);
         }
+        Cookies.remove('dataCenterCrossSystemUserInfo');
       }
       // update state
       yield put({

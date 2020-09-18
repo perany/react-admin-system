@@ -29,6 +29,51 @@ export const formatSeconds = (number: any) => {
 };
 
 /**
+ * 浮点数转换为整数
+ * @param num
+ */
+export const floatToInt = (num: any) => {
+  const rel: any = {};
+  const str: string = `${Math.abs(num)}`;
+  const pos: any = str?.indexOf('.');
+  const len = str.substr(pos + 1).length;
+  // 补充：当小数位数较多时，避免出错，所以多扩大一倍，提高精度
+  rel.times = 10 ** (len + 1);
+  rel.num = num;
+  return rel;
+};
+
+/**
+ * 浮点数计算
+ * @param a: 操作数1
+ * @param b：操作数2
+ * @param op：运算符 +—/*
+ */
+export const numberCalculate = (a: any, b: any, op: string) => {
+  const d1: any = floatToInt(a);
+  const d2: any = floatToInt(b);
+  const max = d1.times > d2.times ? d1.times : d2.times;
+  let rel;
+  switch (op) {
+    case '+':
+      rel = (d1.num * max + d2.num * max) / max;
+      break;
+    case '-':
+      rel = (d1.num * max - d2.num * max) / max;
+      break;
+    case '*':
+      rel = (d1.num * max * (d2.num * max)) / (max * max);
+      break;
+    case '/':
+      rel = (d1.num * max) / (d2.num * max);
+      break;
+    default:
+      break;
+  }
+  return rel;
+};
+
+/**
  * number的货币显示法
  * 123456.456123 -> 123,456.45
  */

@@ -27,10 +27,13 @@ const SystemNotice = () => {
     manual: false,
   });
 
-  // queryList api
-  const { run: getMsgCount, data: msgCountData } = useRequest(messageCount, {
-    manual: false,
-  });
+  // count api
+  const { run: getMsgCount, data: msgCountData } = useRequest(
+    () => messageCount({ startTime: startTime.valueOf(), endTime: endTime.valueOf() }),
+    {
+      manual: false,
+    },
+  );
 
   // queryList api
   const { run: runQuery, loading: queryLoading, data: tableData } = useRequest(

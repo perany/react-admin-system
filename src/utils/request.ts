@@ -107,12 +107,8 @@ request.interceptors.request.use((url: string, options: any) => {
   // url
   let newUrl = url;
   const isAbsoluteURL = url.substr(0, 4) === 'http';
-  // dev remove url-prefix
-  if (
-    (!isAbsoluteURL && process.env.NODE_ENV === 'development') ||
-    process.env.NODE_ENV === 'production' ||
-    process.env.build_env
-  ) {
+  // relative url add prefix
+  if (!isAbsoluteURL) {
     newUrl = proxyConfig.postServer + newUrl;
   }
   // login api

@@ -154,6 +154,18 @@ export const sortersToObject = (sortersString: any) => {
   }));
 };
 
+/**
+ * 获取排序值
+ * 在table配置column-sortOrder时调用：从页面url参数获取初始值传入组件
+ * @param name 需要获取排序的字段名
+ */
+export const getSort = (name: string) => {
+  const sortArr = sortersToObject(getPageQuery()?.sort);
+  return (Array.isArray(sortArr) ? sortArr : [sortArr])?.filter(
+    (item: any) => item?.field === name,
+  )[0]?.order;
+};
+
 // 获取表格列头
 export const getColumns = (thead: any, keys: any, ...other: any[]) => {
   const columns =

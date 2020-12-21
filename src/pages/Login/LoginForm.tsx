@@ -141,9 +141,9 @@ class LoginFrom extends Component<LoginFromProps> {
       dispatch({
         type: 'login/login',
         payload: {
-          username: values.name,
+          userName: values.name,
           password: CryptoJS.AES.encrypt(values.password, proxyConfig.encryptKey).toString(),
-          verify_type: 'token',
+          verifyType: 'token',
           source,
         },
       });

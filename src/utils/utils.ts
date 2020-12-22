@@ -1,7 +1,9 @@
 import { parse, stringify } from 'qs';
 import pathRegexp from 'path-to-regexp';
-import { history } from 'umi';
 import { Route } from '@/models/connect';
+import { history } from 'umi';
+import { ColumnType } from 'antd/lib/table/interface';
+
 import defaultSettings from '../../config/defaultSettings';
 
 declare const ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: any;
@@ -49,11 +51,11 @@ export const floatToInt = (num: any) => {
  * @param b：操作数2
  * @param op：运算符 +—/*
  */
-export const numberCalculate = (a: any, b: any, op: string) => {
+export const numberCalculate = (a: any, b: any, op: string): number => {
   const d1: any = floatToInt(a);
   const d2: any = floatToInt(b);
   const max = d1.times > d2.times ? d1.times : d2.times;
-  let rel;
+  let rel: number;
   switch (op) {
     case '+':
       rel = (d1.num * max + d2.num * max) / max;
@@ -68,6 +70,7 @@ export const numberCalculate = (a: any, b: any, op: string) => {
       rel = (d1.num * max) / (d2.num * max);
       break;
     default:
+      rel = 0;
       break;
   }
   return rel;
@@ -77,9 +80,9 @@ export const numberCalculate = (a: any, b: any, op: string) => {
  * number的货币显示法
  * 123456.456123 -> 123,456.45
  */
-export const numberFormat = (number: any, long?: number): string => {
+export const numberFormat = (number: any, long?: number): string | undefined => {
   if (number !== 0 && (!number || Number.isNaN(Number(number)))) {
-    return '';
+    return undefined;
   }
   // 指定小数位
   if (long !== undefined) {
@@ -107,6 +110,7 @@ export const getPageQuery = () => parse(window.location.href.split('?')[1]);
 
 // 下划线转换驼峰
 export const toHump = (name: string) => {
+  /* eslint-disable */
   return name.replace(/\_(\w)/g, function (all, letter) {
     return letter.toUpperCase();
   });
@@ -166,29 +170,46 @@ export const getSort = (name: string) => {
   )[0]?.order;
 };
 
-// 获取表格列头
-export const getColumns = (thead: any, keys: any, ...other: any[]) => {
+export interface TheadType {
+  label: string;
+  value: any;
+  sorter?: boolean;
+}
+
+export interface coverPropType<T> {
+  [key: string]: ColumnType<T>;
+}
+
+/**
+ * 获取表格列头
+ * @param thead
+ * @param coverProp
+ * @param other
+ * 根据列表thead配置，构造table组件的columns传入参数
+ */
+export const getColumns = (thead: TheadType[], coverProp: coverPropType<any>, ...other: any[]) => {
   const columns =
     thead &&
     thead.map((item: any) => {
-      const key = Object.keys(item) && Object.keys(item)[0];
-      const value = item[key];
+      const key = item?.value;
+      const title = item?.label;
       const newItem = {
-        title: value,
+        title: title,
         dataIndex: key,
-        ...keys[key],
+        sorter: item?.sorter !== undefined ? item?.sorter : false,
+        ...coverProp[key],
       };
       // title extend
-      if (keys[key]?.title) {
-        newItem.title = [value, keys[key].title];
+      if (coverProp[key]?.title) {
+        newItem.title = [title, coverProp[key].title];
       }
       return newItem;
     });
   let result: any[] = [];
   if (columns) {
-    result = other && other[0] ? [...columns, ...other] : [...columns];
+    result = Array.isArray(other) ? [...columns, ...other] : [...columns];
   } else {
-    result = other && other[0] ? [...other] : [];
+    result = Array.isArray(other) ? [...other] : [];
   }
   return result;
 };
@@ -213,25 +234,28 @@ export const updateURLParams = (params: any, isReplace?: boolean) => {
   injectURLParams(history.location.pathname, { ...originalParams, ...params }, true);
 };
 
-// 请求分页参数处理
+/**
+ * 请求分页参数处理
+ * @param data
+ * 将组件输出参数格式化，用于构造请求参数
+ */
 export const requestPageFormat = (data: any) => {
-  const defaultPageSize = 15;
   if (!data) {
     return {
       page: {
         pageNum: '',
-        pageSize: defaultPageSize,
-        orders: [],
+        pageSize: '',
       },
+      orders: [],
     };
   }
   const newData = { ...data };
   const params: any = {
     page: {
       pageNum: newData.current,
-      pageSize: newData.pageSize ?? defaultPageSize,
-      orders: [],
+      pageSize: newData.pageSize,
     },
+    orders: [],
   };
   // sort
   if (newData.sort?.length > 0) {
@@ -239,7 +263,7 @@ export const requestPageFormat = (data: any) => {
       ascend: 'ASC',
       descend: 'DESC',
     };
-    params.page.orders = newData.sort.split('|').map((item: any) => ({
+    params.orders = newData.sort.split('|').map((item: any) => ({
       [item.split('-')[0]]: sortMap[item.split('-')[1]],
     }));
   }
@@ -252,10 +276,14 @@ export const requestPageFormat = (data: any) => {
   };
 };
 
-// 列表分页参数：数据结构格式化
+/**
+ * 列表分页参数：数据结构格式化
+ * @param data
+ * 将请求结果格式化，用于构造table组件接收数据
+ */
 export const paginationFormat = (data: any): any => {
-  const defaultPageSize = 15;
-  if (!data) {
+  const defaultPageSize = 10;
+  if (!data || !Array.isArray(data.body)) {
     return {
       body: [],
       pagination: {
@@ -267,14 +295,13 @@ export const paginationFormat = (data: any): any => {
     };
   }
   return {
-    body: Array.isArray(data.body) ? [...data.body] : [],
+    body: [...data.body],
     pagination: {
       current: data.page ? data.page.pageNum : 1,
       pageSize: data.page ? data.page.pageSize : defaultPageSize,
-      total: data.page ? data.page.total : 0,
+      total: data.page ? data.page.totalRows : 0,
     },
     thead: [...(data.thead || [])],
-    total: data.page ? data.page.total : 0,
   };
 };
 
@@ -359,7 +386,7 @@ export const getAuthorityFromRouter = <T extends Route>(
     return (
       (path && target !== '_blank' && pathRegexp(path).exec(pathname)) ||
       (type === 'menu' && // 判断菜单权限时：菜单无子路由 - 匹配该路由的所有子路由
-        !routes &&
+        (!routes || routes?.length === 0) &&
         matchChildren) ||
       (type === 'menu' && // 判断菜单权限时：三级或以上菜单路由 - 匹配该路由的所有子路由
         level >= 3 &&

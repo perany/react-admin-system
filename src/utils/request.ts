@@ -145,6 +145,28 @@ request.interceptors.request.use((url: string, options: any) => {
 
 // response interceptor, handling response
 request.interceptors.response.use(async (response, options: any) => {
+  // file download
+  if (
+    ['application/zip', 'application/octet-stream'].includes(
+      response.headers.get('Content-Type') ?? '',
+    )
+  ) {
+    // 将文件流转为blob对象，并获取本地文件链接
+    response.blob().then((blob) => {
+      const a = window.document.createElement('a');
+      const downUrl = window.URL.createObjectURL(blob); // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+      const fileStr = response.headers.get('Content-Disposition') || '';
+      let filename = fileStr.split('filename=')[1] || '';
+      filename = filename.substr(0, filename.length);
+      a.href = downUrl;
+      a.download = decodeURIComponent(filename);
+      a.click();
+      window.URL.revokeObjectURL(downUrl);
+    });
+    return response;
+  }
+
+  // json response
   const res = await response.clone().json();
   if (res?.code === 0) {
     return response;

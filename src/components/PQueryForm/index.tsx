@@ -222,9 +222,6 @@ const PQueryForm = (props: PQueryFormProps) => {
       const toolBtnLength = items.filter(
         (val: any) => val.type === 'toolbar' && val.name !== 'submit',
       )?.length;
-      if (toolBtnLength < 2) {
-        btnProps.type = 'primary';
-      }
       // submit type
       if (name === 'submit') {
         btnProps.type = 'default';
@@ -235,6 +232,10 @@ const PQueryForm = (props: PQueryFormProps) => {
             form.submit();
           }
         };
+      }
+      // only one button show primary type
+      if (toolBtnLength < 2) {
+        btnProps.type = 'primary';
       }
       return <Button {...btnProps}>{label || '搜索'}</Button>;
     },

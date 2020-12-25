@@ -54,7 +54,7 @@ const showErrorModal = (title: string, content: string, reLogin: boolean) => {
  */
 const errorHandler = (error: { response: Response }): Response => {
   const { response } = error;
-  if (response && response.status) {
+  if (response && response?.status && response?.status > 200) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
 

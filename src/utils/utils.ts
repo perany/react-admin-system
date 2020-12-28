@@ -197,6 +197,7 @@ export const getColumns = (thead: TheadType[], coverProp: coverPropType<any>, ..
         title: title,
         dataIndex: key,
         sorter: item?.sorter !== undefined ? item?.sorter : false,
+        fixed: item?.fixed !== undefined ? item?.fixed : false,
         ...coverProp[key],
       };
       // title extend

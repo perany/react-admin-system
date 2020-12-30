@@ -191,18 +191,18 @@ export const getColumns = (thead: TheadType[], coverProp: coverPropType<any>, ..
   const columns =
     thead &&
     thead.map((item: any) => {
-      const key = item?.value;
-      const title = item?.label;
+      const { value, label, ...rest } = item || {};
       const newItem = {
-        title: title,
-        dataIndex: key,
+        ...rest,
+        title: label,
+        dataIndex: value,
         sorter: item?.sorter !== undefined ? item?.sorter : false,
         fixed: item?.fixed !== undefined ? item?.fixed : false,
-        ...coverProp[key],
+        ...coverProp[value],
       };
       // title extend
-      if (coverProp[key]?.title) {
-        newItem.title = [title, coverProp[key].title];
+      if (coverProp[value]?.title) {
+        newItem.title = [label, coverProp[value].title];
       }
       return newItem;
     });

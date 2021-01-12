@@ -106,7 +106,7 @@ export const numberFormat = (number: any, long?: number): string | undefined => 
   return number;
 };
 
-export const getPageQuery = () => parse(window.location.href.split('?')[1]);
+export const getPageQuery = () => parse(window.location.search.split('?')[1]);
 
 // 下划线转换驼峰
 export const toHump = (name: string) => {

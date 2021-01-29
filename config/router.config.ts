@@ -33,8 +33,15 @@ export default [
             path: '/admin',
             name: '管理页',
             icon: 'crown',
-            component: './Admin',
             routes: [
+              {
+                path: '/admin',
+                redirect: '/admin/list',
+              },
+              {
+                path: '/admin/list',
+                component: './Admin',
+              },
               {
                 path: '/admin/sub1',
                 name: '管理列表1',

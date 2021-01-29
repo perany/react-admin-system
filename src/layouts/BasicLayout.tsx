@@ -84,9 +84,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     route: { routes },
     menuLoading,
   } = props;
-  /**
-   * init variables
-   */
+
+  // init variables
   const [authRoute, setAuthRoute] = useState<MenuDataItem[]>([] as MenuDataItem[]);
   useEffect(() => {
     if (dispatch) {
@@ -154,6 +153,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   return (
     <ProLayout
       logo={logo}
+      {...settings}
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
@@ -162,10 +162,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       )}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
-        if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
+        if (
+          menuItemProps.isUrl ||
+          menuItemProps.children ||
+          location.pathname === menuItemProps.path
+        ) {
           return defaultDom;
         }
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        return <Link to={menuItemProps.path ?? ''}>{defaultDom}</Link>;
       }}
       breadcrumbRender={(routers = []) => [
         {
@@ -183,11 +187,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         );
       }}
       // footerRender={() => defaultFooterDom}
+      menu={{
+        ...(settings?.menu ?? {}),
+        loading: menuLoading,
+      }}
       menuDataRender={() => menuDataRender(authRoute, routes as Route[])}
-      // menuDataRender={getMenuData}
       rightContentRender={() => <RightContent />}
       {...props}
-      {...settings}
     >
       <ConfigProvider locale={zhCN}>
         <Authorized

@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { ConfigProvider, Button, DatePicker, Form, Input, Select, Radio, Cascader } from 'antd';
+import {
+  TreeSelect,
+  ConfigProvider,
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Select,
+  Radio,
+  Cascader,
+} from 'antd';
 import { FormProps } from 'antd/es/form';
 import classNames from 'classnames';
 
@@ -124,15 +134,15 @@ const PQueryForm = (props: PQueryFormProps) => {
           }
         >
           {Array.isArray(item.data) &&
-            [...item.data].map((option: any) =>
-              item?.renderChildren && typeof item?.renderChildren === 'function' ? (
-                item.renderChildren(option, item)
-              ) : (
-                <Option value={option.value} key={option.value}>
-                  {`${option.text}`}
-                </Option>
-              ),
-            )}
+          [...item.data].map((option: any) =>
+            item?.renderChildren && typeof item?.renderChildren === 'function' ? (
+              item.renderChildren(option, item)
+            ) : (
+              <Option value={option.value} key={option.value}>
+                {`${option.text}`}
+              </Option>
+            ),
+          )}
         </Select>
       );
     },
@@ -149,6 +159,26 @@ const PQueryForm = (props: PQueryFormProps) => {
           placeholder={`请选择${item.label}`}
           fieldNames={{ label: 'text' }}
           options={Array.isArray(item.data) ? item.data : []}
+          style={{ minWidth: 150 }}
+          {...item.extend}
+          onChange={(value: any) =>
+            onChangedCall(item, value, () => {
+              form.submit();
+            })
+          }
+        />
+      );
+    },
+    // 树状选择下拉搜索框
+    treeSelect: (item: ItemProps) => {
+      return (
+        <TreeSelect
+          allowClear
+          treeCheckable
+          treeNodeFilterProp="title"
+          showCheckedStrategy={TreeSelect.SHOW_PARENT}
+          placeholder={`请选择${item.label}`}
+          treeData={Array.isArray(item.data) ? item.data : []}
           style={{ minWidth: 150 }}
           {...item.extend}
           onChange={(value: any) =>
@@ -183,11 +213,11 @@ const PQueryForm = (props: PQueryFormProps) => {
         onChange={(value: any) => onChangedCall(item, value, () => form.submit())}
       >
         {Array.isArray(item.data) &&
-          [...item.data].map((option: any) => (
-            <Radio.Button value={option.value} key={option.value}>
-              {`${option.text}`}
-            </Radio.Button>
-          ))}
+        [...item.data].map((option: any) => (
+          <Radio.Button value={option.value} key={option.value}>
+            {`${option.text}`}
+          </Radio.Button>
+        ))}
       </Radio.Group>
     ),
     // 数字范围
